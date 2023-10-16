@@ -10,7 +10,7 @@ const cors = require('cors');
 const session = require('express-session');
 
 //routes import
-const logRoute = require('./routes/logRoute.js');
+const usersRoute = require('./routes/usersRoutes.js');
 
 // middleware setup
 const app = express();
@@ -29,7 +29,7 @@ app.use(
   })
 );
 
-app.use('/programs', progamsRoutes);
+app.use('/users', usersRoute);
 
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));

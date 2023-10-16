@@ -31,11 +31,17 @@ const Register = () => {
           
           
           <div className="form-group pt-4">
-            <label className="form-label">Role</label>
-            <input className="form-control" type="password" placeholder="password"></input>
+            <div className="px-4">
+              <label className="form-label w-25 px-4">User</label>
+              <input type="radio" name="role" checked="checked"></input>
+            </div>
+            <div className="px-4">
+              <label className="form-label w-25 px-4">Admin</label>
+              <input type="radio" name="role"></input>
+            </div>
           </div>
           <div className="d-flex justify-content-end mx-2 my-4">
-            <button className="btn btn-dark">Login</button>
+            <button className="btn btn-dark">Register</button>
           </div>
         </form>
       </div>
