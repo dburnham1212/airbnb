@@ -22,7 +22,15 @@ const Home = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
-  const listings = data.listings.map((listing) => <ListingCard key={listing.id} name={listing.name}/>)
+  const listings = data.listings.map((listing) => 
+    <ListingCard 
+      key={listing.id} 
+      name={listing.name}
+      description={listing.description}
+      address={listing.address}
+      price={listing.price}
+    />
+  );
 
   return(
     

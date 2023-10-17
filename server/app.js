@@ -2,41 +2,19 @@
 require('dotenv').config();
 const { ENVIROMENT, PORT } = process.env;
 
-const listings = [
-  {  
-    id: 0,
-    user_id: 1,
-    name: "Small Cottage",
-    description: "A small cottage by the water",
-    address: "123 Fake Street",
-    price: "100"
-  },
-  {  
-    id: 1,
-    user_id: 1,
-    name: "Smaller Cottage",
-    description: "A smaller cottage by the water",
-    address: "1234 Fake Street",
-    price: "120"
-  }
-];
-
-const bookings = [
+const users = [
   {
     id: 0,
-    listing_id: 0,
-    user_id: 1,
-    start_date: Date.now(),
-    end_date: Date.now() 
-  },
-  {
-    id: 1,
-    listing_id: 1,
-    user_id: 1,
-    start_date: Date.now(),
-    end_date: Date.now() 
+    first_name: "Dylan",
+    last_name: "Burnham",
+    phone_number: "289-356-5266",
+    email: "dburnham1212@gmail.com",
+    password: "password"
   }
 ]
+
+const listings = require('./db/queries/listings');
+const bookings = require('./db/queries/bookings');
 
 const express = require('express');
 const expressGraphQL = require('express-graphql').graphqlHTTP;
@@ -46,11 +24,47 @@ const {
   GraphQLString,
   GraphQLList,
   GraphQLInt,
-  GraphQLNonNull
-} = require('graphql')
+  GraphQLNonNull,
+  GraphQLScalarType
+} = require('graphql');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+
+
+const DateScalar = new GraphQLScalarType({
+  name: 'Date',
+  description: 'Date custom scalar type',
+  serialize(value) {
+    // Serialize the date to a string, e.g., in ISO 8601 format
+    return value.toISOString();
+  },
+  parseValue(value) {
+    // Parse the date from a string to a Date object
+    return new Date(value);
+  },
+  parseLiteral(ast) {
+    if (ast.kind === Kind.STRING) {
+      // Parse the date from a string literal
+      return new Date(ast.value);
+    }
+    return null; // Invalid input
+  },
+});
+
+const UserType = new GraphQLObjectType({
+  name: 'User',
+  description: 'This is a user',
+  fields: () => ({
+    id: { type: new GraphQLNonNull(GraphQLInt)},
+    first_name: { type: new GraphQLNonNull(GraphQLString)},
+    last_name: {type: new GraphQLNonNull(GraphQLString)},
+    phone_number: {type: new GraphQLNonNull(GraphQLString)},
+    email: {type: new GraphQLNonNull(GraphQLString)},
+    password: {type: new GraphQLNonNull(GraphQLString)},
+    
+  })
+})
 
 const ListingType = new GraphQLObjectType({
   name: 'Listing',
@@ -62,7 +76,12 @@ const ListingType = new GraphQLObjectType({
     description: {type: new GraphQLNonNull(GraphQLString)},
     address: {type: new GraphQLNonNull(GraphQLString)},
     price: {type: new GraphQLNonNull(GraphQLString)},
-    
+    bookings: {
+      type: new GraphQLList(BookingType),
+      resolve: (listing) => {
+        return bookings.getBookingsByListingId(listing.id)
+      }
+    }
   })
 })
 
@@ -73,10 +92,12 @@ const BookingType = new GraphQLObjectType({
     id: { type: new GraphQLNonNull(GraphQLInt)},
     listing_id: {type: new GraphQLNonNull(GraphQLInt)},
     user_id: {type: new GraphQLNonNull(GraphQLInt)},
+    start_date: {type: new GraphQLNonNull(DateScalar)},
+    end_date: {type: new GraphQLNonNull(DateScalar)},
     listing: {
       type: ListingType,
       resolve: (booking) => {
-        return listings.find(listing => booking.listing_id === listing.id)
+        return listings.getListingById(booking.listing_id)
       }
     }
   })
@@ -86,18 +107,26 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: "Root Query",
   fields: () => ({
+    user: {
+      type: UserType,
+      description: "A Single User",
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => users.find(user => user.id === args.id)
+    },
     listing: {
       type: ListingType,
       description: "A Single Listing",
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => listings.find(listing => listing.id === args.id)
+      resolve: (parent, args) => listings.getListingById(args.id)
     },
     listings: { 
       type: new GraphQLList(ListingType),
       description: 'List of all listings',
-      resolve: () => listings
+      resolve: () => listings.getAllListings()
     },
     booking: {
       type: BookingType,
@@ -105,7 +134,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => bookings.find(booking => booking.id === args.id)
+      resolve: (parent, args) => bookings.getBookingById(args.id)
     },
     bookings: { 
       type: new GraphQLList(BookingType),
