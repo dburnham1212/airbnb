@@ -27,6 +27,13 @@ const getBookingsByListingId = async (id) => {
   }
 }
 
+const getBookingsByUserId = async (id) => {
+  try {
+    const data = await db.query('SELECT * FROM bookings WHERE user_id = $1', [id]);
+    return data.rows;
+  } catch (error) {
+    throw error;
+  }
+}
 
-
-module.exports = { getAllBookings, getBookingById, getBookingsByListingId };
+module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId };

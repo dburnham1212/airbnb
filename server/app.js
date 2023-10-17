@@ -140,6 +140,14 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(BookingType),
       description: 'List of all bookings',
       resolve: () => bookings.getAllBookings()
+    },
+    user_bookings: {
+      type: new GraphQLList(BookingType),
+      description: 'List of all bookings',
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => bookings.getBookingsByUserId(args.id)
     }
   })
 })
