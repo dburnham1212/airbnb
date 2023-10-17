@@ -139,7 +139,7 @@ const RootQueryType = new GraphQLObjectType({
     bookings: { 
       type: new GraphQLList(BookingType),
       description: 'List of all bookings',
-      resolve: () => bookings
+      resolve: () => bookings.getAllBookings()
     }
   })
 })

@@ -1,5 +1,14 @@
 const db = require('../../configs/db.config');
 
+const getAllBookings = async () => {
+  try {
+    const data = await db.query('SELECT * FROM bookings');
+    return data.rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
 const getBookingById = async (id) => {
   try {
     const data = await db.query('SELECT * FROM bookings WHERE id = $1', [id]);
@@ -18,4 +27,6 @@ const getBookingsByListingId = async (id) => {
   }
 }
 
-module.exports = { getBookingById, getBookingsByListingId };
+
+
+module.exports = { getAllBookings, getBookingById, getBookingsByListingId };
