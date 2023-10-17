@@ -86,6 +86,14 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: "Root Query",
   fields: () => ({
+    listing: {
+      type: ListingType,
+      description: "A Single Listing",
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => listings.find(listing => listing.id === args.id)
+    },
     listings: { 
       type: new GraphQLList(ListingType),
       description: 'List of all listings',
@@ -107,8 +115,32 @@ const RootQueryType = new GraphQLObjectType({
   })
 })
 
+const RootMutationType = new GraphQLObjectType({
+  name: 'Mutation',
+  description: 'Root Mutation',
+  fields: () => ({
+    addListing: {
+      type: ListingType,
+      description: 'Add a listing',
+      args: {
+        user_id: { type: new GraphQLNonNull(GraphQLInt)},
+        name: {type: new GraphQLNonNull(GraphQLString)},
+        description: {type: new GraphQLNonNull(GraphQLString)},
+        address: {type: new GraphQLNonNull(GraphQLString)},
+        price: {type: new GraphQLNonNull(GraphQLString)}
+      },
+      resolve: (parent, args) => {
+        const listing = { id: bookings.length, user_id: args.user_id, name: args.name, description: args.description, address: args.address, price: args.price};
+        listings.push(listing)
+        return listing;
+      }
+    }
+  })
+})
+
 const schema = new GraphQLSchema({
-  query: RootQueryType
+  query: RootQueryType,
+  mutation: RootMutationType
 })
 
 // middleware setup
