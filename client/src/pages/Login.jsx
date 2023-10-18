@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useMutation, gql } from '@apollo/client';
 import { authContext } from "../context/AuthContext";
+
 const LOGIN_USER = gql`
 mutation LoginUser($email: String!, $password: String!){
   loginUser(email: $email, password: $password) {
@@ -17,7 +18,8 @@ const Login = () => {
     setUser
   } = useContext(authContext);
 
-  const [formState, setFormState] = useState({})
+  const [formState, setFormState] = useState({});
+  const [fieldError, setFieldError] = useState(false);
   
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
@@ -28,12 +30,17 @@ const Login = () => {
 
   const onSubmit= async (e) => {
     e.preventDefault();
-    const res = await loginUser({variables: 
-        {email: formState.email, password: formState.password}
+    if(formState.email && formState.password) {
+      const res = await loginUser({variables: 
+          {email: formState.email, password: formState.password}       
+      })
       
-    })
-    console.log(res.data.loginUser);
-    setUser(res.data.loginUser);
+      setUser(res.data.loginUser);
+    } else {
+      setFieldError(true);
+    }
+
+    
   }
 
   return(
@@ -45,12 +52,15 @@ const Login = () => {
         <form className="px-3">
           <div className="form-group pt-4">
             <label className="form-label">Email</label>
-            <input className="form-control" type="email" placeholder="Email" name="email" onChange={(e) => {handleChange(e)}}></input>
+            <input className={"form-control " + (fieldError && !formState.email && "is-invalid")} type="email" placeholder="Email" name="email" onChange={(e) => {handleChange(e)}}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Password</label>
-            <input className="form-control" type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
+            <input className={"form-control " + (fieldError && !formState.password && "is-invalid")} type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
           </div>
+          {fieldError && <div class="alert alert-danger mt-4" role="alert">
+            Missing Required Fields
+          </div>}
           <div className="d-flex justify-content-end mx-2 my-4">
             <button className="btn btn-dark" onClick={(e => {onSubmit(e)})}>Login</button>
           </div>

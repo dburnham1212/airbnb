@@ -18,7 +18,8 @@ const Register = () => {
     setUser
   } = useContext(authContext);
   const [formState, setFormState] = useState({})
-  
+  const [fieldError, setFieldError] = useState(false);
+
   const [registerUser, { data, loading, error }] = useMutation(REGISTER_USER);
 
   const handleChange = (event) => {
@@ -28,12 +29,18 @@ const Register = () => {
 
   const onSubmit= async (e) => {
     e.preventDefault();
-    const res = await registerUser({variables: 
-        {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password}
+    if(formState.firstName && formState.lastName && formState.phoneNumber && formState.email && formState.password ) {
       
-    })
-    console.log(res.data.registerUser);
-    setUser(res.data.registerUser);
+      const res = await registerUser({variables: 
+          {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password}
+        
+      })
+      console.log(res.data.registerUser);
+      setUser(res.data.registerUser);
+      setFieldError(false);
+    } else {
+      setFieldError(true);
+    }
   }
 
 
@@ -46,23 +53,23 @@ const Register = () => {
         <form className="px-3">
           <div className="form-group pt-4">
             <label className="form-label">First Name</label>
-            <input className="form-control" type="text"  placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}></input>
+            <input className={"form-control " + (fieldError && !formState.firstName && "is-invalid")} type="text"  placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Last Name</label>
-            <input className="form-control" type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}></input>
+            <input className={"form-control " + (fieldError && !formState.lastName && "is-invalid")} type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Email</label>
-            <input className="form-control" type="email" placeholder="example@gmail.com" name="email" onChange={(e) => handleChange(e)}></input>
+            <input className={"form-control " + (fieldError && !formState.email && "is-invalid")} type="email" placeholder="example@gmail.com" name="email" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Password</label>
-            <input className="form-control" type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
+            <input className={"form-control " + (fieldError && !formState.password && "is-invalid")} type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Phone Number</label>
-            <input className="form-control" type="tel" placeholder="(555)-555-5555" name="phoneNumber" onChange={(e) => handleChange(e)}></input>
+            <input className={"form-control " + (fieldError && !formState.phoneNumber && "is-invalid")} type="tel" placeholder="(555)-555-5555" name="phoneNumber" onChange={(e) => handleChange(e)}></input>
           </div>
           
           
@@ -76,6 +83,9 @@ const Register = () => {
               <input type="radio" name="role"></input>
             </div>
           </div>
+          {fieldError && <div class="alert alert-danger" role="alert">
+            Missing Required Fields
+          </div>}
           <div className="d-flex justify-content-end mx-2 my-4">
             <button className="btn btn-dark" onClick={(e) => onSubmit(e)}>Register</button>
           </div>
