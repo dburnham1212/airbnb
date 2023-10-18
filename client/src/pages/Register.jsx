@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useMutation, gql } from '@apollo/client';
-
+import { authContext } from "../context/AuthContext";
 const REGISTER_USER = gql`
 mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: String!, $email: String!, $password: String!){
   registerUser(first_name: $first_name, last_name: $last_name, phone_number: $phone_number, email: $email, password: $password) {
@@ -14,6 +14,9 @@ mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: 
 `
 
 const Register = () => {
+  const {
+    setUser
+  } = useContext(authContext);
   const [formState, setFormState] = useState({})
   
   const [registerUser, { data, loading, error }] = useMutation(REGISTER_USER);
@@ -23,12 +26,14 @@ const Register = () => {
     console.log(formState)
   }
 
-  const onSubmit=(e) => {
+  const onSubmit= async (e) => {
     e.preventDefault();
-    const user = registerUser({variables: 
+    const res = await registerUser({variables: 
         {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password}
       
     })
+    console.log(res.data.registerUser);
+    setUser(res.data.registerUser);
   }
 
 

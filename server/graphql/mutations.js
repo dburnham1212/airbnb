@@ -29,15 +29,34 @@ const RootMutationType = new GraphQLObjectType({
       resolve : async (_, args) => {
         const user = {first_name: args.first_name, last_name: args.last_name, phone_number: args.phone_number, email: args.email, password: args.password}
 
+        // Check if an old user has the current email used
         const oldUser = await users.getUserByEmail(user);
 
         if (oldUser) {
           return new Error(`A user with the email ${user.email} already exists`);
         } 
 
+        // If user email doesnt exist create a new user in the database
         const newUser = users.createUser(user);
 
+        // Return user created in database
         return newUser;
+      }
+    },
+    loginUser: {
+      type: UserType,
+      description: "Add a user",
+      args: {
+        email: {type: new GraphQLNonNull(GraphQLString)},
+        password: {type: new GraphQLNonNull(GraphQLString)},
+      },
+      resolve : async (_, args) => {
+        const user = {email: args.email, password: args.password};
+        
+        // Check if an old user has the current email used
+        const checkUser = await users.getUserByEmail(user);
+
+        return checkUser;
       }
     },
     addListing: {
