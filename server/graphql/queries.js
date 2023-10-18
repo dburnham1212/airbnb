@@ -23,7 +23,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => users.find(user => user.id === args.id)
+      resolve: (_, args) => users.find(user => user.id === args.id)
     },
     listing: {
       type: ListingType,
@@ -31,7 +31,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => listings.getListingById(args.id)
+      resolve: (_, args) => listings.getListingById(args.id)
     },
     listings: { 
       type: new GraphQLList(ListingType),
@@ -44,7 +44,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => listings.getListingsByUserId(args.id)
+      resolve: (_, args) => listings.getListingsByUserId(args.id)
     },
     booking: {
       type: BookingType,
@@ -52,7 +52,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => bookings.getBookingById(args.id)
+      resolve: (_, args) => bookings.getBookingById(args.id)
     },
     bookings: { 
       type: new GraphQLList(BookingType),
@@ -65,7 +65,7 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLInt }
       },
-      resolve: (parent, args) => bookings.getBookingsByUserId(args.id)
+      resolve: (_, args) => bookings.getBookingsByUserId(args.id)
     }
   })
 })

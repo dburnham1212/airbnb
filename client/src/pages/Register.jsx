@@ -1,6 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
+import { graphql } from '@apollo/client'
+import { useMutation, gql } from '@apollo/client';
+
+const REGISTER_USER = gql`
+mutation RegisterUser($first_name: String, $last_name: String, $phone_number: String, $email: String, $password: String){
+  registerUser(first_name: $first_name, last_name: $last_name, phone_number: $phone_number, email: $email, password: $password) {
+    id
+    first_name
+    last_name
+  	phone_number
+    email
+  }
+}
+`
 
 const Register = () => {
+  const [formState, setFormState] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNumber: ""
+    
+  })
+
+  const handleChange = (event) => {
+
+  }
+
   return(
     <div className="d-flex justify-content-center py-5">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center">
