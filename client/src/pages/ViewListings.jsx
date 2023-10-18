@@ -1,12 +1,12 @@
-import React, {useEffect} from "react";
+import React from "react";
 
-import ListingCard from "./ListingCard";
+import ListingCard from "../components/ListingCard";
 
 import { useQuery, gql } from '@apollo/client';
 
 const GET_LISTINGS = gql`
   query GetListings {
-    listings{
+    user_listings(id:${1}){
       id
       name
       description
@@ -16,13 +16,13 @@ const GET_LISTINGS = gql`
   }
 `;
 
-const Home = () => {
+const ViewListings = () => {
   const { loading, error, data } = useQuery(GET_LISTINGS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
-  const listings = data.listings.map((listing) => 
+  const listings = data.user_listings.map((listing) => 
     <ListingCard 
       key={listing.id} 
       name={listing.name}
@@ -45,4 +45,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default ViewListings;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useQuery, gql } from '@apollo/client';
-import BookingCard from "./BookingCard";
+import BookingCard from "../components/BookingCard";
 
 const GET_BOOKINGS = gql`
   query GetBookings {

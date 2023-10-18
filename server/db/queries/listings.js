@@ -9,6 +9,15 @@ const getAllListings = async () => {
   }
 };
 
+const getListingsByUserId = async (id) => {
+  try {
+    const data = await db.query('SELECT * FROM listings WHERE user_id = $1', [id]);
+    return data.rows;
+  } catch (error) {
+    throw error;
+  }
+}
+
 const getListingById = async (id) => {
   try {
     const data = await db.query('SELECT * FROM listings WHERE id = $1', [id]);
@@ -18,4 +27,4 @@ const getListingById = async (id) => {
   }
 };
 
-module.exports = { getAllListings, getListingById };
+module.exports = { getAllListings, getListingsByUserId, getListingById };

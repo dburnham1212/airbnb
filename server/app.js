@@ -2,17 +2,6 @@
 require('dotenv').config();
 const { ENVIROMENT, PORT } = process.env;
 
-const users = [
-  {
-    id: 0,
-    first_name: "Dylan",
-    last_name: "Burnham",
-    phone_number: "289-356-5266",
-    email: "dburnham1212@gmail.com",
-    password: "password"
-  }
-]
-
 const listings = require('./db/queries/listings');
 const bookings = require('./db/queries/bookings');
 
@@ -128,6 +117,14 @@ const RootQueryType = new GraphQLObjectType({
       description: 'List of all listings',
       resolve: () => listings.getAllListings()
     },
+    user_listings: {
+      type: new GraphQLList(ListingType),
+      description: 'List of user listings',
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (parent, args) => listings.getListingsByUserId(args.id)
+    },
     booking: {
       type: BookingType,
       description: "A Single Booking",
@@ -143,7 +140,7 @@ const RootQueryType = new GraphQLObjectType({
     },
     user_bookings: {
       type: new GraphQLList(BookingType),
-      description: 'List of all bookings',
+      description: 'List of user bookings',
       args: {
         id: { type: GraphQLInt }
       },
@@ -156,6 +153,22 @@ const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
   fields: () => ({
+    createUser: {
+      type: UserType,
+      description: "Add a user",
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt)},
+        first_name: { type: new GraphQLNonNull(GraphQLString)},
+        last_name: {type: new GraphQLNonNull(GraphQLString)},
+        phone_number: {type: new GraphQLNonNull(GraphQLString)},
+        email: {type: new GraphQLNonNull(GraphQLString)},
+        password: {type: new GraphQLNonNull(GraphQLString)},
+      },
+      resolve : (parent, args) => {
+        const user = {first_name: args.first_name, last_name: args.last_name, phone_number: args.phone_number, email: args.email, password: args.password}
+        return user;
+      }
+    },
     addListing: {
       type: ListingType,
       description: 'Add a listing',

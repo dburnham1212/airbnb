@@ -1,15 +1,19 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Login from './components/Login';
+import Login from './pages/Login';
 import NavBar from './components/NavBar';
-import Register from './components/Register';
-import Home from './components/Home';
-import Listings from './components/Listings';
-import History from "./components/History";
-import CreateListing from "./components/CreateListing";
-import ViewListings from "./components/ViewListings";
+import Register from './pages/Register';
+import Home from './pages/Home';
+import Listings from './pages/Listings';
+import History from "./pages/History";
+import CreateListing from "./pages/CreateListing";
+import ViewListings from "./pages/ViewListings";
 
 import './App.css';
+
+
+
+
 
 function App() {
   return (
