@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { graphql } from '@apollo/client'
 import { useMutation, gql } from '@apollo/client';
 
 const REGISTER_USER = gql`
-mutation RegisterUser($first_name: String, $last_name: String, $phone_number: String, $email: String, $password: String){
+mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: String!, $email: String!, $password: String!){
   registerUser(first_name: $first_name, last_name: $last_name, phone_number: $phone_number, email: $email, password: $password) {
     id
     first_name
@@ -15,18 +14,23 @@ mutation RegisterUser($first_name: String, $last_name: String, $phone_number: St
 `
 
 const Register = () => {
-  const [formState, setFormState] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    phoneNumber: ""
-    
-  })
+  const [formState, setFormState] = useState({})
+  
+  const [registerUser, { data, loading, error }] = useMutation(REGISTER_USER);
 
   const handleChange = (event) => {
-
+    setFormState({...formState, [event.target.name]: event.target.value}); 
+    console.log(formState)
   }
+
+  const onSubmit=(e) => {
+    e.preventDefault();
+    const user = registerUser({variables: 
+        {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password}
+      
+    })
+  }
+
 
   return(
     <div className="d-flex justify-content-center py-5">
@@ -37,23 +41,23 @@ const Register = () => {
         <form className="px-3">
           <div className="form-group pt-4">
             <label className="form-label">First Name</label>
-            <input className="form-control" type="text" placeholder="First Name"></input>
+            <input className="form-control" type="text"  placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Last Name</label>
-            <input className="form-control" type="text" placeholder="Last Name"></input>
+            <input className="form-control" type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Email</label>
-            <input className="form-control" type="email" placeholder="example@gmail.com"></input>
+            <input className="form-control" type="email" placeholder="example@gmail.com" name="email" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Password</label>
-            <input className="form-control" type="password" placeholder="password"></input>
+            <input className="form-control" type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Phone Number</label>
-            <input className="form-control" type="tel" placeholder="(555)-555-5555"></input>
+            <input className="form-control" type="tel" placeholder="(555)-555-5555" name="phoneNumber" onChange={(e) => handleChange(e)}></input>
           </div>
           
           
@@ -68,7 +72,7 @@ const Register = () => {
             </div>
           </div>
           <div className="d-flex justify-content-end mx-2 my-4">
-            <button className="btn btn-dark">Register</button>
+            <button className="btn btn-dark" onClick={(e) => onSubmit(e)}>Register</button>
           </div>
         </form>
       </div>

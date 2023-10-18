@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 
 // import context providers
-import AuthProvider from './providers/AuthProvider';
+import AuthProvider from './context/AuthContext';
 
 // import bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -17,9 +17,6 @@ const client = new ApolloClient({
   uri: "http://localhost:5000/graphql",
   cache: new InMemoryCache(),
 });
-
-
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
