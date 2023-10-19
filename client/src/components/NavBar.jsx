@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { authContext } from "../context/AuthContext";
 
 const NavBar = () => {
+  const {
+    user,
+    setUser,
+    clearToken
+  } = useContext(authContext);
+
+  const onLogout = () => {
+    clearToken();
+    setUser(null);
+  }
 
   return(
     <nav className="navbar navbar-expand-md navbar-light fixed-top bg-dark py-4">
@@ -22,24 +33,40 @@ const NavBar = () => {
         <div className="collapse navbar-collapse mx-4" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item active">
-              <Link className="nav-link text-light" to="/login">Login</Link>
-            </li>
-            <li className="nav-item active">
-              <Link className="nav-link text-light" to="/register">Register</Link>
-            </li>
-            <li className="nav-item active">
               <Link className="nav-link text-light" to="/listings">Listings</Link>
             </li>
+          </ul>
+          {user && <ul className="navbar-nav me-auto">
             <li className="nav-item active">
-              <Link className="nav-link text-light" to="/history">History</Link>
+              <Link className="nav-link text-light" to="/history">Booking History</Link>
             </li>
             <li className="nav-item active">
               <Link className="nav-link text-light" to="/newlisting">New Listing</Link>
             </li>
             <li className="nav-item active">
-              <Link className="nav-link text-light" to="/viewlistings">View Listings</Link>
+              <Link className="nav-link text-light" to="/viewlistings">My Listings</Link>
+            </li>
+          </ul>}
+          {user ?
+          <ul className="navbar-nav d-flex justify-content-end"> 
+            <li className="nav-item active">
+              <div className="text-warning">User: {user.first_name} {user.last_name}</div>
+            </li>
+            <li className="nav-item active">
+              <button className="nav-link text-light" onClick={onLogout}>Logout</button>
             </li>
           </ul>
+          :<ul className="navbar-nav d-flex justify-content-end">  
+            <li className="nav-item active">
+              <Link className="nav-link text-light" to="/login">Login</Link>
+            </li>
+            <li className="nav-item active">
+              <Link className="nav-link text-light" to="/register">Register</Link>
+            </li>
+          </ul>
+          
+          }
+          
         </div>
       </div>
     </nav>

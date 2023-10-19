@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
-
+import { ApolloClient, InMemoryCache, ApolloProvider, gql, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 // import context providers
 import AuthProvider from './context/AuthContext';
 
@@ -13,8 +13,21 @@ import AuthProvider from './context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
+const httpLink = createHttpLink({
+  uri: "http://localhost:5000/graphql"
+});
+
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      authorization: localStorage.getItem("token") || ""
+    }
+  }
+});
+
 const client = new ApolloClient({
-  uri: "http://localhost:5000/graphql",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 

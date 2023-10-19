@@ -9,13 +9,15 @@ mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: 
     last_name
   	phone_number
     email
+    token
   }
 }
 `
 
 const Register = () => {
   const {
-    setUser
+    setUser,
+    setToken
   } = useContext(authContext);
   const [formState, setFormState] = useState({})
   const [fieldError, setFieldError] = useState(false);
@@ -36,6 +38,7 @@ const Register = () => {
           {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password, role: formState.role}
       }).then((res) => {
         setUser(res.data.registerUser);
+        setToken(res.data.loginUser);
         setFieldError(false);
       }).catch((err) => {
         setErrorText(err.message)

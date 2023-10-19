@@ -41,7 +41,8 @@ const UserType = new GraphQLObjectType({
     phone_number: {type: new GraphQLNonNull(GraphQLString)},
     email: {type: new GraphQLNonNull(GraphQLString)},
     password: {type: new GraphQLNonNull(GraphQLString)},
-    role: {type: new GraphQLNonNull(GraphQLString)}
+    role: {type: new GraphQLNonNull(GraphQLString)},
+    token: {type: new GraphQLNonNull(GraphQLString)},
   })
 })
 

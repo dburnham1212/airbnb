@@ -9,7 +9,6 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-
 const { RootQueryType } = require('./graphql/queries');
 const { RootMutationType } = require('./graphql/mutations')
 

@@ -35,7 +35,7 @@ const ViewListings = () => {
   return(
     
     <div className="text-center py-4">
-      <h1>Listings</h1>
+      <h1>My Listings</h1>
       <div className="container-fluid">
         <div className="row">
           {listings}

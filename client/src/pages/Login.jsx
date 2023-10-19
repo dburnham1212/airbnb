@@ -10,12 +10,14 @@ mutation LoginUser($email: String!, $password: String!){
     last_name
   	phone_number
     email
+    token
   }
 }
 `
 const Login = () => {
   const {
-    setUser
+    setUser,
+    setToken
   } = useContext(authContext);
 
   const [formState, setFormState] = useState({});
@@ -36,6 +38,7 @@ const Login = () => {
           {email: formState.email, password: formState.password}       
       }).then((res) => {
         setUser(res.data.loginUser);
+        setToken(res.data.loginUser);
         setFieldError(false);
       }).catch((err) => {
         setErrorText(err.message)

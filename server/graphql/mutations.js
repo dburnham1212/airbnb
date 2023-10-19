@@ -14,6 +14,10 @@ const users = require('../db/queries/users');
 
 const bcrypt = require('bcryptjs');
 
+const jwt = require('jsonwebtoken');
+
+require('dotenv').config();
+
 const { UserType, ListingType, BookingType } = require("./typeDefs")
 
 const RootMutationType = new GraphQLObjectType({
@@ -51,6 +55,13 @@ const RootMutationType = new GraphQLObjectType({
         // If user email doesnt exist create a new user in the database
         const newUser = users.createUser(user);
 
+        // Create json web token
+        const token = jwt.sign(newUser, process.env.REFRESH_TOKEN_SECRET, {
+          expiresIn: "2h"
+        });
+
+        newUser.token = token;
+
         // Return user created in database
         return newUser;
       }
@@ -76,6 +87,13 @@ const RootMutationType = new GraphQLObjectType({
           });
         }
 
+        // Create json web token
+        const token = jwt.sign(checkUser, process.env.REFRESH_TOKEN_SECRET, {
+          expiresIn: "2h"
+        });
+
+        checkUser.token = token;
+        
         return checkUser;
       }
     },
