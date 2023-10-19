@@ -9,6 +9,7 @@ export const authContext = createContext();
 export default function AuthProvider(props) {
   // Here is our Shared State Object
   const [user, setUser] = useState({});
+  
   useEffect(() => {
     if(localStorage.getItem("token")) {
       const decodedToken = jwtDecode(localStorage.getItem("token"));
@@ -17,6 +18,7 @@ export default function AuthProvider(props) {
         localStorage.removeItem("token")
       } else {
         setUser(decodedToken);
+        console.log(decodedToken)
       }
       
     }

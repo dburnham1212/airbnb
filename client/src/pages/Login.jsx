@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useMutation, gql } from '@apollo/client';
 import { authContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LOGIN_USER = gql`
 mutation LoginUser($email: String!, $password: String!){
@@ -10,6 +11,7 @@ mutation LoginUser($email: String!, $password: String!){
     last_name
   	phone_number
     email
+    role
     token
   }
 }
@@ -24,6 +26,8 @@ const Login = () => {
   const [fieldError, setFieldError] = useState(false);
   const [errorText, setErrorText] = useState("");
 
+  const navigate = useNavigate();
+
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
   const handleChange = (event) => {
@@ -33,25 +37,29 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    // Check if form fields have been entered correctly
     if(formState.email && formState.password) {
+      // Attempt to login
       loginUser({variables: 
           {email: formState.email, password: formState.password}       
-      }).then((res) => {
+      }).then((res) => { 
+        // On Successful login
+        // Update user
         setUser(res.data.loginUser);
+        // Set token in local storage
         setToken(res.data.loginUser);
-        setFieldError(false);
+        // Navigate to listings page 
+        navigate("/listings")
       }).catch((err) => {
+        // If there is an error returned
         setErrorText(err.message)
+        // Display error in alert box
         setFieldError(true);
       })
-      
-      
     } else {
       setErrorText("Missing Required Fields")
       setFieldError(true);
     }
-
-    
   }
 
   return(

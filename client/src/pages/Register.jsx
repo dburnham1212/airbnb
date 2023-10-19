@@ -1,6 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useMutation, gql } from '@apollo/client';
 import { authContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+
 const REGISTER_USER = gql`
 mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: String!, $email: String!, $password: String!, $role: String!){
   registerUser(first_name: $first_name, last_name: $last_name, phone_number: $phone_number, email: $email, password: $password, role: $role) {
@@ -9,6 +12,7 @@ mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: 
     last_name
   	phone_number
     email
+    role
     token
   }
 }
@@ -22,6 +26,8 @@ const Register = () => {
   const [formState, setFormState] = useState({})
   const [fieldError, setFieldError] = useState(false);
   const [errorText, setErrorText] = useState("");
+
+  const navigate = useNavigate();
 
   const [registerUser, { data, loading, error }] = useMutation(REGISTER_USER);
 
@@ -37,9 +43,13 @@ const Register = () => {
       registerUser({variables: 
           {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password, role: formState.role}
       }).then((res) => {
+        // On Successful registration
+        // Update user
         setUser(res.data.registerUser);
+        // Set token in local storage
         setToken(res.data.loginUser);
-        setFieldError(false);
+        // Navigate to listings page
+        navigate("/listings")
       }).catch((err) => {
         setErrorText(err.message)
         setFieldError(true);

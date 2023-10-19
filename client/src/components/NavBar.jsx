@@ -1,6 +1,8 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { authContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 const NavBar = () => {
   const {
@@ -9,9 +11,12 @@ const NavBar = () => {
     clearToken
   } = useContext(authContext);
 
+  const navigate = useNavigate();
+
   const onLogout = () => {
     clearToken();
     setUser(null);
+    navigate("/login")
   }
 
   return(
@@ -35,22 +40,24 @@ const NavBar = () => {
             <li className="nav-item active">
               <Link className="nav-link text-light" to="/listings">Listings</Link>
             </li>
+            {user && user.role==="admin" && <>
+              <li className="nav-item active">
+                <Link className="nav-link text-light" to="/history">Booking History</Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link text-light" to="/newlisting">New Listing</Link>
+              </li>
+              <li className="nav-item active">
+                <Link className="nav-link text-light" to="/viewlistings">My Listings</Link>
+              </li> 
+            </>
+            }
           </ul>
-          {user && <ul className="navbar-nav me-auto">
-            <li className="nav-item active">
-              <Link className="nav-link text-light" to="/history">Booking History</Link>
-            </li>
-            <li className="nav-item active">
-              <Link className="nav-link text-light" to="/newlisting">New Listing</Link>
-            </li>
-            <li className="nav-item active">
-              <Link className="nav-link text-light" to="/viewlistings">My Listings</Link>
-            </li>
-          </ul>}
+          
           {user ?
           <ul className="navbar-nav d-flex justify-content-end"> 
-            <li className="nav-item active">
-              <div className="text-warning">User: {user.first_name} {user.last_name}</div>
+            <li className="nav-item m-auto">
+              <span className="text-warning">User: {user.first_name} {user.last_name}</span>
             </li>
             <li className="nav-item active">
               <button className="nav-link text-light" onClick={onLogout}>Logout</button>
