@@ -20,7 +20,8 @@ const Login = () => {
 
   const [formState, setFormState] = useState({});
   const [fieldError, setFieldError] = useState(false);
-  
+  const [errorText, setErrorText] = useState("");
+
   const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER);
 
   const handleChange = (event) => {
@@ -28,15 +29,22 @@ const Login = () => {
     console.log(formState)
   }
 
-  const onSubmit= async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     if(formState.email && formState.password) {
-      const res = await loginUser({variables: 
+      loginUser({variables: 
           {email: formState.email, password: formState.password}       
+      }).then((res) => {
+        setUser(res.data.loginUser);
+        setFieldError(false);
+      }).catch((err) => {
+        setErrorText(err.message)
+        setFieldError(true);
       })
       
-      setUser(res.data.loginUser);
+      
     } else {
+      setErrorText("Missing Required Fields")
       setFieldError(true);
     }
 
@@ -59,7 +67,7 @@ const Login = () => {
             <input className={"form-control " + (fieldError && !formState.password && "is-invalid")} type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
           </div>
           {fieldError && <div class="alert alert-danger mt-4" role="alert">
-            Missing Required Fields
+            {errorText}
           </div>}
           <div className="d-flex justify-content-end mx-2 my-4">
             <button className="btn btn-dark" onClick={(e => {onSubmit(e)})}>Login</button>
