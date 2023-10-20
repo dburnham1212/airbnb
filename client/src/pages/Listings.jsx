@@ -25,6 +25,7 @@ const Home = () => {
   const listings = data.listings.map((listing) => 
     <ListingCard 
       key={listing.id} 
+      id={listing.id}
       name={listing.name}
       description={listing.description}
       address={listing.address}

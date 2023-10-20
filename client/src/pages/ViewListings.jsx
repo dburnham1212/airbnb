@@ -32,6 +32,7 @@ const ViewListings = () => {
   const listings = data.user_listings.map((listing) => 
     <ListingCard 
       key={listing.id} 
+      id={listing.id}
       name={listing.name}
       description={listing.description}
       address={listing.address}
