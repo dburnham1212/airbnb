@@ -136,6 +136,23 @@ const RootMutationType = new GraphQLObjectType({
       }
     },
     // -------------------- BOOKING MUTATIONS -------------------- 
+    
+    addBooking: {
+      type: BookingType,
+      description: 'Add a booking',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt)},
+        listing_id: {type: new GraphQLNonNull(GraphQLInt)},
+        user_id: {type: new GraphQLNonNull(GraphQLInt)},
+        start_date: {type: new GraphQLNonNull(GraphQLString)},
+        end_date: {type: new GraphQLNonNull(GraphQLString)},
+      },
+      resolve: async (_, args) => {
+        const booking = { listing_id: args.listing_id, user_id: args.user_id, start_date: args.start_date, end_date: args.end_date};
+        const createdBooking = await bookings.createBooking(booking);
+        return createdBooking;
+      } 
+    },
     deleteBooking: {
       type: BookingType,
       description: 'Delete a booking',

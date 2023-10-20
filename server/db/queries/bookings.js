@@ -36,6 +36,15 @@ const getBookingsByUserId = async (id) => {
   }
 }
 
+const createBooking = async (booking) => {
+  try {
+    const data = await db.query('INSERT INTO bookings (listing_id, user_id, start_date, end_date) VALUES ($1, $2, $3, $4) RETURNING *', [booking.listing_id, booking.user_id, booking.start_date, booking.end_date]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
 const deleteBookingById = async (id) => {
   try {
     const data = await db.query('DELETE FROM bookings WHERE id = $1 RETURNING *', [id]);
@@ -45,4 +54,4 @@ const deleteBookingById = async (id) => {
   }
 }
 
-module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId, deleteBookingById };
+module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId, createBooking, deleteBookingById };
