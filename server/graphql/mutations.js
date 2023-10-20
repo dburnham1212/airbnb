@@ -10,6 +10,7 @@ const {
   GraphQLScalarType
 } = require('graphql');
 
+const { DateScalar } = require('./createdTypes');
 const users = require('../db/queries/users');
 const listings = require('../db/queries/listings');
 const bookings = require('../db/queries/bookings');
@@ -63,7 +64,7 @@ const RootMutationType = new GraphQLObjectType({
 
         // Create json web token
         const token = jwt.sign(newUser, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: "2h"
+          expiresIn: '2h'
         });
 
         newUser.token = token;
@@ -74,7 +75,7 @@ const RootMutationType = new GraphQLObjectType({
     },
     loginUser: {
       type: UserType,
-      description: "Add a user",
+      description: 'Add a user',
       args: {
         email: {type: new GraphQLNonNull(GraphQLString)},
         password: {type: new GraphQLNonNull(GraphQLString)},
@@ -98,7 +99,7 @@ const RootMutationType = new GraphQLObjectType({
 
         // Create json web token
         const token = jwt.sign(checkUser, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: "2h"
+          expiresIn: '2h'
         });
 
         checkUser.token = token;
@@ -136,16 +137,14 @@ const RootMutationType = new GraphQLObjectType({
       }
     },
     // -------------------- BOOKING MUTATIONS -------------------- 
-    
     addBooking: {
       type: BookingType,
       description: 'Add a booking',
       args: {
-        id: { type: new GraphQLNonNull(GraphQLInt)},
         listing_id: {type: new GraphQLNonNull(GraphQLInt)},
         user_id: {type: new GraphQLNonNull(GraphQLInt)},
-        start_date: {type: new GraphQLNonNull(GraphQLString)},
-        end_date: {type: new GraphQLNonNull(GraphQLString)},
+        start_date: {type: new GraphQLNonNull(DateScalar)},
+        end_date: {type: new GraphQLNonNull(DateScalar)},
       },
       resolve: async (_, args) => {
         const booking = { listing_id: args.listing_id, user_id: args.user_id, start_date: args.start_date, end_date: args.end_date};
@@ -161,7 +160,6 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: async (_, args) => {
         const deletedBooking = await bookings.deleteBookingById(args.id);
-  
         return deletedBooking
       }
     }

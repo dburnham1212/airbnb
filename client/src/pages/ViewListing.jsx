@@ -1,6 +1,6 @@
-import React, {useContext} from "react";
+import React, {useState, useContext} from "react";
 import { authContext } from "../context/AuthContext";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import moment from "moment"
 
@@ -24,6 +24,14 @@ const GET_LISTING = gql`
   }
 `;
 
+const CREATE_BOOKING = gql`
+  mutation AddBooking($listing_id: Int!, $user_id: Int!, $start_date: Date!, $end_date: Date!){
+    addBooking(listing_id: $listing_id, user_id: $user_id, start_date: $start_date, end_date: $end_date){
+      id
+    }
+  }
+`
+
 const ViewListing = () => {
   const {
     user
@@ -31,13 +39,35 @@ const ViewListing = () => {
 
   const { listingId } = useParams();
 
+  const [bookingFormState, setBookingFormState] = useState({})
+
+  const [addBooking, newBooking] = useMutation(CREATE_BOOKING);
+
+  const handleBookingFormChange = (event) => {
+    setBookingFormState({...bookingFormState, [event.target.name]: event.target.value}); 
+    console.log(bookingFormState);
+  };
+
+  // Function used to create a new booking
+  const createBooking = (event) => {
+    event.preventDefault()
+    addBooking({
+      variables: {
+        listing_id: Number(listingId), user_id: user.id, start_date: bookingFormState.start_date, end_date: bookingFormState.end_date
+      }
+    });
+  };
+
+  // Query to get the listing data via GraphQL
   const { loading, error, data } = useQuery(GET_LISTING, {
     variables: { id: Number(listingId) }
   });
 
+  // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
+  // Create a variable for listing and set it to the data recieved
   const listing = data.listing;
 
   const bookingHistory = listing.bookings.map((booking) => {
@@ -62,20 +92,20 @@ const ViewListing = () => {
           <h6>Book Listing</h6>
         </div>
         <div className="card-body">
-          <form className="px-3">
+          <form className="px-3" onSubmit={(e) => createBooking(e)}>
             <div className="form-group">
               <div>
                 <label className="form-label">Start Date</label>
-                <input className="form-control "type="date"  placeholder="First Name" name="firstName"></input>
+                <input className="form-control "type="date" name="start_date" required onChange={(e) => handleBookingFormChange(e)}></input>
 
               </div>
               <div>
                 <label className="form-label">End Date</label>
-                <input className="form-control "type="date"  placeholder="First Name" name="firstName"></input>
+                <input className="form-control "type="date" name="end_date" required onChange={(e) => handleBookingFormChange(e)}></input>
               </div>
             </div>
             <div className="form-group py-3">
-              <button className="btn btn-dark"> Book Listing </button>
+              <button className="btn btn-dark" type="submit"> Book Listing </button>
             </div>
           </form>
         </div>
