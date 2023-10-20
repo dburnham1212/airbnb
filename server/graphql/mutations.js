@@ -143,9 +143,9 @@ const RootMutationType = new GraphQLObjectType({
         id: { type: new GraphQLNonNull(GraphQLInt)}
       },
       resolve: async (_, args) => {
-        const deletedListing = await listings.deleteListingById(args.id);
+        const deletedBooking = await bookings.deleteBookingById(args.id);
   
-        return deletedListing
+        return deletedBooking
       }
     }
   }),

@@ -35,6 +35,7 @@ const History = () => {
   const history = data.user_bookings.map((booking) => 
     <BookingCard
       key={booking.id}
+      id={booking.id}
       name={booking.listing.name}
       description={booking.listing.description}
       address={booking.listing.address}
