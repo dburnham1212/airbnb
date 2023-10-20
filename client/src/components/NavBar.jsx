@@ -40,10 +40,11 @@ const NavBar = () => {
             <li className="nav-item active">
               <Link className="nav-link text-light" to="/listings">Listings</Link>
             </li>
+            <li className="nav-item active">
+              <Link className="nav-link text-light" to="/history">Booking History</Link>
+            </li>
             {user && user.role==="admin" && <>
-              <li className="nav-item active">
-                <Link className="nav-link text-light" to="/history">Booking History</Link>
-              </li>
+              
               <li className="nav-item active">
                 <Link className="nav-link text-light" to="/newlisting">New Listing</Link>
               </li>

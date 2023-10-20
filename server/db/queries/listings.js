@@ -27,4 +27,13 @@ const getListingById = async (id) => {
   }
 };
 
+const deleteListingById = async (id) => {
+  try {
+    const data = await db.query('SELECT * FROM listings WHERE id = $1', [id]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = { getAllListings, getListingsByUserId, getListingById };

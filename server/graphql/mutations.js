@@ -11,6 +11,7 @@ const {
 } = require('graphql');
 
 const users = require('../db/queries/users');
+const listings = require('../db/queries/listings');
 
 const bcrypt = require('bcryptjs');
 
@@ -58,7 +59,6 @@ const RootMutationType = new GraphQLObjectType({
         // remove password field because we do not need to send it back
         delete newUser.password;
 
-        console.log(newUser);
         // Create json web token
         const token = jwt.sign(newUser, process.env.REFRESH_TOKEN_SECRET, {
           expiresIn: "2h"
@@ -119,8 +119,21 @@ const RootMutationType = new GraphQLObjectType({
         listings.push(listing)
         return listing;
       }
+    },
+    deleteListing: {
+      type: ListingType,
+      description: 'Delete a listing',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt)}
+      },
+      resolve: async (_, args) => {
+        const deletedListing = await listings.deleteListingById(args.id);
+
+        return deletedListing
+      }
     }
   })
+  
 })
 
 module.exports = { RootMutationType }

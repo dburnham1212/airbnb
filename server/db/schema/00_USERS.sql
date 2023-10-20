@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS users CASCADE;
+DROP TYPE IF EXISTS role_enum CASCADE;
 
 CREATE TYPE role_enum AS ENUM('user', 'admin');
 

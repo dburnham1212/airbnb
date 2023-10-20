@@ -23,7 +23,7 @@ const Register = () => {
     setUser,
     setToken
   } = useContext(authContext);
-  const [formState, setFormState] = useState({})
+  const [formState, setFormState] = useState({role: "user"})
   const [errorText, setErrorText] = useState("");
 
   const navigate = useNavigate();
@@ -32,8 +32,6 @@ const Register = () => {
 
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
-
-    console.log(formState)
   }
 
   const onSubmit= async (e) => {
@@ -80,8 +78,8 @@ const Register = () => {
             <input className="form-control" type="password" placeholder="password" name="password" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
-            <label className="form-label">Phone Number</label>
-            <input className="form-control" type="tel" placeholder="(555)-555-5555" name="phoneNumber" required onChange={(e) => handleChange(e)}></input>
+            <label className="form-label">Phone Number 555-555-5555</label>
+            <input className="form-control" type="tel" placeholder="555-555-5555" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phoneNumber" required onChange={(e) => handleChange(e)}></input>
           </div>
           
           
