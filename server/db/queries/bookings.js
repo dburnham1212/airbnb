@@ -36,4 +36,13 @@ const getBookingsByUserId = async (id) => {
   }
 }
 
-module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId };
+const deleteBookingById = async (id) => {
+  try {
+    const data = await db.query('DELETE FROM bookings WHERE id = $1 RETURNING *', [id]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId, deleteBookingById };

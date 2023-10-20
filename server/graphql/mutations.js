@@ -12,6 +12,7 @@ const {
 
 const users = require('../db/queries/users');
 const listings = require('../db/queries/listings');
+const bookings = require('../db/queries/bookings');
 
 const bcrypt = require('bcryptjs');
 
@@ -25,6 +26,7 @@ const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
   description: 'Root Mutation',
   fields: () => ({
+    // -------------------- USER MUTATIONS -------------------- 
     registerUser: {
       type: UserType,
       description: "Add a user",
@@ -104,6 +106,7 @@ const RootMutationType = new GraphQLObjectType({
         return checkUser;
       }
     },
+    // -------------------- LISTING MUTATIONS -------------------- 
     addListing: {
       type: ListingType,
       description: 'Add a listing',
@@ -131,9 +134,21 @@ const RootMutationType = new GraphQLObjectType({
 
         return deletedListing
       }
-    }
-  })
+    },
+    // -------------------- BOOKING MUTATIONS -------------------- 
+    deleteBooking: {
+      type: BookingType,
+      description: 'Delete a booking',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt)}
+      },
+      resolve: async (_, args) => {
+        const deletedListing = await listings.deleteListingById(args.id);
   
+        return deletedListing
+      }
+    }
+  }),
 })
 
 module.exports = { RootMutationType }
