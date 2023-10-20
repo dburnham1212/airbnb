@@ -1,8 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useMutation, gql } from "@apollo/client";
+import { authContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+const CREATE_LISTING = gql`
+mutation AddListing($user_id: Int!, $name: String!, $description: String!, $address: String!, $price: String!){
+  addListing(user_id: $user_id, name: $name, description: $description, address: $address, price: $price) {
+    id
+  }
+}
+`
 
 const CreateListing = () => {
+  const {
+    user,
+  } = useContext(authContext);
+
   const [formState, setFormState] = useState({});
   const [addressState, setAddressState] = useState({});
+
+  const navigate = useNavigate()
+
+  const [addListing, addedListing] = useMutation(CREATE_LISTING);
 
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
@@ -12,8 +31,20 @@ const CreateListing = () => {
     setAddressState({...addressState, [event.target.name]: event.target.value})
   }
 
-  const onSubmit = () => {
-    const address = `${addressState.street}, ${addressState.city}, ${addressState}`
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    const address = `${addressState.street}, ${addressState.city}, ${addressState.postalCode}`;
+
+    addListing({
+      variables: {
+        user_id: user.id, name: formState.name, description: formState.description, address: address, price: formState.price
+      }
+    }).then(() => {
+      navigate('/viewListings')
+    }).catch((err) => {
+      console.log(err.message);
+    })
   }
 
   return(
@@ -33,19 +64,19 @@ const CreateListing = () => {
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Street Address</label>
-            <input className="form-control" type="text" placeholder="123 New Street" required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="123 New Street" name="street" required onChange={(e) => handleAddressChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">City</label>
-            <input className="form-control" type="text" placeholder="City" required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="City" name="city" required onChange={(e) => handleAddressChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Postal Code</label>
-            <input className="form-control" type="text" placeholder="Postal Code" required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" required onChange={(e) => handleAddressChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Price Per Night</label>
-            <input className="form-control" type="text" placeholder="Price" name="description" required onChange={(e) => handleChange(e)}></input>
+            <input className="form-control" type="text" placeholder="Price Per Night" name="price" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="d-flex justify-content-end mx-2 my-4">
             <button className="btn btn-dark" type="submit">Create Listing</button>

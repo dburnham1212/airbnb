@@ -118,9 +118,9 @@ const RootMutationType = new GraphQLObjectType({
         address: {type: new GraphQLNonNull(GraphQLString)},
         price: {type: new GraphQLNonNull(GraphQLString)}
       },
-      resolve: (_, args) => {
+      resolve: async (_, args) => {
         const listing = { user_id: args.user_id, name: args.name, description: args.description, address: args.address, price: args.price};
-        const newListing = listings.createListing(listing)
+        const newListing = await listings.createListing(listing);
         return newListing;
       }
     },

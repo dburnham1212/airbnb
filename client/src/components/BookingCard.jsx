@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 
 import { useMutation, gql } from '@apollo/client';
 const CANCEL_BOOKING = gql`
@@ -29,9 +30,10 @@ const BookingCard = (props) => {
         <p>{props.description}</p>
         <p>{props.address}</p>
         <p>${props.price}CAD per night</p>
-        <p>Booking Start {props.start_date}</p>
-        <p>Booking End {props.end_date}</p>
-        <div>
+        <p>Booking Start {moment(props.start_date).format("MM/DD/YYYY")}</p>
+        <p>Booking End {moment(props.end_date).format("MM/DD/YYYY")}</p>
+        <div className="d-flex justify-content-between">
+          <button className="btn btn-dark">Change Booking</button>
           <button className="btn btn-danger" onClick={onDelete}>Cancel Booking</button>
         </div>
       </div>

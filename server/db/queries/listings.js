@@ -29,7 +29,7 @@ const getListingById = async (id) => {
 
 const createListing = async (listing) => {
   try {
-    const data = await db.query('INSERT INTO bookings (listing_id, user_id, start_date, end_date) VALUES ($1, $2, $3, $4) RETURNING *', [listing.name, listing.description, listing.address, listing.price]);
+    const data = await db.query('INSERT INTO listings (user_id, name, description, address, price) VALUES ($1, $2, $3, $4, $5) RETURNING *', [listing.user_id, listing.name, listing.description, listing.address, listing.price]);
     return data.rows[0];
   } catch (error) {
     throw error;
@@ -45,4 +45,4 @@ const deleteListingById = async (id) => {
   }
 };
 
-module.exports = { getAllListings, getListingsByUserId, getListingById, deleteListingById };
+module.exports = { getAllListings, getListingsByUserId, getListingById, createListing, deleteListingById };
