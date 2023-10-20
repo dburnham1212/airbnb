@@ -1,5 +1,8 @@
 import React from "react";
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from "react-router-dom";
+
+
 const DELETE_LISTING = gql`
 mutation DeleteListing($id: Int!){
   deleteListing(id: $id) {
@@ -10,14 +13,21 @@ mutation DeleteListing($id: Int!){
 
 
 const ListingCard = (props) => {
+  const navigate = useNavigate();
+  
   const [deleteListing, deletedListing] = useMutation(DELETE_LISTING);
   
+  // Function to delete a listing
   const onDelete = () => {
     deleteListing({
       variables: {
         id: props.id
       }
     })
+  }
+
+  const navigateToListing = () => {
+    navigate(`/viewListing/${props.id}`)
   }
 
   return(
@@ -27,7 +37,8 @@ const ListingCard = (props) => {
         <p>{props.description}</p>
         <p>{props.address}</p>
         <p>${props.price}CAD per night</p>
-        <div>
+        <div className="d-flex justify-content-between">
+          <button className="btn btn-success" onClick={navigateToListing}>View Listing</button>
           <button className="btn btn-danger" onClick={onDelete}>Delete Listing</button>
         </div>
       </div>

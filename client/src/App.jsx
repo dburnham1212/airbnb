@@ -9,6 +9,7 @@ import Listings from './pages/Listings';
 import History from "./pages/History";
 import CreateListing from "./pages/CreateListing";
 import ViewListings from "./pages/ViewListings";
+import ViewListing from "./pages/ViewListing";
 
 import './App.css';
 import { authContext } from "./context/AuthContext";
@@ -34,6 +35,8 @@ function App() {
           <Route path="/newlisting" element={(user && user.role === "admin") && <CreateListing/>}/>
           {/* View My Listings Page */}
           <Route path="/viewlistings" element={<ViewListings/>}/>
+          {/* View a specific listing and its history */}
+          <Route path="/viewListing/:listingId" element={<ViewListing/>}/>
           {/* Login Page */}
           <Route path="/login" element={<Login/>}/>
           {/* Registration Page*/}

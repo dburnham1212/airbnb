@@ -9,6 +9,15 @@ const getUserByEmail = async (user) => {
   }
 }
 
+const getUserById = async (id) => {
+  try {
+    const data = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
 const createUser = async (user) => {
   try {
     const data = await db.query('INSERT INTO users(first_name, last_name, phone_number, email, password, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [user.first_name, user.last_name, user.phone_number, user.email, user.password, user.role]);
@@ -18,4 +27,6 @@ const createUser = async (user) => {
   }
 }
 
-module.exports = { getUserByEmail, createUser };
+
+
+module.exports = { getUserByEmail, getUserById, createUser };

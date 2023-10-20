@@ -8,6 +8,7 @@ const {
   GraphQLScalarType
 } = require('graphql');
 
+const users = require('../db/queries/users');
 const listings = require('../db/queries/listings');
 const bookings = require('../db/queries/bookings');
 
@@ -78,6 +79,12 @@ const BookingType = new GraphQLObjectType({
       type: ListingType,
       resolve: (booking) => {
         return listings.getListingById(booking.listing_id)
+      }
+    },
+    user: {
+      type: UserType,
+      resolve: (booking) => {
+        return users.getUserById(booking.user_id)
       }
     }
   })
