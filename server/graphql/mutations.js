@@ -119,9 +119,9 @@ const RootMutationType = new GraphQLObjectType({
         price: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: (_, args) => {
-        const listing = { id: bookings.length, user_id: args.user_id, name: args.name, description: args.description, address: args.address, price: args.price};
-        listings.push(listing)
-        return listing;
+        const listing = { user_id: args.user_id, name: args.name, description: args.description, address: args.address, price: args.price};
+        const newListing = listings.createListing(listing)
+        return newListing;
       }
     },
     deleteListing: {
@@ -132,7 +132,6 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: async (_, args) => {
         const deletedListing = await listings.deleteListingById(args.id);
-
         return deletedListing
       }
     },

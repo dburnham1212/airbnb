@@ -27,6 +27,15 @@ const getListingById = async (id) => {
   }
 };
 
+const createListing = async (listing) => {
+  try {
+    const data = await db.query('INSERT INTO bookings (listing_id, user_id, start_date, end_date) VALUES ($1, $2, $3, $4) RETURNING *', [listing.name, listing.description, listing.address, listing.price]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
 const deleteListingById = async (id) => {
   try {
     const data = await db.query('DELETE FROM listings WHERE id = $1 RETURNING *', [id]);
