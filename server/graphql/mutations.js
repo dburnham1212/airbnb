@@ -53,8 +53,12 @@ const RootMutationType = new GraphQLObjectType({
         user.password = bcrypt.hashSync(user.password, 12);
         
         // If user email doesnt exist create a new user in the database
-        const newUser = users.createUser(user);
+        const newUser = await users.createUser(user);
+        
+        // remove password field because we do not need to send it back
+        delete newUser.password;
 
+        console.log(newUser);
         // Create json web token
         const token = jwt.sign(newUser, process.env.REFRESH_TOKEN_SECRET, {
           expiresIn: "2h"
@@ -86,6 +90,9 @@ const RootMutationType = new GraphQLObjectType({
             },
           });
         }
+
+        // remove password field because we do not need to send it back
+        delete checkUser.password;
 
         // Create json web token
         const token = jwt.sign(checkUser, process.env.REFRESH_TOKEN_SECRET, {

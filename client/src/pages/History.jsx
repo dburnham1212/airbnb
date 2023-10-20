@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { authContext } from "../context/AuthContext";
 
 import { useQuery, gql } from '@apollo/client';
 import BookingCard from "../components/BookingCard";
 
 const GET_BOOKINGS = gql`
-  query GetBookings {
-    user_bookings(id:${1}){
+  query GetBookings($id: Int!) {
+    user_bookings(id: $id){
+      id
       start_date
       end_date
       listing{
@@ -19,13 +21,20 @@ const GET_BOOKINGS = gql`
 `;
 
 const History = () => {
-  const { loading, error, data } = useQuery(GET_BOOKINGS);
+  const {
+    user
+  } = useContext(authContext);
+
+  const { loading, error, data } = useQuery(GET_BOOKINGS, {
+    variables: { id: user.id }  
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
   const history = data.user_bookings.map((booking) => 
     <BookingCard
+      key={booking.id}
       name={booking.listing.name}
       description={booking.listing.description}
       address={booking.listing.address}

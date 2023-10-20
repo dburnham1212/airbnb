@@ -23,7 +23,6 @@ const Login = () => {
   } = useContext(authContext);
 
   const [formState, setFormState] = useState({});
-  const [fieldError, setFieldError] = useState(false);
   const [errorText, setErrorText] = useState("");
 
   const navigate = useNavigate();
@@ -35,31 +34,24 @@ const Login = () => {
     console.log(formState)
   }
 
-  const onSubmit = (e) => {
+  const onSubmission = (e) => {
     e.preventDefault();
-    // Check if form fields have been entered correctly
-    if(formState.email && formState.password) {
-      // Attempt to login
-      loginUser({variables: 
-          {email: formState.email, password: formState.password}       
-      }).then((res) => { 
-        // On Successful login
-        // Update user
-        setUser(res.data.loginUser);
-        // Set token in local storage
-        setToken(res.data.loginUser);
-        // Navigate to listings page 
-        navigate("/listings")
-      }).catch((err) => {
-        // If there is an error returned
-        setErrorText(err.message)
-        // Display error in alert box
-        setFieldError(true);
-      })
-    } else {
-      setErrorText("Missing Required Fields")
-      setFieldError(true);
-    }
+    // Attempt to login
+    loginUser({variables: 
+        {email: formState.email, password: formState.password}       
+    }).then((res) => { 
+      // On Successful login
+      // Update user
+      setUser(res.data.loginUser);
+      // Set token in local storage
+      console.log(res.data);
+      setToken(res.data.loginUser);
+      // Navigate to listings page 
+      navigate("/listings")
+    }).catch((err) => {
+      // If there is an error returned
+      setErrorText(err.message)
+    })
   }
 
   return(
@@ -68,20 +60,20 @@ const Login = () => {
         <div className="card-header">
           <h2>Login</h2>
         </div>
-        <form className="px-3">
+        <form className="px-3" onSubmit={(e) => {onSubmission(e)}}>
           <div className="form-group pt-4">
             <label className="form-label">Email</label>
-            <input className={"form-control " + (fieldError && !formState.email && "is-invalid")} type="email" placeholder="Email" name="email" onChange={(e) => {handleChange(e)}}></input>
+            <input className="form-control " type="email" placeholder="Email" name="email" required onChange={(e) => {handleChange(e)} }></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Password</label>
-            <input className={"form-control " + (fieldError && !formState.password && "is-invalid")} type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
+            <input className="form-control" type="password" placeholder="password" name="password" required onChange={(e) => handleChange(e)}></input>
           </div>
-          {fieldError && <div class="alert alert-danger mt-4" role="alert">
+          {errorText && <div class="alert alert-danger mt-4" role="alert">
             {errorText}
           </div>}
           <div className="d-flex justify-content-end mx-2 my-4">
-            <button className="btn btn-dark" onClick={(e => {onSubmit(e)})}>Login</button>
+            <button className="btn btn-dark" type="submit">Login</button>
           </div>
         </form>
       </div>

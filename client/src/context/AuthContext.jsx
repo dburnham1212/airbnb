@@ -9,16 +9,19 @@ export const authContext = createContext();
 export default function AuthProvider(props) {
   // Here is our Shared State Object
   const [user, setUser] = useState({});
-  
+
   useEffect(() => {
     if(localStorage.getItem("token")) {
       const decodedToken = jwtDecode(localStorage.getItem("token"));
-  
+      
+      // if the token has expired
       if(decodedToken.exp * 1000 < Date.now()) {
-        localStorage.removeItem("token")
+        // remove the token from storage
+        localStorage.removeItem("token");
+        // make sure that the user is set to null 
+        setUser(null);
       } else {
         setUser(decodedToken);
-        console.log(decodedToken)
       }
       
     }

@@ -1,12 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
+import { authContext } from "../context/AuthContext";
 
 import ListingCard from "../components/ListingCard";
 
 import { useQuery, gql } from '@apollo/client';
 
 const GET_LISTINGS = gql`
-  query GetListings {
-    user_listings(id:${1}){
+  query GetListings($id: Int!){
+    user_listings(id: $id){
       id
       name
       description
@@ -17,7 +18,13 @@ const GET_LISTINGS = gql`
 `;
 
 const ViewListings = () => {
-  const { loading, error, data } = useQuery(GET_LISTINGS);
+  const {
+    user
+  } = useContext(authContext);
+
+  const { loading, error, data } = useQuery(GET_LISTINGS, {
+    variables: {id: user.id}
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;

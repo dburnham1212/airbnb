@@ -24,7 +24,6 @@ const Register = () => {
     setToken
   } = useContext(authContext);
   const [formState, setFormState] = useState({})
-  const [fieldError, setFieldError] = useState(false);
   const [errorText, setErrorText] = useState("");
 
   const navigate = useNavigate();
@@ -33,32 +32,28 @@ const Register = () => {
 
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
+
     console.log(formState)
   }
 
   const onSubmit= async (e) => {
     e.preventDefault();
-    if(formState.firstName && formState.lastName && formState.phoneNumber && formState.email && formState.password ) {
       
-      registerUser({variables: 
-          {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password, role: formState.role}
-      }).then((res) => {
-        // On Successful registration
-        // Update user
-        setUser(res.data.registerUser);
-        // Set token in local storage
-        setToken(res.data.loginUser);
-        // Navigate to listings page
-        navigate("/listings")
-      }).catch((err) => {
-        setErrorText(err.message)
-        setFieldError(true);
-      })
+    registerUser({variables: 
+        {first_name: formState.firstName, last_name: formState.lastName, phone_number: formState.phoneNumber, email: formState.email, password: formState.password, role: formState.role}
+    }).then((res) => {
+      // On Successful registration
+      // Update user
+      setUser(res.data.registerUser);
+      console.log(res.data);
+      // Set token in local storage
+      setToken(res.data.registerUser);
+      // Navigate to listings page
+      navigate("/listings")
+    }).catch((err) => {
+      setErrorText(err.message)
+    })
       
-    } else {
-      setErrorText("Missing Required Fields")
-      setFieldError(true);
-    }
   }
 
   return(
@@ -67,26 +62,26 @@ const Register = () => {
         <div className="card-header">
           <h2>Register</h2>
         </div>
-        <form className="px-3">
+        <form className="px-3" onSubmit={(e) => onSubmit(e)}>
           <div className="form-group pt-4">
             <label className="form-label">First Name</label>
-            <input className={"form-control " + (fieldError && !formState.firstName && "is-invalid")} type="text"  placeholder="First Name" name="firstName" onChange={(e) => handleChange(e)}></input>
+            <input className="form-control "type="text"  placeholder="First Name" name="firstName" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Last Name</label>
-            <input className={"form-control " + (fieldError && !formState.lastName && "is-invalid")} type="text" placeholder="Last Name" name="lastName" onChange={(e) => handleChange(e)}></input>
+            <input className="form-control "type="text" placeholder="Last Name" name="lastName" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Email</label>
-            <input className={"form-control " + (fieldError && !formState.email && "is-invalid")} type="email" placeholder="example@gmail.com" name="email" onChange={(e) => handleChange(e)}></input>
+            <input className="form-control " type="email" placeholder="example@gmail.com" name="email" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Password</label>
-            <input className={"form-control " + (fieldError && !formState.password && "is-invalid")} type="password" placeholder="password" name="password" onChange={(e) => handleChange(e)}></input>
+            <input className="form-control" type="password" placeholder="password" name="password" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Phone Number</label>
-            <input className={"form-control " + (fieldError && !formState.phoneNumber && "is-invalid")} type="tel" placeholder="(555)-555-5555" name="phoneNumber" onChange={(e) => handleChange(e)}></input>
+            <input className="form-control" type="tel" placeholder="(555)-555-5555" name="phoneNumber" required onChange={(e) => handleChange(e)}></input>
           </div>
           
           
@@ -100,11 +95,11 @@ const Register = () => {
               <input type="radio" name="role" value="admin" onChange={(e) => handleChange(e)}></input>
             </div>
           </div>
-          {fieldError && <div class="alert alert-danger" role="alert">
+          {errorText && <div className="alert alert-danger" role="alert">
             {errorText}
           </div>}
           <div className="d-flex justify-content-end mx-2 my-4">
-            <button className="btn btn-dark" onClick={(e) => onSubmit(e)}>Register</button>
+            <button className="btn btn-dark" type="submit">Register</button>
           </div>
         </form>
       </div>
