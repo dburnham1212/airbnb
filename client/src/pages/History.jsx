@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { authContext } from "../context/AuthContext";
 
 import { useQuery, gql } from '@apollo/client';
 import BookingCard from "../components/BookingCard";
+import ChangeBookingModal from "../components/ChangeBookingModal";
 
 const GET_BOOKINGS = gql`
   query GetBookings($id: Int!) {
@@ -24,6 +25,8 @@ const History = () => {
   const {
     user
   } = useContext(authContext);
+
+  
 
   const { loading, error, data } = useQuery(GET_BOOKINGS, {
     variables: { id: user.id }  

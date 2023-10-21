@@ -29,7 +29,7 @@ const getBookingsByListingId = async (id) => {
 
 const getBookingsByUserId = async (id) => {
   try {
-    const data = await db.query('SELECT * FROM bookings WHERE user_id = $1', [id]);
+    const data = await db.query('SELECT * FROM bookings WHERE user_id = $1 ORDER BY id', [id]);
     return data.rows;
   } catch (error) {
     throw error;
@@ -45,6 +45,15 @@ const createBooking = async (booking) => {
   }
 }
 
+const updateBooking = async (booking) => {
+  try {
+    const data = await db.query('UPDATE bookings SET start_date = $2, end_date = $3 WHERE id = $1 RETURNING *', [booking.id, booking.start_date, booking.end_date]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
 const deleteBookingById = async (id) => {
   try {
     const data = await db.query('DELETE FROM bookings WHERE id = $1 RETURNING *', [id]);
@@ -54,4 +63,4 @@ const deleteBookingById = async (id) => {
   }
 }
 
-module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId, createBooking, deleteBookingById };
+module.exports = { getAllBookings, getBookingById, getBookingsByListingId, getBookingsByUserId, createBooking, updateBooking, deleteBookingById };

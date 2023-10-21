@@ -11,7 +11,6 @@ mutation DeleteListing($id: Int!){
 }
 `
 
-
 const ListingCard = (props) => {
   const navigate = useNavigate();
   
@@ -30,6 +29,10 @@ const ListingCard = (props) => {
     navigate(`/viewListing/${props.id}`)
   }
 
+  const navigateToUpdateListing = () => {
+    navigate(`/updateListing/${props.id}`)
+  }
+
   return(
     <div className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-4">
       <div className="card bg-light p-3">
@@ -37,8 +40,9 @@ const ListingCard = (props) => {
         <p>{props.description}</p>
         <p>{props.address}</p>
         <p>${props.price}CAD per night</p>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-end gap-2">
           <button className="btn btn-success" onClick={navigateToListing}>View Listing</button>
+          <button className="btn btn-dark" onClick={navigateToUpdateListing}>Update Listing</button>
           <button className="btn btn-danger" onClick={onDelete}>Delete Listing</button>
         </div>
       </div>

@@ -13,6 +13,7 @@ import ViewListing from "./pages/ViewListing";
 
 import './App.css';
 import { authContext } from "./context/AuthContext";
+import UpdateListing from "./pages/UpdateListing";
 
 function App() {
 
@@ -32,7 +33,9 @@ function App() {
           {/* History Page */}
           <Route path="/history" element={user ? <History/> : <Login/>}/>
           {/* Create Listing Page */}
-          <Route path="/newlisting" element={(user && user.role === "admin") && <CreateListing/>}/>
+          <Route path="/newlisting" element={(user && user.role === "admin") ? <CreateListing/> : <Login/>}/>
+          {/* Update Listing Page*/}
+          <Route path="/updateListing/:listingId" element={(user && user.role === "admin") ? <UpdateListing/> : <Login/>}/>
           {/* View My Listings Page */}
           <Route path="/viewlistings" element={<ViewListings/>}/>
           {/* View a specific listing and its history */}
