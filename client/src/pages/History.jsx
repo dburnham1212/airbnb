@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { authContext } from "../context/AuthContext";
 
 import { useQuery, gql } from '@apollo/client';
@@ -26,16 +26,27 @@ const History = () => {
     user
   } = useContext(authContext);
 
-  
+  const [bookings, setBookings] = useState([]);
 
   const { loading, error, data } = useQuery(GET_BOOKINGS, {
-    variables: { id: user.id }  
+    variables: { id: user.id },
+    fetchPolicy: 'cache-and-network'
   });
+
+  useEffect (() => {
+    if(!loading) {
+      setBookings(data.user_bookings);
+    }
+  }, [loading]) 
+
+  const removeBooking = (bookingId) => {
+    setBookings(bookings.filter(booking => booking.id !== bookingId));
+  }
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
-  const history = data.user_bookings.map((booking) => 
+  const history = bookings.map((booking) => 
     <BookingCard
       key={booking.id}
       id={booking.id}
@@ -45,6 +56,7 @@ const History = () => {
       price={booking.listing.price}
       start_date={booking.start_date}
       end_date={booking.end_date}
+      removeBooking={removeBooking}
     />
   );
 

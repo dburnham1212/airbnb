@@ -17,6 +17,7 @@ const GET_LISTINGS = gql`
 `;
 
 const Home = () => {
+
   const { loading, error, data } = useQuery(GET_LISTINGS);
 
   if (loading) return <p>Loading...</p>;

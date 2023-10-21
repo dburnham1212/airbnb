@@ -22,6 +22,7 @@ const BookingCard = (props) => {
         id: props.id
       }
     })
+    props.removeBooking(props.id);
   }
 
   return(

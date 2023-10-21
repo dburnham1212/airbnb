@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import { authContext } from "../context/AuthContext";
 
 import ListingCard from "../components/ListingCard";
@@ -23,7 +23,8 @@ const ViewListings = () => {
   } = useContext(authContext);
 
   const { loading, error, data } = useQuery(GET_LISTINGS, {
-    variables: {id: user.id}
+    variables: {id: user.id},
+    fetchPolicy: 'cache-and-network'
   });
 
   if (loading) return <p>Loading...</p>;

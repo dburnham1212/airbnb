@@ -17,8 +17,8 @@ const GET_LISTING = gql`
 `;
 
 const UPDATE_LISTING = gql`
-mutation AddListing($user_id: Int!, $name: String!, $description: String!, $address: String!, $price: String!){
-  addListing(user_id: $user_id, name: $name, description: $description, address: $address, price: $price) {
+mutation UpdateListing($id: Int!, $name: String!, $description: String!, $address: String!, $price: String!){
+  updateListing(id: $id, name: $name, description: $description, address: $address, price: $price) {
     id
   }
 }
@@ -30,10 +30,20 @@ const UpdateListing = () => {
   } = useContext(authContext);
 
   
-  const [formState, setFormState] = useState({});
-  const [addressState, setAddressState] = useState({});
+  const [formState, setFormState] = useState({
+    name: "",
+    description: "",
+    address: "",
+    price: ""
+  });
+  const [addressState, setAddressState] = useState({
+    street: "",
+    city: "",
+    postalCode: ""
+  });
+  const [listing, setListing] = useState({});
 
-  const [addListing, addedListing] = useMutation(UPDATE_LISTING);
+  const [updateListing, updatedListing] = useMutation(UPDATE_LISTING);
   
   const navigate = useNavigate()
   const { listingId } = useParams();
@@ -51,9 +61,9 @@ const UpdateListing = () => {
 
     const address = `${addressState.street}, ${addressState.city}, ${addressState.postalCode}`;
 
-    addListing({
+    updateListing({
       variables: {
-        user_id: user.id, name: formState.name, description: formState.description, address: address, price: formState.price
+        id: listing.id, name: formState.name, description: formState.description, address: address, price: formState.price
       }
     }).then(() => {
       navigate('/viewListings')
@@ -71,6 +81,8 @@ const UpdateListing = () => {
     // Create a variable for listing and set it to the data recieved
     if(!loading){
       const listing = data.listing;
+
+      setListing(listing);
 
       const addressString = listing.address.split(",");
       setAddressState({

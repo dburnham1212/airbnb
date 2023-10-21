@@ -60,7 +60,8 @@ const ViewListing = () => {
 
   // Query to get the listing data via GraphQL
   const { loading, error, data } = useQuery(GET_LISTING, {
-    variables: { id: Number(listingId) }
+    variables: { id: Number(listingId) },
+    fetchPolicy: 'cache-and-network'
   });
 
   // Wait for values to be returned from GraphQL
@@ -70,9 +71,9 @@ const ViewListing = () => {
   // Create a variable for listing and set it to the data recieved
   const listing = data.listing;
 
-  const bookingHistory = listing.bookings.map((booking) => {
+  const bookingHistory = listing.bookings.map((booking, i) => {
     return (
-      <tr>
+      <tr key={i}>
         <td>{booking.user.first_name} {booking.user.last_name}</td>
         <td>{moment(booking.start_date).format("MM/DD/YYYY")}</td>
         <td>{moment(booking.end_date).format("MM/DD/YYYY")}</td>
