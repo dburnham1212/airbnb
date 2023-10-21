@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import moment from "moment";
 import ChangeBookingModal from "./ChangeBookingModal";
 import { useMutation, gql } from '@apollo/client';
+
 const CANCEL_BOOKING = gql`
 mutation DeleteBooking($id: Int!){
   deleteBooking(id: $id) {

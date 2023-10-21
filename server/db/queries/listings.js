@@ -36,6 +36,15 @@ const createListing = async (listing) => {
   }
 }
 
+const updateListing = async (listing) => {
+  try {
+    const data = await db.query('UPDATE listings SET name = $2, description = $3, address = $4, price = $5 WHERE id = $1 RETURNING *', [listing.id, listing.name, listing.description, listing.address, listing.price]);
+    return data.rows[0];
+  } catch (error) {
+    throw error;
+  }
+}
+
 const deleteListingById = async (id) => {
   try {
     const data = await db.query('DELETE FROM listings WHERE id = $1 RETURNING *', [id]);
@@ -45,4 +54,4 @@ const deleteListingById = async (id) => {
   }
 };
 
-module.exports = { getAllListings, getListingsByUserId, getListingById, createListing, deleteListingById };
+module.exports = { getAllListings, getListingsByUserId, getListingById, createListing, updateListing, deleteListingById };

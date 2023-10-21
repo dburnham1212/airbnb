@@ -124,6 +124,22 @@ const RootMutationType = new GraphQLObjectType({
         return newListing;
       }
     },
+    updateListing: {
+      type: ListingType,
+      description: 'Update a listing',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLInt)},
+        name: {type: new GraphQLNonNull(GraphQLString)},
+        description: {type: new GraphQLNonNull(GraphQLString)},
+        address: {type: new GraphQLNonNull(GraphQLString)},
+        price: {type: new GraphQLNonNull(GraphQLString)}
+      },
+      resolve: async (_, args) => {
+        const listing = { id: args.id, name: args.name, description: args.description, address: args.address, price: args.price};
+        const updatedListing = await listings.updateListing(listing);
+        return updatedListing;
+      }
+    },
     deleteListing: {
       type: ListingType,
       description: 'Delete a listing',
