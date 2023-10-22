@@ -3,7 +3,6 @@ import { authContext } from "../context/AuthContext";
 
 import { useQuery, gql } from '@apollo/client';
 import BookingCard from "../components/BookingCard";
-import ChangeBookingModal from "../components/ChangeBookingModal";
 
 const GET_BOOKINGS = gql`
   query GetBookings($id: Int!) {

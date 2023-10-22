@@ -3,7 +3,7 @@ import { authContext } from "../context/AuthContext";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import moment from "moment"
-import {DateRangePicker} from "react-date-range";
+import {DateRange} from "react-date-range";
 
 
 import { setDate } from "date-fns";
@@ -49,7 +49,6 @@ const ViewListing = () => {
     user
   } = useContext(authContext);
 
-  const [bookingFormState, setBookingFormState] = useState({})
   const [bookings, setBookings] = useState([]);
   const [listing, setListing] = useState({});
   const [dateRange, setDateRange] = useState({
@@ -63,13 +62,6 @@ const ViewListing = () => {
 
   const [addBooking, newBooking] = useMutation(CREATE_BOOKING);
 
-  const handleBookingFormChange = (event) => {
-    setBookingFormState({...bookingFormState, [event.target.name]: event.target.value}); 
-    console.log(bookingFormState);
-  };
-
-
-
   // Function used to create a new booking
   const createBooking = (event) => {
     event.preventDefault()
@@ -78,9 +70,9 @@ const ViewListing = () => {
         listing_id: Number(listingId), user_id: user.id, start_date: dateRange.startDate, end_date: dateRange.endDate
       }
     }).then((res) => {
-      console.log(data);
-      setBookings([...bookings, res.data.addBooking])
-      updateBlockedDates(bookings)
+      const newBookings = [...bookings, res.data.addBooking];
+      setBookings(newBookings)
+      updateBlockedDates(newBookings)
     }).catch((err)  => {
       console.log(err.message);
     })
@@ -148,15 +140,7 @@ const ViewListing = () => {
   })
 
   const handleDateSelect = (ranges) =>{
-    console.log(ranges.selection.startDate);
-    console.log(ranges.selection.endDate)
     setDateRange(ranges.selection)
-    // {
-    //   selection: {
-    //     startDate: ranges.startDate,
-    //     endDate: ranges.endDate
-    //   }
-    // }
   }
 
   return(
@@ -171,7 +155,7 @@ const ViewListing = () => {
           <h6>Book Listing</h6>
         </div>
         <div className="card-body">
-          <DateRangePicker
+          <DateRange
             minDate={new Date()}
             disabledDates={blockedDates}
             ranges={[dateRange]}

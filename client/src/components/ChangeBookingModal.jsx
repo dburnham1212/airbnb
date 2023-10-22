@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useMutation, gql } from "@apollo/client";
 import moment from "moment";
+import { DateRange } from "react-date-range";
 import "../styles/modal.css"
 
-const UPDATE_LISTING = gql`
+const UPDATE_BOOKING = gql`
 mutation UpdateBooking($id: Int!, $start_date: Date!, $end_date: Date!){
   updateBooking(id: $id, start_date: $start_date, end_date: $end_date) {
     id
@@ -12,7 +13,11 @@ mutation UpdateBooking($id: Int!, $start_date: Date!, $end_date: Date!){
 `
 
 const ChangeBookingModal = (props) => {
-
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection"
+  });
   const [formState, setFormState] = useState({
     startDate: props.startDate,
     endDate: props.endDate
@@ -22,7 +27,7 @@ const ChangeBookingModal = (props) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
   }
 
-  const [updateBooking, updatedBooking] = useMutation(UPDATE_LISTING);
+  const [updateBooking, updatedBooking] = useMutation(UPDATE_BOOKING);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -37,6 +42,10 @@ const ChangeBookingModal = (props) => {
     })
   }
 
+  const handleDateSelect = (ranges) =>{
+    setDateRange(ranges.selection)
+  }
+
   return(
     <>
       <div className="modal-background">
@@ -47,6 +56,11 @@ const ChangeBookingModal = (props) => {
           <h2>Change Booking</h2>
         </div>
         <div className="card-body">
+          <DateRange
+            minDate={new Date()}
+            ranges={[dateRange]}
+            onChange={handleDateSelect}
+          />
           <form onSubmit={(e) => onSubmit(e)}>
             <div className="form-group pt-4">
               <label className="form-label">Start Date</label>
@@ -57,11 +71,12 @@ const ChangeBookingModal = (props) => {
               <input className="form-control" type="date" name="endDate" value={moment(formState.endDate).format("YYYY-MM-DD")} required onChange={(e) => handleChange(e)}></input>
             </div>
             <div className="d-flex justify-content-end mx-2 my-4 gap-2">
-              <button className="btn btn-danger" onClick={() => props.closeModal(false)}>Cancel</button>
+              <button className="btn btn-danger" >Cancel</button>
               <button className="btn btn-dark" type="submit">Update Booking</button>
             </div>
           </form>
         </div>
+        
       </div>
       
     </>    

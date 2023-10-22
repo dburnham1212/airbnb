@@ -120,15 +120,15 @@ const UpdateListing = () => {
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Street Address</label>
-            <input className="form-control" type="text" placeholder="123 New Street" name="street" value={addressState.street} required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="123 New Street" name="street" value={addressState.street} required onChange={(e) => handleAddressChange(e)} pattern="^[^,]+$"></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">City</label>
-            <input className="form-control" type="text" placeholder="City" name="city" required value={addressState.city} onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="City" name="city" required value={addressState.city} onChange={(e) => handleAddressChange(e)} pattern="^[^,]+$"></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Postal Code (XXX XXX)</label>
-            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" pattern="[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"value={addressState.postalCode} required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" value={addressState.postalCode} required onChange={(e) => handleAddressChange(e)} pattern="[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]" ></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Price Per Night</label>
