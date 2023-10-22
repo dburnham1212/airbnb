@@ -36,8 +36,8 @@ mutation UpdateBooking($id: Int!, $start_date: Date!, $end_date: Date!){
 const UpdateBooking = (props) => {
   const [booking, setBooking] = useState({});
   const [currentListing, setCurrentListing] = useState({});
-  const [listingBookings, setListingBookings] = useState([]);
   const [blockedDates, setBlockedDates] = useState([]);
+  const [bookingUpdated, setBookingUpdated] = useState(false);
 
 
   const [dateRange, setDateRange] = useState({
@@ -59,6 +59,8 @@ const UpdateBooking = (props) => {
         id: booking.id, start_date: dateRange.startDate, end_date: dateRange.endDate
       }
     }).then(() => {
+      setBooking({...booking, start_date: dateRange.startDate, end_date: dateRange.endDate});
+      setBookingUpdated(true);
       props.closeModal(false);
     }).catch((err) => {
       console.log(err.message);
@@ -84,8 +86,6 @@ const UpdateBooking = (props) => {
       setBooking({...booking, id: data.booking.id, startDate: data.booking.startDate, endDate: data.booking.endData});
 
       setCurrentListing({...currentListing, name: data.booking.listing.name, description: data.booking.listing.description, address: data.booking.listing.address, price: data.booking.listing.price});
-      
-      setListingBookings(data.booking.listing.bookings);
 
       updateBlockedDates(data.booking.listing.bookings, data.booking);
     }
@@ -119,6 +119,16 @@ const UpdateBooking = (props) => {
         <div className="card-header">
           <h2>Change Booking</h2>
         </div>
+        {bookingUpdated ? <div className="card-body">
+          <h6>Booking Successfully Updated</h6>
+          <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
+          <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+          <div className="d-flex justify-content-end">
+            <button className="btn btn-dark" onClick={navigateToHistory}>Return to History</button>
+          </div>
+        </div>
+        
+        :
         <div className="card-body">
           <DateRange
             minDate={new Date()}
@@ -131,6 +141,9 @@ const UpdateBooking = (props) => {
             <button className="btn btn-dark" onClick={(e) => onSubmit(e)}>Update Booking</button>
           </div>
         </div>
+        }
+        
+        
       </div>
     </div> 
   )
