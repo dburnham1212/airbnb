@@ -31,6 +31,7 @@ const Home = () => {
       description={listing.description}
       address={listing.address}
       price={listing.price}
+      canEdit={false}
     />
   );
 

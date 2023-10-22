@@ -23,6 +23,7 @@ const ListingCard = (props) => {
         id: props.id
       }
     })
+    props.removeListing(props.id);
   }
 
   const navigateToListing = () => {
@@ -41,9 +42,11 @@ const ListingCard = (props) => {
         <p>{props.address}</p>
         <p>${props.price}CAD per night</p>
         <div className="d-flex justify-content-end gap-2">
-          <button className="btn btn-success" onClick={navigateToListing}>View Listing</button>
-          <button className="btn btn-dark" onClick={navigateToUpdateListing}>Update Listing</button>
-          <button className="btn btn-danger" onClick={onDelete}>Delete Listing</button>
+          <button className="btn btn-secondary" onClick={navigateToListing}>View Listing</button>
+          {props.canEdit && <>
+            <button className="btn btn-dark" onClick={navigateToUpdateListing}>Update Listing</button>
+            <button className="btn btn-danger" onClick={onDelete}>Delete Listing</button>
+          </>}
         </div>
       </div>
     </div>

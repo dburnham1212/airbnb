@@ -71,8 +71,8 @@ const CreateListing = () => {
             <input className="form-control" type="text" placeholder="City" name="city" required onChange={(e) => handleAddressChange(e)}></input>
           </div>
           <div className="form-group pt-4">
-            <label className="form-label">Postal Code</label>
-            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" required onChange={(e) => handleAddressChange(e)}></input>
+            <label className="form-label">Postal Code (XXX XXX)</label>
+            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" required onChange={(e) => handleAddressChange(e)} pattern="[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Price Per Night</label>

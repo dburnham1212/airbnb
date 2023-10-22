@@ -13,6 +13,10 @@ import AuthProvider from './context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
 
+// react date range
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
 const httpLink = createHttpLink({
   uri: "http://localhost:5000/graphql"
 });

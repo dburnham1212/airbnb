@@ -37,9 +37,9 @@ function App() {
           {/* Update Listing Page*/}
           <Route path="/updateListing/:listingId" element={(user && user.role === "admin") ? <UpdateListing/> : <Login/>}/>
           {/* View My Listings Page */}
-          <Route path="/viewlistings" element={<ViewListings/>}/>
+          <Route path="/viewlistings" element={(user && user.role === "admin") ? <ViewListings/> : <Login/>}/>
           {/* View a specific listing and its history */}
-          <Route path="/viewListing/:listingId" element={<ViewListing/>}/>
+          <Route path="/viewListing/:listingId" element={user ? <ViewListing/> : <Login/>}/>
           {/* Login Page */}
           <Route path="/login" element={<Login/>}/>
           {/* Registration Page*/}

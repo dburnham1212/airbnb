@@ -102,7 +102,7 @@ const UpdateListing = () => {
   // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
- 
+
   return(
     <div className="d-flex justify-content-center py-5">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center">
@@ -127,8 +127,8 @@ const UpdateListing = () => {
             <input className="form-control" type="text" placeholder="City" name="city" required value={addressState.city} onChange={(e) => handleAddressChange(e)}></input>
           </div>
           <div className="form-group pt-4">
-            <label className="form-label">Postal Code</label>
-            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" value={addressState.postalCode} required onChange={(e) => handleAddressChange(e)}></input>
+            <label className="form-label">Postal Code (XXX XXX)</label>
+            <input className="form-control" type="text" placeholder="Postal Code" name="postalCode" pattern="[ABCEGHJKLMNPRSTVXY][0-9][ABCEGHJKLMNPRSTVWXYZ] [0-9][ABCEGHJKLMNPRSTVWXYZ][0-9]"value={addressState.postalCode} required onChange={(e) => handleAddressChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Price Per Night</label>

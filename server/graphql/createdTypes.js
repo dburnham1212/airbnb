@@ -11,7 +11,8 @@ const DateScalar = new GraphQLScalarType({
   },
   parseValue(value) {
     // Parse the date from a string to a Date object
-    return new Date(value);
+    console.log(new Date(new Date(value).getTime() + new Date(value).getTimezoneOffset() * 60000));
+    return new Date(new Date(value).getTime() + new Date(value).getTimezoneOffset() * 60000);
   },
   parseLiteral(ast) {
     if (ast.kind === Kind.STRING) {

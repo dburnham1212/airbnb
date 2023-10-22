@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { authContext } from "../context/AuthContext";
 
 import ListingCard from "../components/ListingCard";
@@ -22,15 +22,27 @@ const ViewListings = () => {
     user
   } = useContext(authContext);
 
+  const [listings, setListings] = useState([]);
+
   const { loading, error, data } = useQuery(GET_LISTINGS, {
     variables: {id: user.id},
     fetchPolicy: 'cache-and-network'
   });
 
+  useEffect(() => {
+    if (!loading) {
+      setListings(data.user_listings);
+    }
+  }, [loading])
+
+  const removeListing = (listingId) => {
+    setListings(listings.filter(listing => listing.id !== listingId))
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
-  const listings = data.user_listings.map((listing) => 
+  const displayListings = listings.map((listing) => 
     <ListingCard 
       key={listing.id} 
       id={listing.id}
@@ -38,6 +50,8 @@ const ViewListings = () => {
       description={listing.description}
       address={listing.address}
       price={listing.price}
+      canEdit={true}
+      removeListing={removeListing}
     />
   );
 
@@ -47,7 +61,7 @@ const ViewListings = () => {
       <h1>My Listings</h1>
       <div className="container-fluid">
         <div className="row">
-          {listings}
+          {displayListings}
         </div>  
       </div>
     </div>
