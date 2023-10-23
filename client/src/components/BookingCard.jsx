@@ -44,7 +44,7 @@ const BookingCard = (props) => {
             <div className="border-top w-100 py-2 fw-bold"> ${props.price} CAD per night</div>
           </div>
          
-            {(moment(props.start_date) >= moment(new Date())) ?  
+            {(moment(props.start_date) >= moment(new Date()).startOf('day')) ?  
               <div className="d-flex justify-content-end gap-2">
                 <button className="btn btn-dark" onClick={navigateToUpdate}>Change</button>
                 <button className="btn btn-danger" onClick={onDelete}>Cancel</button>

@@ -84,11 +84,11 @@ const Register = () => {
           
           
           <div className="form-group pt-4">
-            <div className="px-4">
-              <label className="form-label w-25 px-4">User</label>
+            <div className="px-4 d-flex d-flex justify-content-center">
+              <label className="form-label w-25 px-4">Customer</label>
               <input type="radio" name="role" defaultChecked="user" value="user" onChange={(e) => handleChange(e)}></input>
             </div>
-            <div className="px-4">
+            <div className="px-4 d-flex d-flex justify-content-center">
               <label className="form-label w-25 px-4">Admin</label>
               <input type="radio" name="role" value="admin" onChange={(e) => handleChange(e)}></input>
             </div>
