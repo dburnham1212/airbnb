@@ -82,8 +82,8 @@ const Listings = () => {
   );
 
   return(
-    <div className="text-center py-4">
-      <h5>Listings</h5>
+    <div className="text-center">
+      <h3 className="py-2 bg-light">Listings</h3>
       <div className="d-flex gap-2 mx-3 mt-3">
         <input className="form-control" placeholder="Search by address" onChange={(e) => {setSearchString(e.target.value)}}></input>
         <button className="btn btn-dark" onClick={getListingsByAddress}>Search</button>

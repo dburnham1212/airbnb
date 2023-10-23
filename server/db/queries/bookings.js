@@ -29,7 +29,7 @@ const getBookingsByListingId = async (id) => {
 
 const getBookingsByUserId = async (id) => {
   try {
-    const data = await db.query('SELECT * FROM bookings WHERE user_id = $1 ORDER BY id', [id]);
+    const data = await db.query('SELECT * FROM bookings WHERE user_id = $1 ORDER BY start_date DESC', [id]);
     return data.rows;
   } catch (error) {
     throw error;

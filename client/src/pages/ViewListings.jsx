@@ -61,8 +61,8 @@ const ViewListings = () => {
 
   return(
     
-    <div className="text-center py-4">
-      <h1>My Listings</h1>
+    <div className="text-center">
+       <h3 className="py-2 bg-light">My Listings</h3>
       <div className="container-fluid">
         <div className="row">
           {displayListings}
