@@ -43,6 +43,7 @@ const UpdateListing = () => {
     city: "",
     postalCode: ""
   });
+  
   const [listing, setListing] = useState({});
 
   const [updateListing, updatedListing] = useMutation(UPDATE_LISTING);

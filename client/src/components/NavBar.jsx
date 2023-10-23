@@ -38,19 +38,19 @@ const NavBar = () => {
         <div className="collapse navbar-collapse mx-4" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item active">
-              <Link className="nav-link text-light" to="/listings">Listings</Link>
+              <Link className="nav-link link-light link-opacity-50-hover" to="/listings">Listings</Link>
             </li>
             {user && 
               <li className="nav-item active">
-                <Link className="nav-link text-light" to="/history">My Bookings</Link>
+                <Link className="nav-link link-light link-opacity-50-hover" to="/history">My Bookings</Link>
               </li>}
             {user && user.role==="admin" && <>
               
               <li className="nav-item active">
-                <Link className="nav-link text-light" to="/newlisting">New Listing</Link>
+                <Link className="nav-link link-light link-opacity-50-hover" to="/newlisting">New Listing</Link>
               </li>
               <li className="nav-item active">
-                <Link className="nav-link text-light" to="/viewlistings">My Listings</Link>
+                <Link className="nav-link link-light link-opacity-50-hover" to="/viewlistings">My Listings</Link>
               </li> 
             </>
             }
@@ -62,15 +62,15 @@ const NavBar = () => {
               <span className="text-warning">User: {user.first_name} {user.last_name}</span>
             </li>
             <li className="nav-item active">
-              <button className="nav-link text-light" onClick={onLogout}>Logout</button>
+              <button className="nav-link link-light link-opacity-50-hover" onClick={onLogout}>Logout</button>
             </li>
           </ul>
           :<ul className="navbar-nav d-flex justify-content-end">  
             <li className="nav-item active">
-              <Link className="nav-link text-light" to="/login">Login</Link>
+              <Link className="nav-link link-light link-opacity-50-hover" to="/login">Login</Link>
             </li>
             <li className="nav-item active">
-              <Link className="nav-link text-light" to="/register">Register</Link>
+              <Link className="nav-link link-light link-opacity-50-hover" to="/register">Register</Link>
             </li>
           </ul>
           

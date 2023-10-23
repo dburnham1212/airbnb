@@ -147,56 +147,73 @@ const ViewListing = () => {
   return(
     
     <div className="text-center py-4">
-      <img className="object-fit-cover border rounded" src={listing.image_url} alt="listing image" height="500" width="75%"/>
-      <div className="row">
-        <div className="card col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-          <div className="card-header">
-            <h6>Listing Details</h6>
+      
+      <div className="container-fluid">
+        <div className="row justify-content-center gx-2">
+          <img className="object-fit-cover border rounded col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 mb-3" src={listing.image_url} alt="listing image" height="500"/>
+        
+          <div className="col-11 col-sm-11 col-md-11 col-lg-4 col-xl-4 ">
+            <div className="card h-100">
+              <div className="card-header">
+                <h6>Listing Details</h6>
+              </div>
+              <div className="card-body">
+                <h1>{listing.name}</h1>
+                <h6>{listing.description}</h6>
+                <p>{listing.address}</p>
+                <p>${listing.price} per night</p>
+              </div>
+            </div>
           </div>
-          <div className="card-body">
-            <h1>{listing.name}</h1>
-            <h6>{listing.description}</h6>
-            <p>{listing.address}</p>
-            <p>${listing.price} per night</p>
+          <div className="col-11 col-sm-11 col-md-11 col-lg-5 col-xl-5">
+            <div className="card">
+              <div className="card-header">
+                <h6>Book Listing</h6>
+              </div>
+              <div className="card-body">
+                <DateRange
+                  minDate={new Date()}
+                  disabledDates={blockedDates}
+                  ranges={[dateRange]}
+                  onChange={handleDateSelect}
+                />
+                <div className="form-group py-3">
+                  <button className="btn btn-dark" onClick={(e) => createBooking(e)}> Book Listing </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="card col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-          <div className="card-header">
-            <h6>Book Listing</h6>
-          </div>
-          <div className="card-body">
-            <DateRange
-              minDate={new Date()}
-              disabledDates={blockedDates}
-              ranges={[dateRange]}
-              onChange={handleDateSelect}
-            />
-            <div className="form-group py-3">
-              <button className="btn btn-dark" onClick={(e) => createBooking(e)}> Book Listing </button>
+          <div className="card card col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 mt-3">
+            <div className="card-header">
+              <h6>Booking History</h6>
+            </div>
+            <div className="card-body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Guest</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookingHistory.length > 0 &&  
+                    <>
+                      {bookingHistory}
+                    </>
+                  }
+                </tbody>
+              </table>
+              {bookingHistory.length === 0 &&  
+                <h6>
+                  No Booking History Found
+                </h6>
+              }
             </div>
           </div>
         </div>
       </div>
       
-      <div className="card">
-        <div className="card-header">
-          <h6>Booking History</h6>
-        </div>
-        <div className="card-body">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Guest</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookingHistory}
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   )
 }

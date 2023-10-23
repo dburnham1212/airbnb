@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
 import moment from "moment";
 import { DateRange } from "react-date-range";
-import "../styles/modal.css"
 import { useNavigate, useParams } from "react-router-dom";
 
 const GET_BOOKING = gql`
@@ -143,8 +142,6 @@ const UpdateBooking = (props) => {
           </div>
         </div>
         }
-        
-        
       </div>
     </div> 
   )

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import moment from "moment";
-import ChangeBookingModal from "./ChangeBookingModal";
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 const CANCEL_BOOKING = gql`
@@ -55,15 +54,8 @@ const BookingCard = (props) => {
                 <div className="bg-dark text-warning p-2">Booking Completed</div>
               </div>
             }
-          
         </div>
       </div>
-      {editBooking && <ChangeBookingModal
-        closeModal={setEditBooking}
-        id={props.id}
-        startDate = {props.start_date}
-        endDate = {props.end_date}
-      />}
     </>
   )
 }
