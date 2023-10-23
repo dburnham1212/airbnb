@@ -113,13 +113,14 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Add a listing',
       args: {
         user_id: { type: new GraphQLNonNull(GraphQLInt)},
+        image_url: {type: new GraphQLNonNull(GraphQLString)},
         name: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: new GraphQLNonNull(GraphQLString)},
         address: {type: new GraphQLNonNull(GraphQLString)},
         price: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
-        const listing = { user_id: args.user_id, name: args.name, description: args.description, address: args.address, price: args.price};
+        const listing = { user_id: args.user_id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};
         const newListing = await listings.createListing(listing);
         return newListing;
       }
@@ -129,13 +130,14 @@ const RootMutationType = new GraphQLObjectType({
       description: 'Update a listing',
       args: {
         id: { type: new GraphQLNonNull(GraphQLInt)},
+        image_url: {type: new GraphQLNonNull(GraphQLString)},
         name: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: new GraphQLNonNull(GraphQLString)},
         address: {type: new GraphQLNonNull(GraphQLString)},
         price: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
-        const listing = { id: args.id, name: args.name, description: args.description, address: args.address, price: args.price};
+        const listing = { id: args.id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};
         const updatedListing = await listings.updateListing(listing);
         return updatedListing;
       }

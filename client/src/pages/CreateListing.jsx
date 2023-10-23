@@ -4,8 +4,8 @@ import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const CREATE_LISTING = gql`
-mutation AddListing($user_id: Int!, $name: String!, $description: String!, $address: String!, $price: String!){
-  addListing(user_id: $user_id, name: $name, description: $description, address: $address, price: $price) {
+mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: String!){
+  addListing(user_id: $user_id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
     id
   }
 }
@@ -38,7 +38,7 @@ const CreateListing = () => {
 
     addListing({
       variables: {
-        user_id: user.id, name: formState.name, description: formState.description, address: address, price: formState.price
+        user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: formState.price
       }
     }).then(() => {
       navigate('/viewListings')
@@ -63,7 +63,7 @@ const CreateListing = () => {
             <textarea className="form-control" type="text" placeholder="Description" name="description" required onChange={(e) => handleChange(e)}></textarea>
           </div>
           <div className="form-group pt-4">
-            <label className="form-label">Image URL</label>
+            <label className="form-label">Image <URL></URL></label>
             <input className="form-control" type="text" placeholder="Description" name="imageUrl" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">

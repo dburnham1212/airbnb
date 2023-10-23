@@ -119,6 +119,10 @@ const UpdateListing = () => {
             <textarea className="form-control" type="text" placeholder="Description" name="description" value={formState.description} required onChange={(e) => handleChange(e)}></textarea>
           </div>
           <div className="form-group pt-4">
+            <label className="form-label">Image <URL></URL></label>
+            <input className="form-control" type="text" placeholder="Description" name="imageUrl" required onChange={(e) => handleChange(e)}></input>
+          </div>
+          <div className="form-group pt-4">
             <label className="form-label">Street Address</label>
             <input className="form-control" type="text" placeholder="123 New Street" name="street" value={addressState.street} required onChange={(e) => handleAddressChange(e)} pattern="^[^,]+$"></input>
           </div>
