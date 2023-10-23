@@ -42,7 +42,7 @@ const ListingCard = (props) => {
           <h5><u>{props.name}</u></h5>
           <p>{props.description}</p>
           <p>Address: {props.address}</p>
-          <p>${props.price}CAD per night</p>
+          <p>${props.price} CAD per night</p>
         </div>
         <div className="d-flex justify-content-end gap-2">
           <button className="btn btn-secondary" onClick={navigateToListing}>View Listing</button>

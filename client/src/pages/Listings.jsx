@@ -32,32 +32,42 @@ const GET_ADDRESS_LISTINGS = gql`
 
 const Listings = () => {
 
+  // Set up our stats
   const [searchString, setSearchString] = useState("");
   const [displayListings, setDisplayListings] = useState([]);
 
+  // Use base query to get listings
   const { loading, error, data } = useQuery(GET_LISTINGS);
 
-  const [loadAddressListings, listingsByAddress] = useLazyQuery(GET_ADDRESS_LISTINGS, {
-    variables: {address: searchString},
-    fetchPolicy: 'cache-and-network',
+  // Set up query to get listings based off of address
+  const [loadAddressListings, _listingsByAddress] = useLazyQuery(GET_ADDRESS_LISTINGS, {
+    variables: {address: searchString}
   });
 
-  const getListingsByAddress = async () => {
-    await loadAddressListings();
-    setDisplayListings(listingsByAddress.data.listings_by_address)
+  // Function to get listings based off search parameters
+  const getListingsByAddress = () => {
+    loadAddressListings()
+    .then((res) => {
+      console.log(res)
+      setDisplayListings(res.data.listings_by_address)
+    })
+    .catch((err) => {
+      console.log(err.message)
+    });
   }
 
-
+  // Create use effect to set the current displayed listings
   useEffect(() => {
     if(!loading) {
       setDisplayListings(data.listings);
     }
   }, [loading])
 
+  // Check if we are loading or if there is an error
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
-
+  // Set up listing cards based off of listing data
   const listings = displayListings.map((listing) => 
     <ListingCard 
       key={listing.id} 
@@ -72,16 +82,23 @@ const Listings = () => {
   );
 
   return(
-    
     <div className="text-center py-4">
-      <h1>Listings</h1>
+      <h5>Listings</h5>
       <div className="d-flex gap-2 mx-3 mt-3">
         <input className="form-control" placeholder="Search by address" onChange={(e) => {setSearchString(e.target.value)}}></input>
         <button className="btn btn-dark" onClick={getListingsByAddress}>Search</button>
       </div>
       <div className="container-fluid">
         <div className="row">
-          {listings}
+          {listings.length > 0 ? 
+          <>
+            {listings}
+          </>
+          :
+            <div className="pt-4">
+              <h6>No Listings To Display</h6>
+            </div>
+          }
         </div>  
       </div>
     </div>

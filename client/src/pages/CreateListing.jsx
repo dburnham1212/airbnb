@@ -63,6 +63,10 @@ const CreateListing = () => {
             <textarea className="form-control" type="text" placeholder="Description" name="description" required onChange={(e) => handleChange(e)}></textarea>
           </div>
           <div className="form-group pt-4">
+            <label className="form-label">Image URL</label>
+            <input className="form-control" type="text" placeholder="Description" name="imageUrl" required onChange={(e) => handleChange(e)}></input>
+          </div>
+          <div className="form-group pt-4">
             <label className="form-label">Street Address</label>
             <input className="form-control" type="text" placeholder="123 New Street" name="street" required onChange={(e) => handleAddressChange(e)}></input>
           </div>
