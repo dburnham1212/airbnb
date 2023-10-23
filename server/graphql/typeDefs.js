@@ -34,6 +34,7 @@ const ListingType = new GraphQLObjectType({
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLInt)},
     user_id: { type: new GraphQLNonNull(GraphQLInt)},
+    image_url: { type: new GraphQLNonNull(GraphQLString)},
     name: {type: new GraphQLNonNull(GraphQLString)},
     description: {type: new GraphQLNonNull(GraphQLString)},
     address: {type: new GraphQLNonNull(GraphQLString)},

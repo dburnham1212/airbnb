@@ -27,6 +27,15 @@ const getListingById = async (id) => {
   }
 };
 
+const getListingsByAddress = async (address) => {
+  try {
+    const data = await db.query('SELECT * FROM listings WHERE address ILIKE $1', [address]);
+    return data.rows;
+  } catch (error) {
+    throw error;  }
+};
+
+
 const createListing = async (listing) => {
   try {
     const data = await db.query('INSERT INTO listings (user_id, name, description, address, price) VALUES ($1, $2, $3, $4, $5) RETURNING *', [listing.user_id, listing.name, listing.description, listing.address, listing.price]);
@@ -54,4 +63,4 @@ const deleteListingById = async (id) => {
   }
 };
 
-module.exports = { getAllListings, getListingsByUserId, getListingById, createListing, updateListing, deleteListingById };
+module.exports = { getAllListings, getListingsByUserId, getListingById, getListingsByAddress, createListing, updateListing, deleteListingById };

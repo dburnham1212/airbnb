@@ -11,6 +11,7 @@ const GET_BOOKINGS = gql`
       start_date
       end_date
       listing{
+        image_url
         name
         description
         address
@@ -49,6 +50,7 @@ const History = () => {
     <BookingCard
       key={booking.id}
       id={booking.id}
+      image_url={booking.listing.image_url}
       name={booking.listing.name}
       description={booking.listing.description}
       address={booking.listing.address}

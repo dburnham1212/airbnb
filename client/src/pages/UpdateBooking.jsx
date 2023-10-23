@@ -12,6 +12,7 @@ query GetBooking($id: Int!){
     start_date
     end_date
     listing{
+      image_url
       name
       description
       address

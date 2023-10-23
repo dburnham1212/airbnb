@@ -37,10 +37,13 @@ const ListingCard = (props) => {
   return(
     <div className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-4">
       <div className="card bg-light p-3">
-        <h6>{props.name}</h6>
-        <p>{props.description}</p>
-        <p>{props.address}</p>
-        <p>${props.price}CAD per night</p>
+        <img className="object-fit-cover border rounded" src={props.image_url} alt="listing image" height="300" />
+        <div className="my-3 border rounded py-2">
+          <h5><u>{props.name}</u></h5>
+          <p>{props.description}</p>
+          <p>Address: {props.address}</p>
+          <p>${props.price}CAD per night</p>
+        </div>
         <div className="d-flex justify-content-end gap-2">
           <button className="btn btn-secondary" onClick={navigateToListing}>View Listing</button>
           {props.canEdit && <>

@@ -12,6 +12,7 @@ const GET_LISTING = gql`
   query GetListing($id: Int!){
     listing(id: $id){
       id
+      image_url
       name
       description
       address
@@ -146,26 +147,35 @@ const ViewListing = () => {
   return(
     
     <div className="text-center py-4">
-      <h1>{listing.name}</h1>
-      <h6>{listing.description}</h6>
-      <p>{listing.address}</p>
-      <p>${listing.price} per night</p>
-      <div className="card">
-        <div className="card-header">
-          <h6>Book Listing</h6>
-        </div>
-        <div className="card-body">
-          <DateRange
-            minDate={new Date()}
-            disabledDates={blockedDates}
-            ranges={[dateRange]}
-            onChange={handleDateSelect}
-          />
-          <div className="form-group py-3">
-            <button className="btn btn-dark" onClick={(e) => createBooking(e)}> Book Listing </button>
+      <img className="object-fit-cover border rounded" src={listing.image_url} alt="listing image" height="500" width="90%"/>
+      <div className="row">
+        <div className="card col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div className="card-header">
+            <h6>Listing Details</h6>
+          </div>
+          <div className="card-body">
+            <h1>{listing.name}</h1>
+            <h6>{listing.description}</h6>
+            <p>{listing.address}</p>
+            <p>${listing.price} per night</p>
           </div>
         </div>
-        
+        <div className="card col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div className="card-header">
+            <h6>Book Listing</h6>
+          </div>
+          <div className="card-body">
+            <DateRange
+              minDate={new Date()}
+              disabledDates={blockedDates}
+              ranges={[dateRange]}
+              onChange={handleDateSelect}
+            />
+            <div className="form-group py-3">
+              <button className="btn btn-dark" onClick={(e) => createBooking(e)}> Book Listing </button>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div className="card">

@@ -30,6 +30,14 @@ const RootQueryType = new GraphQLObjectType({
       description: 'List of all listings',
       resolve: () => listings.getAllListings()
     },
+    listings_by_address: {
+      type: new GraphQLList(ListingType),
+      description: 'List of listings by address',
+      args: {
+        address: { type: GraphQLString }
+      },
+      resolve: (_, args) => listings.getListingsByAddress(`%${args.address}%`)
+    },
     user_listings: {
       type: new GraphQLList(ListingType),
       description: 'List of user listings',

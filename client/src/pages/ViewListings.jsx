@@ -9,6 +9,7 @@ const GET_LISTINGS = gql`
   query GetListings($id: Int!){
     user_listings(id: $id){
       id
+      image_url
       name
       description
       address
@@ -32,6 +33,8 @@ const ViewListings = () => {
   useEffect(() => {
     if (!loading) {
       setListings(data.user_listings);
+
+      console.log(data.user_listings[0].image_url)
     }
   }, [loading])
 
@@ -46,6 +49,7 @@ const ViewListings = () => {
     <ListingCard 
       key={listing.id} 
       id={listing.id}
+      image_url={listing.image_url}
       name={listing.name}
       description={listing.description}
       address={listing.address}
