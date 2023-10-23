@@ -2,7 +2,7 @@ const db = require('../../configs/db.config');
 
 const getAllListings = async () => {
   try {
-    const data = await db.query('SELECT * FROM listings');
+    const data = await db.query('SELECT * FROM listings ORDER BY id DESC');
     return data.rows;
   } catch (error) {
     throw error;
@@ -11,7 +11,7 @@ const getAllListings = async () => {
 
 const getListingsByUserId = async (id) => {
   try {
-    const data = await db.query('SELECT * FROM listings WHERE user_id = $1', [id]);
+    const data = await db.query('SELECT * FROM listings WHERE user_id = $1 ORDER BY id DESC', [id]);
     return data.rows;
   } catch (error) {
     throw error;
@@ -20,7 +20,7 @@ const getListingsByUserId = async (id) => {
 
 const getListingById = async (id) => {
   try {
-    const data = await db.query('SELECT * FROM listings WHERE id = $1', [id]);
+    const data = await db.query('SELECT * FROM listings WHERE id = $1 ORDER BY id DESC', [id]);
     return data.rows[0];
   } catch (error) {
     throw error;
@@ -38,7 +38,7 @@ const getListingsByAddress = async (address) => {
 
 const createListing = async (listing) => {
   try {
-    const data = await db.query('INSERT INTO listings (user_id, name, description, address, price) VALUES ($1, $2, $3, $4, $5) RETURNING *', [listing.user_id, listing.name, listing.description, listing.address, listing.price]);
+    const data = await db.query('INSERT INTO listings (user_id, image_url, name, description, address, price) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', [listing.user_id, listing.image_url, listing.name, listing.description, listing.address, listing.price]);
     return data.rows[0];
   } catch (error) {
     throw error;
@@ -47,7 +47,7 @@ const createListing = async (listing) => {
 
 const updateListing = async (listing) => {
   try {
-    const data = await db.query('UPDATE listings SET name = $2, description = $3, address = $4, price = $5 WHERE id = $1 RETURNING *', [listing.id, listing.name, listing.description, listing.address, listing.price]);
+    const data = await db.query('UPDATE listings SET image_url = $2, name = $3, description = $4, address = $5, price = $6 WHERE id = $1 RETURNING *', [listing.id, listing.image_url, listing.name, listing.description, listing.address, listing.price]);
     return data.rows[0];
   } catch (error) {
     throw error;

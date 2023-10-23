@@ -147,7 +147,7 @@ const ViewListing = () => {
   return(
     
     <div className="text-center py-4">
-      <img className="object-fit-cover border rounded" src={listing.image_url} alt="listing image" height="500" width="90%"/>
+      <img className="object-fit-cover border rounded" src={listing.image_url} alt="listing image" height="500" width="75%"/>
       <div className="row">
         <div className="card col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
           <div className="card-header">

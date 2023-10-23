@@ -37,7 +37,9 @@ const Listings = () => {
   const [displayListings, setDisplayListings] = useState([]);
 
   // Use base query to get listings
-  const { loading, error, data } = useQuery(GET_LISTINGS);
+  const { loading, error, data } = useQuery(GET_LISTINGS, {
+    fetchPolicy: 'cache-and-network'
+  });
 
   // Set up query to get listings based off of address
   const [loadAddressListings, _listingsByAddress] = useLazyQuery(GET_ADDRESS_LISTINGS, {

@@ -48,8 +48,8 @@ const CreateListing = () => {
   }
 
   return(
-    <div className="d-flex justify-content-center py-5">
-      <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center">
+    <div className="d-flex justify-content-center py-5 mx-2">
+      <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-6 text-center">
       <div className="card-header">
           <h2>Create Listing</h2>
         </div>
@@ -63,8 +63,8 @@ const CreateListing = () => {
             <textarea className="form-control" type="text" placeholder="Description" name="description" required onChange={(e) => handleChange(e)}></textarea>
           </div>
           <div className="form-group pt-4">
-            <label className="form-label">Image <URL></URL></label>
-            <input className="form-control" type="text" placeholder="Description" name="imageUrl" required onChange={(e) => handleChange(e)}></input>
+            <label className="form-label">Image URL</label>
+            <input className="form-control" type="text" placeholder="URL" name="imageUrl" required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Street Address</label>
