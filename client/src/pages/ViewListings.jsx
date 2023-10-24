@@ -59,7 +59,7 @@ const ViewListings = () => {
 
   return(
     
-    <div className="text-center">
+    <div className="text-center mb-3">
        <h3 className="py-2 bg-light">My Listings</h3>
       <div className="container-fluid">
         <div className="row">

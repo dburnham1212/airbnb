@@ -11,10 +11,10 @@ mutation DeleteBooking($id: Int!){
 `
 
 const BookingCard = (props) => {
-  const [deleteBooking, deletedBooking] = useMutation(CANCEL_BOOKING);
-  
-  const [editBooking, setEditBooking] = useState(false);
+  const [inDeleteMode, setInDeleteMode] = useState(false);
 
+  const [deleteBooking, _deletedBooking] = useMutation(CANCEL_BOOKING);
+  
   const navigate = useNavigate();
 
   const onDelete = () => {
@@ -45,10 +45,22 @@ const BookingCard = (props) => {
           </div>
          
             {(moment(props.start_date) >= moment(new Date()).startOf('day')) ?  
-              <div className="d-flex justify-content-end gap-2">
-                <button className="btn btn-dark" onClick={navigateToUpdate}>Change</button>
-                <button className="btn btn-danger" onClick={onDelete}>Cancel</button>
-              </div>
+              <>
+                <div className="d-flex justify-content-end align-items-center gap-2">
+                  {inDeleteMode ?  
+                  <>
+                    <span>Confirm Cancellation:</span>
+                    <button className="btn btn-danger" onClick={onDelete}>Yes</button>
+                    <button className="btn btn-dark" onClick={() => setInDeleteMode(false)}>No</button>
+                  </>
+                  :
+                  <>
+                    <button className="btn btn-dark" onClick={navigateToUpdate}>Change</button>
+                    <button className="btn btn-danger" onClick={() => setInDeleteMode(true)}>Cancel</button>
+                  </>
+                  }
+                </div>
+              </>
               :
               <div className="d-flex justify-content-center gap-2">
                 <div className="bg-dark text-warning p-2">Booking Completed</div>

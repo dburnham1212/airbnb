@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +12,11 @@ mutation DeleteListing($id: Int!){
 `
 
 const ListingCard = (props) => {
-  const navigate = useNavigate();
+  const [inDeleteMode, setInDeleteMode] = useState(false);
   
   const [deleteListing, deletedListing] = useMutation(DELETE_LISTING);
+  
+  const navigate = useNavigate();
   
   // Function to delete a listing
   const onDelete = () => {
@@ -44,11 +46,21 @@ const ListingCard = (props) => {
           <p>Address: {props.address}</p>
           <div className="border-top w-100 py-2 fw-bold"> ${props.price} CAD per night</div>
         </div>
-        <div className="d-flex justify-content-end gap-2">
-          <button className="btn btn-secondary" onClick={navigateToListing}>View</button>
+        <div className="d-flex justify-content-end align-items-center gap-2">
+          {!inDeleteMode && <button className="btn btn-secondary" onClick={navigateToListing}>View</button>}
           {props.canEdit && <>
-            <button className="btn btn-dark" onClick={navigateToUpdateListing}>Update</button>
-            <button className="btn btn-danger" onClick={onDelete}>Delete</button>
+            {inDeleteMode ?
+            <>
+              <span>Confirm Delete:</span>
+              <button className="btn btn-danger" onClick={onDelete}>Yes</button>
+              <button className="btn btn-dark" onClick={() => setInDeleteMode(false)}>No</button>
+            </>
+            :
+            <>
+              <button className="btn btn-dark" onClick={navigateToUpdateListing}>Update</button>
+              <button className="btn btn-danger" onClick={() => setInDeleteMode(true)}>Delete</button>
+            </>
+            }
           </>}
         </div>
       </div>

@@ -84,7 +84,7 @@ const Listings = () => {
   );
 
   return(
-    <div className="text-center">
+    <div className="text-center mb-3">
       <h3 className="py-2 bg-light">Listings</h3>
       <div className="d-flex gap-2 mx-3 mt-3">
         <input className="form-control" placeholder="Search by address" onChange={(e) => {setSearchString(e.target.value)}}></input>
@@ -97,9 +97,9 @@ const Listings = () => {
             {listings}
           </>
           :
-            <div className="pt-4">
-              <h6>No Listings To Display</h6>
-            </div>
+          <div className="pt-4">
+            <h6>No Listings To Display</h6>
+          </div>
           }
         </div>  
       </div>
