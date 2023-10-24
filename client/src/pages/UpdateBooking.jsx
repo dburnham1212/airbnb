@@ -123,8 +123,8 @@ const UpdateBooking = (props) => {
           <div className="border rounded bg-light py-3 mb-3">
             <h4 className="pb-2">Booking Successfully Updated</h4>
             <h5 className="pb-2">{currentListing.name}</h5>
-            <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
-            <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+            <p>Start Date: {moment(booking.start_date).format("MM/DD/YYYY")}</p>
+            <p>End Date: {moment(booking.end_date).format("MM/DD/YYYY")}</p>
           </div>
           <div className="d-flex justify-content-end">
             <button className="btn btn-dark" onClick={navigateToHistory}>Return to History</button>

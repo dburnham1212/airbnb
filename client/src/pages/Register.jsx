@@ -3,7 +3,7 @@ import { useMutation, gql } from '@apollo/client';
 import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-
+//Register user GraphQL query
 const REGISTER_USER = gql`
 mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: String!, $email: String!, $password: String!, $role: String!){
   registerUser(first_name: $first_name, last_name: $last_name, phone_number: $phone_number, email: $email, password: $password, role: $role) {
@@ -19,12 +19,13 @@ mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: 
 `
 
 const Register = () => {
-  // State objects 
+  // Import functions from context
   const {
     setUser,
     setToken
   } = useContext(authContext);
 
+  // State objects 
   const [formState, setFormState] = useState({role: "user"})
   const [errorText, setErrorText] = useState("");
   
@@ -87,8 +88,6 @@ const Register = () => {
             <label className="form-label">Phone Number 555-555-5555</label>
             <input className="form-control" type="tel" placeholder="555-555-5555" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" name="phoneNumber" required onChange={(e) => handleChange(e)}></input>
           </div>
-          
-          
           <div className="form-group pt-4">
             <div className="px-4 d-flex d-flex justify-content-center">
               <label className="form-label w-25 px-4">Customer</label>
