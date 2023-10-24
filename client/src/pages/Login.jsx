@@ -31,7 +31,6 @@ const Login = () => {
 
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
-    console.log(formState)
   }
 
   const onSubmission = (e) => {
@@ -44,7 +43,6 @@ const Login = () => {
       // Update user
       setUser(res.data.loginUser);
       // Set token in local storage
-      console.log(res.data);
       setToken(res.data.loginUser);
       // Navigate to listings page 
       navigate("/listings")

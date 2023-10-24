@@ -4,7 +4,7 @@ import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const CREATE_LISTING = gql`
-mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: String!){
+mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!){
   addListing(user_id: $user_id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
     id
   }
@@ -38,7 +38,7 @@ const CreateListing = () => {
 
     addListing({
       variables: {
-        user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: formState.price
+        user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
       navigate('/viewListings')

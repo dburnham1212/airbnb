@@ -66,7 +66,15 @@ const History = () => {
       <h3 className="py-2 bg-light">Booking History</h3>
       <div className="container-fluid">
         <div className="row">
-          {history}
+          {history.length > 0 ?
+          <>
+            {history}
+          </>
+          :
+          <div className="pt-4">
+            <h6>No Bookings To Display</h6>
+          </div>
+          }
         </div>  
       </div>
     </div>

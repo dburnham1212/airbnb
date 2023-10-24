@@ -117,7 +117,7 @@ const RootMutationType = new GraphQLObjectType({
         name: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: new GraphQLNonNull(GraphQLString)},
         address: {type: new GraphQLNonNull(GraphQLString)},
-        price: {type: new GraphQLNonNull(GraphQLString)}
+        price: {type: new GraphQLNonNull(GraphQLInt)}
       },
       resolve: async (_, args) => {
         const listing = { user_id: args.user_id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};
@@ -134,7 +134,7 @@ const RootMutationType = new GraphQLObjectType({
         name: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: new GraphQLNonNull(GraphQLString)},
         address: {type: new GraphQLNonNull(GraphQLString)},
-        price: {type: new GraphQLNonNull(GraphQLString)}
+        price: {type: new GraphQLNonNull(GraphQLInt)}
       },
       resolve: async (_, args) => {
         const listing = { id: args.id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};

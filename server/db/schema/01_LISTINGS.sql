@@ -8,5 +8,5 @@ CREATE TABLE listings (
   name VARCHAR(50) NOT NULL,
   description VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL,
-  price VARCHAR(255) NOT NULL
+  price SMALLINT NOT NULL
 );

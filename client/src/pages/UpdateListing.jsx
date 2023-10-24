@@ -18,7 +18,7 @@ const GET_LISTING = gql`
 `;
 
 const UPDATE_LISTING = gql`
-mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: String!){
+mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!){
   updateListing(id: $id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
     id
   }
@@ -66,7 +66,7 @@ const UpdateListing = () => {
 
     updateListing({
       variables: {
-        id: listing.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: formState.price
+        id: listing.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
       navigate('/viewListings')

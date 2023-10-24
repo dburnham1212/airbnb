@@ -38,7 +38,7 @@ const ListingType = new GraphQLObjectType({
     name: {type: new GraphQLNonNull(GraphQLString)},
     description: {type: new GraphQLNonNull(GraphQLString)},
     address: {type: new GraphQLNonNull(GraphQLString)},
-    price: {type: new GraphQLNonNull(GraphQLString)},
+    price: {type: new GraphQLNonNull(GraphQLInt)},
     bookings: {
       type: new GraphQLList(BookingType),
       resolve: (listing) => {

@@ -33,8 +33,6 @@ const ViewListings = () => {
   useEffect(() => {
     if (!loading) {
       setListings(data.user_listings);
-
-      console.log(data.user_listings[0].image_url)
     }
   }, [loading])
 
@@ -65,7 +63,15 @@ const ViewListings = () => {
        <h3 className="py-2 bg-light">My Listings</h3>
       <div className="container-fluid">
         <div className="row">
-          {displayListings}
+          {displayListings.length > 0 ?
+          <>
+            {displayListings}
+          </>
+          :
+          <div className="pt-4">
+            <h6>No Listings To Display</h6>
+          </div>
+          }
         </div>  
       </div>
     </div>
