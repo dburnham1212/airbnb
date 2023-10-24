@@ -149,12 +149,12 @@ const ViewListing = () => {
     <div className="text-center py-4">
       
       <div className="container-fluid">
-        <div className="row justify-content-center gx-2">
-          <img className="object-fit-cover col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 border rounded mb-3" src={listing.image_url} alt="listing image" height="600"/>
+        <div className="row justify-content-center g-2">
+          <img className="object-fit-cover col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 border rounded" src={listing.image_url} alt="listing image" height="600"/>
           <div className="col-11 col-sm-11 col-md-11 col-lg-4 col-xl-4 ">
             <div className="card h-100">
-              <div className="card-header">
-                <h6>Listing Details</h6>
+              <div className="card-header bg-dark">
+                <h6 className="text-light">Listing Details</h6>
               </div>
               <div className="card-body d-flex flex-column justify-content-between">
                 <div>
@@ -170,8 +170,8 @@ const ViewListing = () => {
           </div>
           <div className="col-11 col-sm-11 col-md-11 col-lg-5 col-xl-5">
             <div className="card">
-              <div className="card-header">
-                <h6>Book Listing</h6>
+              <div className="card-header bg-dark">
+                <h6 className="text-light">Book Listing</h6>
               </div>
               <div className="card-body">
                 <DateRange
@@ -186,9 +186,9 @@ const ViewListing = () => {
               </div>
             </div>
           </div>
-          <div className="card card col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 mt-3">
-            <div className="card-header">
-              <h6>Booking History</h6>
+          <div className="card card col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 ">
+            <div className="card-header bg-dark">
+              <h6 className="text-light">Booking History</h6>
             </div>
             <div className="card-body">
               <table className="table">

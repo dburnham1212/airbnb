@@ -116,11 +116,12 @@ const UpdateBooking = (props) => {
   return(
     <div className="d-flex justify-content-center py-5">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center position-fixed overflow-auto">
-        <div className="card-header">
-          <h2>Change Booking</h2>
+        <div className="card-header bg-dark">
+          <h2 className="text-light">Change Booking</h2>
         </div>
         {bookingUpdated ? <div className="card-body">
-          <h6>Booking Successfully Updated</h6>
+          <h5>Booking Successfully Updated</h5>
+          <h6>{currentListing.name}</h6>
           <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
           <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
           <div className="d-flex justify-content-end">
@@ -137,8 +138,8 @@ const UpdateBooking = (props) => {
             onChange={handleDateSelect}
           />
           <div className="d-flex justify-content-end mx-2 my-4 gap-2">
-            <button className="btn btn-danger" onClick={navigateToHistory}>Cancel</button>
             <button className="btn btn-dark" onClick={(e) => onSubmit(e)}>Update Booking</button>
+            <button className="btn btn-danger" onClick={navigateToHistory}>Cancel</button>
           </div>
         </div>
         }

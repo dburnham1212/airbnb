@@ -41,17 +41,21 @@ const CreateListing = () => {
         user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
-      navigate('/viewListings')
+      navigateToViewListings();
     }).catch((err) => {
       console.log(err.message);
     })
   }
 
+  const navigateToViewListings = () => {
+    navigate('/viewListings')
+  }
+
   return(
     <div className="d-flex justify-content-center py-5 mx-2">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-6 text-center">
-      <div className="card-header">
-          <h2>Create Listing</h2>
+      <div className="card-header bg-dark">
+          <h2 className="text-light">Create Listing</h2>
         </div>
         <form className="px-3" onSubmit={onSubmit}>
           <div className="form-group pt-4">
@@ -82,8 +86,9 @@ const CreateListing = () => {
             <label className="form-label">Price Per Night</label>
             <input className="form-control" type="number" min="0" placeholder="Price Per Night" name="price" required onChange={(e) => handleChange(e)}></input>
           </div>
-          <div className="d-flex justify-content-end mx-2 my-4">
+          <div className="d-flex justify-content-end mx-2 my-4 gap-2">
             <button className="btn btn-dark" type="submit">Create Listing</button>
+            <button className="btn btn-danger" onClick={navigateToViewListings}>Cancel</button>
           </div>
         </form>
       </div>

@@ -55,8 +55,8 @@ const Login = () => {
   return(
     <div className="d-flex justify-content-center py-5">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center">
-        <div className="card-header">
-          <h2>Login</h2>
+        <div className="card-header bg-dark">
+          <h2 className="text-light">Login</h2>
         </div>
         <form className="px-3" onSubmit={(e) => {onSubmission(e)}}>
           <div className="form-group pt-4">

@@ -45,6 +45,7 @@ const UpdateListing = () => {
   });
 
   const [listing, setListing] = useState({});
+  const [listingUpdated, setListingUpdated] = useState(false);
 
   const [updateListing, updatedListing] = useMutation(UPDATE_LISTING);
   
@@ -69,10 +70,14 @@ const UpdateListing = () => {
         id: listing.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
-      navigate('/viewListings')
+      setListingUpdated(true);
     }).catch((err) => {
       console.log(err.message);
     })
+  }
+  
+  const navigateToViewListings = () => {
+    navigate('/viewListings')
   }
 
   // Query to get the listing data via GraphQL
@@ -110,10 +115,22 @@ const UpdateListing = () => {
   return(
     <div className="d-flex justify-content-center py-5 mx-2">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-6 text-center">
-      <div className="card-header">
-          <h2>Update Listing</h2>
+      <div className="card-header bg-dark">
+          <h2 className="text-light">Update Listing</h2>
         </div>
-        <form className="px-3" onSubmit={onSubmit}>
+        {listingUpdated ? 
+        <div className="card-body">
+          <div className="border rounded bg-light py-3 mb-3">
+            <h5 className="mb-3">Listing Successfully Updated</h5>
+            <h6>{formState.name}</h6>
+            
+          </div>
+          <div className="d-flex justify-content-end">
+            <button className="btn btn-dark" onClick={navigateToViewListings}>Return To My Listings</button>
+          </div>
+        </div>
+        :
+        <form className="px-3 bg-light" onSubmit={onSubmit}>
           <div className="form-group pt-4">
             <label className="form-label">Name</label>
             <input className="form-control" type="text" placeholder="Name" name="name" value={formState.name} required onChange={(e) => handleChange(e)}></input>
@@ -142,10 +159,11 @@ const UpdateListing = () => {
             <label className="form-label">Price Per Night</label>
             <input className="form-control" type="number" min="0" placeholder="Price Per Night" name="price" value={formState.price} required onChange={(e) => handleChange(e)}></input>
           </div>
-          <div className="d-flex justify-content-end mx-2 my-4">
+          <div className="d-flex justify-content-end mx-2 my-4 gap-2">
             <button className="btn btn-dark" type="submit">Update Listing</button>
+            <button className="btn btn-danger" onClick={navigateToViewListings}>Cancel</button>
           </div>
-        </form>
+        </form>}
       </div>
     </div>
     
