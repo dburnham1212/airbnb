@@ -114,16 +114,18 @@ const UpdateBooking = (props) => {
   if (error) return <p>Error : {error.message}</p>;
 
   return(
-    <div className="d-flex justify-content-center py-5">
-      <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center position-fixed overflow-auto">
+    <div className="d-flex justify-content-center py-5 mx-2">
+      <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-6 text-center position-fixed overflow-auto">
         <div className="card-header bg-dark">
           <h2 className="text-light">Change Booking</h2>
         </div>
         {bookingUpdated ? <div className="card-body">
-          <h5>Booking Successfully Updated</h5>
-          <h6>{currentListing.name}</h6>
-          <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
-          <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+          <div className="border rounded bg-light py-3 mb-3">
+            <h4 className="pb-2">Booking Successfully Updated</h4>
+            <h5 className="pb-2">{currentListing.name}</h5>
+            <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
+            <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+          </div>
           <div className="d-flex justify-content-end">
             <button className="btn btn-dark" onClick={navigateToHistory}>Return to History</button>
           </div>
@@ -131,6 +133,11 @@ const UpdateBooking = (props) => {
         
         :
         <div className="card-body">
+          <div className="border rounded bg-light py-3 mb-3">
+            <h5 className="pb-2">{currentListing.name}</h5>
+            <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
+            <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+          </div>
           <DateRange
             minDate={new Date()}
             disabledDates={blockedDates}

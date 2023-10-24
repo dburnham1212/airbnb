@@ -5,9 +5,6 @@ import { useParams } from "react-router-dom";
 import moment from "moment"
 import {DateRange} from "react-date-range";
 
-
-import { setDate } from "date-fns";
-
 const GET_LISTING = gql`
   query GetListing($id: Int!){
     listing(id: $id){
@@ -71,9 +68,9 @@ const ViewListing = () => {
         listing_id: Number(listingId), user_id: user.id, start_date: dateRange.startDate, end_date: dateRange.endDate
       }
     }).then((res) => {
-      const newBookings = [...bookings, res.data.addBooking];
-      setBookings(newBookings)
-      updateBlockedDates(newBookings)
+      const newBookings = sortBookings([...bookings, res.data.addBooking]);
+      setBookings(newBookings);
+      updateBlockedDates(newBookings);
     }).catch((err)  => {
       console.log(err.message);
     })
@@ -92,6 +89,7 @@ const ViewListing = () => {
 
       setListing(currentListing);
 
+      currentListing.bookings = sortBookings(currentListing.bookings);
       setBookings(currentListing.bookings)
 
       updateBlockedDates(currentListing.bookings);
@@ -104,6 +102,19 @@ const ViewListing = () => {
     endDate: dateRange.endDate,
     key: 'selection',
     
+  }
+
+  // Function to sort bookings by 
+  const sortBookings = (bookings) => {
+    return bookings.sort((a, b) => {
+      if(a.start_date < b.start_date) {
+        return 1;
+      }
+      if(a.start_date > b.start_date) {
+        return -1;
+      }
+      return 0;
+    });
   }
 
   const updateBlockedDates = (checkBookings) => {

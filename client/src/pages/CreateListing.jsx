@@ -18,6 +18,7 @@ const CreateListing = () => {
 
   const [formState, setFormState] = useState({});
   const [addressState, setAddressState] = useState({});
+  const [listingCreated, setListingCreated] = useState(false);
 
   const navigate = useNavigate()
 
@@ -41,7 +42,7 @@ const CreateListing = () => {
         user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
-      navigateToViewListings();
+      setListingCreated(true)
     }).catch((err) => {
       console.log(err.message);
     })
@@ -57,6 +58,17 @@ const CreateListing = () => {
       <div className="card-header bg-dark">
           <h2 className="text-light">Create Listing</h2>
         </div>
+        {listingCreated ? 
+        <div className="card-body">
+          <div className="border rounded bg-light py-3 mb-3">
+            <h4 className="mb-3">Listing Successfully Created</h4>
+            <h5>{formState.name}</h5>
+          </div>
+          <div className="d-flex justify-content-end">
+            <button className="btn btn-dark" onClick={navigateToViewListings}>Return To My Listings</button>
+          </div>
+        </div>
+        :
         <form className="px-3" onSubmit={onSubmit}>
           <div className="form-group pt-4">
             <label className="form-label">Name</label>
@@ -91,6 +103,7 @@ const CreateListing = () => {
             <button className="btn btn-danger" onClick={navigateToViewListings}>Cancel</button>
           </div>
         </form>
+        }
       </div>
     </div>
     

@@ -121,8 +121,8 @@ const UpdateListing = () => {
         {listingUpdated ? 
         <div className="card-body">
           <div className="border rounded bg-light py-3 mb-3">
-            <h5 className="mb-3">Listing Successfully Updated</h5>
-            <h6>{formState.name}</h6>
+            <h4 className="mb-3">Listing Successfully Updated</h4>
+            <h5>{formState.name}</h5>
             
           </div>
           <div className="d-flex justify-content-end">

@@ -19,21 +19,27 @@ mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: 
 `
 
 const Register = () => {
+  // State objects 
   const {
     setUser,
     setToken
   } = useContext(authContext);
+
   const [formState, setFormState] = useState({role: "user"})
   const [errorText, setErrorText] = useState("");
-
+  
+  // Use Navigate to handle navigation
   const navigate = useNavigate();
 
-  const [registerUser, { data, loading, error }] = useMutation(REGISTER_USER);
+  // Query to register a user
+  const [registerUser, _registerUserData] = useMutation(REGISTER_USER);
 
+  // Function to handle form changes
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
   }
 
+  // Function to submit registration form
   const onSubmit= async (e) => {
     e.preventDefault();
       
@@ -55,7 +61,7 @@ const Register = () => {
   }
 
   return(
-    <div className="d-flex justify-content-center py-5">
+    <div className="d-flex justify-content-center py-5 mx-2">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-4 text-center">
         <div className="card-header bg-dark">
           <h2 className="text-light">Register</h2>
