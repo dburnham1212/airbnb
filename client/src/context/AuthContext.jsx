@@ -4,6 +4,9 @@ import jwtDecode from 'jwt-decode'
 // Create a Context
 export const authContext = createContext();
 
+let userTokenObject = null;
+
+
 
 // Create a Component wrapper from Context.Provider
 export default function AuthProvider(props) {
@@ -22,13 +25,8 @@ export default function AuthProvider(props) {
         localStorage.removeItem("token");
         
       } else {
-        // Set the user to the decoded token
-        setUser(decodedToken);
+        setUser(decodedToken)
       }
-      
-    } else {
-      // Make sure the user is removed
-      setUser(null);
     }
   }, [])
 

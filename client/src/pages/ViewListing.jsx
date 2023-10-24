@@ -150,18 +150,21 @@ const ViewListing = () => {
       
       <div className="container-fluid">
         <div className="row justify-content-center gx-2">
-          <img className="object-fit-cover border rounded col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 mb-3" src={listing.image_url} alt="listing image" height="500"/>
-        
+          <img className="object-fit-cover col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 border rounded mb-3" src={listing.image_url} alt="listing image" height="600"/>
           <div className="col-11 col-sm-11 col-md-11 col-lg-4 col-xl-4 ">
             <div className="card h-100">
               <div className="card-header">
                 <h6>Listing Details</h6>
               </div>
-              <div className="card-body">
-                <h1>{listing.name}</h1>
-                <h6>{listing.description}</h6>
-                <p>{listing.address}</p>
-                <p>${listing.price} per night</p>
+              <div className="card-body d-flex flex-column justify-content-between">
+                <div>
+                  <h5 className="border-bottom border-dark mx-3 py-2 text-uppercase">{listing.name}</h5>
+                  <p>{listing.description}</p>
+                  <p>Address: {listing.address}</p>
+                </div>
+                <div>
+                  <div className="border-top w-100 py-2 fw-bold"> ${listing.price} CAD per night</div>
+                </div>
               </div>
             </div>
           </div>

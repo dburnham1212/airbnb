@@ -43,7 +43,7 @@ const UpdateListing = () => {
     city: "",
     postalCode: ""
   });
-  
+
   const [listing, setListing] = useState({});
 
   const [updateListing, updatedListing] = useMutation(UPDATE_LISTING);
@@ -140,7 +140,7 @@ const UpdateListing = () => {
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Price Per Night</label>
-            <input className="form-control" type="text" placeholder="Price Per Night" name="price" value={formState.price} required onChange={(e) => handleChange(e)}></input>
+            <input className="form-control" type="number" min="0" placeholder="Price Per Night" name="price" value={formState.price} required onChange={(e) => handleChange(e)}></input>
           </div>
           <div className="d-flex justify-content-end mx-2 my-4">
             <button className="btn btn-dark" type="submit">Update Listing</button>

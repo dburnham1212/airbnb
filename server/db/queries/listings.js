@@ -29,7 +29,7 @@ const getListingById = async (id) => {
 
 const getListingsByAddress = async (address) => {
   try {
-    const data = await db.query('SELECT * FROM listings WHERE address ILIKE $1', [address]);
+    const data = await db.query('SELECT * FROM listings WHERE address ILIKE $1 ORDER BY id DESC', [address]);
     return data.rows;
   } catch (error) {
     throw error;  }
