@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import { authContext } from "../context/AuthContext";
-
-import ListingCard from "../components/ListingCard";
-
 import { useQuery, gql } from '@apollo/client';
 
+// Import components used
+import ListingCard from "../components/ListingCard";
+
+// Get listings GraphQL query
 const GET_LISTINGS = gql`
   query GetListings($id: Int!){
     user_listings(id: $id){
@@ -19,30 +20,37 @@ const GET_LISTINGS = gql`
 `;
 
 const ViewListings = () => {
+  // Import user variable from context
   const {
     user
   } = useContext(authContext);
 
+  // State objects 
   const [listings, setListings] = useState([]);
 
+  // Run GraphQL query to get all of the listings for the page
   const { loading, error, data } = useQuery(GET_LISTINGS, {
     variables: {id: user.id},
     fetchPolicy: 'cache-and-network'
   });
 
+  // Wait for query to finish loading and assign results to state object 
   useEffect(() => {
     if (!loading) {
       setListings(data.user_listings);
     }
-  }, [loading])
+  }, [loading]);
 
+  // Function used to delete a listing so that we do not need to refresh the page
   const removeListing = (listingId) => {
-    setListings(listings.filter(listing => listing.id !== listingId))
-  }
+    setListings(listings.filter(listing => listing.id !== listingId));
+  };
 
+  // Wait for query results to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
+  // Set up array of listing cards to display on the page
   const displayListings = listings.map((listing) => 
     <ListingCard 
       key={listing.id} 

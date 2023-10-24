@@ -17,12 +17,13 @@ mutation LoginUser($email: String!, $password: String!){
 }
 `
 const Login = () => {
-  // State objects 
+  // Import functions from context
   const {
     setUser,
     setToken
   } = useContext(authContext);
 
+  // State objects 
   const [formState, setFormState] = useState({});
   const [errorText, setErrorText] = useState("");
 
@@ -63,6 +64,7 @@ const Login = () => {
         <div className="card-header bg-dark">
           <h2 className="text-light">Login</h2>
         </div>
+        {/* Submit login form body */}
         <form className="px-3" onSubmit={(e) => {onSubmit(e)}}>
           <div className="form-group pt-4">
             <label className="form-label">Email</label>
@@ -72,6 +74,7 @@ const Login = () => {
             <label className="form-label">Password</label>
             <input className="form-control" type="password" placeholder="password" name="password" required onChange={(e) => handleChange(e)}></input>
           </div>
+          {/* Error handling for form */}
           {errorText && <div class="alert alert-danger mt-4" role="alert">
             {errorText}
           </div>}

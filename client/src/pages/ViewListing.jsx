@@ -2,9 +2,10 @@ import React, {useState, useContext, useEffect} from "react";
 import { authContext } from "../context/AuthContext";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import { DateRange } from "react-date-range";
 import moment from "moment"
-import {DateRange} from "react-date-range";
 
+// Get listing GraphQL query
 const GET_LISTING = gql`
   query GetListing($id: Int!){
     listing(id: $id){
@@ -26,7 +27,8 @@ const GET_LISTING = gql`
   }
 `;
 
-const CREATE_BOOKING = gql`
+// GraphQL query to add a booking
+const ADD_BOOKING = gql`
   mutation AddBooking($listing_id: Int!, $user_id: Int!, $start_date: Date!, $end_date: Date!){
     addBooking(listing_id: $listing_id, user_id: $user_id, start_date: $start_date, end_date: $end_date){
       id
@@ -38,40 +40,49 @@ const CREATE_BOOKING = gql`
       }
     }
   }
-`
-
-
+`;
 
 const ViewListing = () => {
+  // Import user variable from context
   const {
     user
   } = useContext(authContext);
 
+  // State Objects
   const [bookings, setBookings] = useState([]);
   const [listing, setListing] = useState({});
+  const [blockedDates, setBlockedDates] = useState([]);
   const [dateRange, setDateRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: "selection"
   });
-  const [blockedDates, setBlockedDates] = useState([]);
 
+  // Import listing id from params in the url
   const { listingId } = useParams();
 
-  const [addBooking, newBooking] = useMutation(CREATE_BOOKING);
+  // Set up create booking mutation to be used when a booking is created
+  const [addBooking, newBooking] = useMutation(ADD_BOOKING);
 
   // Function used to create a new booking
   const createBooking = (event) => {
     event.preventDefault()
+
+    // Promise to add booking to the database
     addBooking({
       variables: {
         listing_id: Number(listingId), user_id: user.id, start_date: dateRange.startDate, end_date: dateRange.endDate
       }
     }).then((res) => {
+      // If successful
+      // Add the new booking to the list and sort it from latest start date to earliest
       const newBookings = sortBookings([...bookings, res.data.addBooking]);
+      // Set the booking state to the new object
       setBookings(newBookings);
+      // Update the blocked dates list so that the user can no longer select dates within previously booked range
       updateBlockedDates(newBookings);
     }).catch((err)  => {
+      // If not successful
       console.log(err.message);
     })
   };
@@ -82,29 +93,27 @@ const ViewListing = () => {
     fetchPolicy: 'cache-and-network'
   });
 
+  // Function to run after we have gotten the listing from GraphQL
   useEffect(() => {
     if (!loading) {
       // Create a variable for listing and set it to the data recieved
       const currentListing = data.listing;
 
+      // Set the listing state to the current listing from GraphQL
       setListing(currentListing);
 
+      // Sorting the bookings from latest start date to earliest
       currentListing.bookings = sortBookings(currentListing.bookings);
+      // Setting the bookings state to the bookings for the listing from GraphQL
       setBookings(currentListing.bookings)
 
+      // Updating blocked dates list so that a user cannot book over another booking
       updateBlockedDates(currentListing.bookings);
       
     } 
-  }, [loading])
+  }, [loading]);
 
-  let selectionRange = {
-    startDate: dateRange.startDate,
-    endDate: dateRange.endDate,
-    key: 'selection',
-    
-  }
-
-  // Function to sort bookings by 
+  // Function to sort bookings from latest start date to earliest
   const sortBookings = (bookings) => {
     return bookings.sort((a, b) => {
       if(a.start_date < b.start_date) {
@@ -115,32 +124,49 @@ const ViewListing = () => {
       }
       return 0;
     });
-  }
+  };
 
+  // Function to update the blocked dates array
   const updateBlockedDates = (checkBookings) => {
+    // Set up blocked dates arrays
     const blockedDatesArr = [];
     const blockedDatesStrArr = [];
+
+    // Cycle through the bookings
     for(const booking of checkBookings) {
       let currentDate = moment(booking.start_date);
-      let stopDate = moment(booking.end_date)
+      let stopDate = moment(booking.end_date);
+      // While the current date is less than the end date
       while(currentDate <= stopDate) {
-        blockedDatesArr.push(new Date(currentDate))
+        // Add the date to the date array and move on to the next day
+        blockedDatesArr.push(new Date(currentDate));
         blockedDatesStrArr.push(moment(new Date(currentDate)).format("MM-DD-YYYY"));
         currentDate = moment(currentDate).add(1, 'days');
-      }
-    }
+      };
+    };
+    // Set the blocked dates state to the array
     setBlockedDates(blockedDatesArr);
+    
+    // Set up the current date in date picker
     let currentStartDate = moment(dateRange.startDate);
+    // While the current date exists in the list of dates cycle to the next day
     while(blockedDatesStrArr.includes(moment(currentStartDate).format("MM-DD-YYYY"))) {
       currentStartDate = moment(currentStartDate).add(1, 'days');
-    }
+    };
+    // Set the date range object based off found start date
     setDateRange({...dateRange, startDate: new Date(currentStartDate), endDate: new Date(currentStartDate)});
+  };
+  
+  // Function to handle date selection
+  const handleDateSelect = (ranges) =>{
+    setDateRange(ranges.selection)
   }
 
   // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
+  // Set up the booking history table 
   const bookingHistory = bookings.map((booking, i) => {
     return (
       <tr key={i}>
@@ -151,9 +177,6 @@ const ViewListing = () => {
     )
   })
 
-  const handleDateSelect = (ranges) =>{
-    setDateRange(ranges.selection)
-  }
 
   return(
     

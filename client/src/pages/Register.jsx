@@ -67,6 +67,7 @@ const Register = () => {
         <div className="card-header bg-dark">
           <h2 className="text-light">Register</h2>
         </div>
+        {/* Submit registration form body */}
         <form className="px-3" onSubmit={(e) => onSubmit(e)}>
           <div className="form-group pt-4">
             <label className="form-label">First Name</label>
@@ -98,6 +99,7 @@ const Register = () => {
               <input type="radio" name="role" value="admin" onChange={(e) => handleChange(e)}></input>
             </div>
           </div>
+          {/* Error handling for form */}
           {errorText && <div className="alert alert-danger" role="alert">
             {errorText}
           </div>}
