@@ -50,7 +50,7 @@ const RootMutationType = new GraphQLObjectType({
               code: 'EMAIL_ALREAD_FOUND',
             },
           });
-        } 
+        }; 
 
         // Encrypt password with bcrypt
         user.password = bcrypt.hashSync(user.password, 12);
@@ -93,7 +93,7 @@ const RootMutationType = new GraphQLObjectType({
               code: 'INVALID_CREDENTIALS',
             },
           });
-        }
+        };
 
         // remove password field because we do not need to send it back
         delete checkUser.password;
@@ -154,7 +154,7 @@ const RootMutationType = new GraphQLObjectType({
         // if there are errors return the errors to the client
         if(errors) {
           return errors;
-        }
+        };
         // If not run the mutation and provide results
         const listing = { id: args.id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};
         const updatedListing = await listings.updateListing(listing);
@@ -177,7 +177,7 @@ const RootMutationType = new GraphQLObjectType({
         }
         // If not run the mutation and provide results
         const deletedListing = await listings.deleteListingById(args.id);
-        return deletedListing
+        return deletedListing;
       }
     },
     // -------------------- BOOKING MUTATIONS -------------------- 
@@ -189,9 +189,16 @@ const RootMutationType = new GraphQLObjectType({
         user_id: {type: new GraphQLNonNull(GraphQLInt)},
         start_date: {type: new GraphQLNonNull(DateScalar)},
         end_date: {type: new GraphQLNonNull(DateScalar)},
+        token: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
-        
+        // Verify the token recieved from client
+        const errors = verifyJWT(args);
+        // if there are errors return the errors to the client
+        if(errors) {
+          return errors;
+        };
+        // If not run the mutation and provide results
         const booking = { listing_id: args.listing_id, user_id: args.user_id, start_date: args.start_date, end_date: args.end_date};
         const createdBooking = await bookings.createBooking(booking);
         return createdBooking;
@@ -204,22 +211,38 @@ const RootMutationType = new GraphQLObjectType({
         id: {type: new GraphQLNonNull(GraphQLInt)},
         start_date: {type: new GraphQLNonNull(DateScalar)},
         end_date: {type: new GraphQLNonNull(DateScalar)},
+        token: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
+        // Verify the token recieved from client
+        const errors = verifyJWT(args);
+        // if there are errors return the errors to the client
+        if(errors) {
+          return errors;
+        };
+        // If not run the mutation and provide results
         const booking = { id: args.id, start_date: args.start_date, end_date: args.end_date};
-        const updatedBooking = await bookings.updateBooking(booking)
-        return updatedBooking
+        const updatedBooking = await bookings.updateBooking(booking);
+        return updatedBooking;
       }
     },
     deleteBooking: {
       type: BookingType,
       description: 'Delete a booking',
       args: {
-        id: { type: new GraphQLNonNull(GraphQLInt)}
+        id: { type: new GraphQLNonNull(GraphQLInt)},
+        token: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
+        // Verify the token recieved from client
+        const errors = verifyJWT(args);
+        // if there are errors return the errors to the client
+        if(errors) {
+          return errors;
+        };
+        // If not run the mutation and provide results
         const deletedBooking = await bookings.deleteBookingById(args.id);
-        return deletedBooking
+        return deletedBooking;
       }
     }
   }),

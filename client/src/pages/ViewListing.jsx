@@ -29,8 +29,8 @@ const GET_LISTING = gql`
 
 // GraphQL query to add a booking
 const ADD_BOOKING = gql`
-  mutation AddBooking($listing_id: Int!, $user_id: Int!, $start_date: Date!, $end_date: Date!){
-    addBooking(listing_id: $listing_id, user_id: $user_id, start_date: $start_date, end_date: $end_date){
+  mutation AddBooking($listing_id: Int!, $user_id: Int!, $start_date: Date!, $end_date: Date!, $token: String!){
+    addBooking(listing_id: $listing_id, user_id: $user_id, start_date: $start_date, end_date: $end_date, token: $token){
       id
       start_date
       end_date
@@ -72,7 +72,11 @@ const ViewListing = () => {
     // Promise to add booking to the database
     addBooking({
       variables: {
-        listing_id: Number(listingId), user_id: user.id, start_date: dateRange.startDate, end_date: dateRange.endDate
+        listing_id: Number(listingId), 
+        user_id: user.id, 
+        start_date: dateRange.startDate, 
+        end_date: dateRange.endDate,
+        token: localStorage.getItem("token")
       }
     }).then((res) => {
       // If successful
@@ -83,7 +87,9 @@ const ViewListing = () => {
       // Update the blocked dates list so that the user can no longer select dates within previously booked range
       updateBlockedDates(newBookings);
     }).catch((err)  => {
-      // If not successful
+      // If not successful handle JWT errors first
+      handleJWTErrors(err);
+      // Otherwise log errors to the console
       console.log(err.message);
     })
   };
@@ -192,7 +198,7 @@ const ViewListing = () => {
       <div className="container-fluid">
         <div className="row justify-content-center g-2">
           <div className="col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9" >
-            <img className="object-fit-cover img-fluid border rounded" src={listing.image_url} alt="listing image" style={{maxHeight: "500px", width: "100%"}}/>
+            <img className="object-fit-cover img-fluid border rounded" src={listing.image_url} alt="listing" style={{maxHeight: "500px", width: "100%"}}/>
           </div>
           {/* Listing card */}
           <div className="col-11 col-sm-11 col-md-11 col-lg-4 col-xl-4 ">

@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { authContext } from "../context/AuthContext";
 
 // GraphQL query to cancel a booking
 const CANCEL_BOOKING = gql`
-mutation DeleteBooking($id: Int!){
-  deleteBooking(id: $id) {
+mutation DeleteBooking($id: Int!, $token: String!){
+  deleteBooking(id: $id, token: $token) {
     id
   }
 }
 `;
 
 const BookingCard = (props) => {
+  const {
+    handleJWTErrors
+  } = useContext(authContext)
   // State object
   const [inDeleteMode, setInDeleteMode] = useState(false);
 
@@ -26,10 +30,14 @@ const BookingCard = (props) => {
   const onDelete = () => {
     deleteBooking({
       variables: {
-        id: props.id
+        id: props.id,
+        token: localStorage.getItem("token")
       }
+    }).then(() => {
+      props.removeBooking(props.id);
+    }).catch((err) => {
+      handleJWTErrors(err);
     })
-    props.removeBooking(props.id);
   }
 
   // Function used to navigate to update a specific booking

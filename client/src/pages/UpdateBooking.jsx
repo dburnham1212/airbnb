@@ -29,8 +29,8 @@ query GetBooking($id: Int!, $token: String!){
 
 // Update booking GraphQL query
 const UPDATE_BOOKING = gql`
-mutation UpdateBooking($id: Int!, $start_date: Date!, $end_date: Date!){
-  updateBooking(id: $id, start_date: $start_date, end_date: $end_date) {
+mutation UpdateBooking($id: Int!, $start_date: Date!, $end_date: Date!, $token: String!){
+  updateBooking(id: $id, start_date: $start_date, end_date: $end_date, token: $token) {
     id
   }
 }
@@ -68,7 +68,7 @@ const UpdateBooking = () => {
     // GraphQL query call to update a booking
     updateBooking({
       variables: {
-        id: booking.id, start_date: dateRange.startDate, end_date: dateRange.endDate
+        id: booking.id, start_date: dateRange.startDate, end_date: dateRange.endDate, token: localStorage.getItem("token")
       }
     }).then(() => {
       // If successful
@@ -77,6 +77,7 @@ const UpdateBooking = () => {
       // Set state object to show that the booking has been updated
       setBookingUpdated(true);
     }).catch((err) => {
+      handleJWTErrors(err);
       // If not successful log the error message to the console
       console.log(err.message);
     })
@@ -125,7 +126,9 @@ const UpdateBooking = () => {
   // Check if the booking has been loaded
   useEffect(() => {
     if(!loading) {
+      // If there is an error
       if(error) {
+        // Handle JSON Web Token errors
         handleJWTErrors(error);
       } else {
         // Set booking to the object returned from the query
