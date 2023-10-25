@@ -3,6 +3,7 @@ import { useQuery, useLazyQuery, gql } from '@apollo/client';
 
 // Import components
 import ListingCard from "../components/ListingCard";
+import ResourceNotFound from "./ReourceNotFound";
 
 // GraphQL query to retrieve all listings
 const GET_LISTINGS = gql`
@@ -43,7 +44,7 @@ const Listings = () => {
   });
 
   // Set up query to get listings based off of address
-  const [loadAddressListings, _listingsByAddress] = useLazyQuery(GET_ADDRESS_LISTINGS, {
+  const [loadAddressListings] = useLazyQuery(GET_ADDRESS_LISTINGS, {
     variables: {address: searchString}
   });
 
@@ -71,7 +72,7 @@ const Listings = () => {
 
   // Check if we are loading or if there is an error
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (error) return <ResourceNotFound/>;
 
   // Set up listing cards based off of listing data
   const listings = displayListings.map((listing) => 

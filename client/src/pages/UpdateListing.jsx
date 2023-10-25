@@ -3,6 +3,7 @@ import { useMutation, useQuery, gql } from "@apollo/client";
 import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import ResourceNotFound from "./ReourceNotFound";
 
 // Get listing GraphQL query
 const GET_LISTING = gql`
@@ -56,7 +57,7 @@ const UpdateListing = () => {
   const { listingId } = useParams();
 
   // Set up update listing mutation to be used when a listing is updated
-  const [updateListing, _updatedListing] = useMutation(UPDATE_LISTING);
+  const [updateListing] = useMutation(UPDATE_LISTING);
   
   // Handle form changes
   const handleChange = (event) => {
@@ -144,7 +145,7 @@ const UpdateListing = () => {
 
   // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (error) return <ResourceNotFound/>;
 
   return(
     <div className="d-flex justify-content-center py-5 mx-2">

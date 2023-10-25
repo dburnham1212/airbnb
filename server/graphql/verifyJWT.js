@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 // Function used to verify JSON Web Tokens and provide a proper error if the token is invalid
 const verifyJWT = (args) => {
   try {
-    jwt.verify(args.token, process.env.REFRESH_TOKEN_SECRET);
+    jwt.verify(args.token, process.env.ACCESS_TOKEN_SECRET);
   }
   catch (err){
     return new graphql.GraphQLError(err.message, {

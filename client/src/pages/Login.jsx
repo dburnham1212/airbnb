@@ -31,7 +31,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   // Query to login as a user a user
-  const [loginUser, _loginUserData] = useMutation(LOGIN_USER);
+  const [loginUser] = useMutation(LOGIN_USER);
 
   // Function to handle form changes
   const handleChange = (event) => {
@@ -51,7 +51,7 @@ const Login = () => {
       // Set token in local storage
       setToken(res.data.loginUser);
       // Navigate to listings page 
-      navigate("/listings")
+      navigate("/")
     }).catch((err) => {
       // If there is an error returned
       setErrorText(err.message)

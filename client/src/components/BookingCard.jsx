@@ -24,7 +24,7 @@ const BookingCard = (props) => {
   const navigate = useNavigate();
   
   // Mutation used to delete a booking
-  const [deleteBooking, _deletedBooking] = useMutation(CANCEL_BOOKING);
+  const [deleteBooking] = useMutation(CANCEL_BOOKING);
 
   // Function to use mutation to delete a booking and remove it from current list
   const onDelete = () => {
@@ -49,7 +49,7 @@ const BookingCard = (props) => {
     <>
       <div className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-4">
         <div className="card bg-light p-3">
-          <img className="object-fit-cover border rounded" src={props.image_url} alt="listing image" height="300" />
+          <img className="object-fit-cover border rounded" src={props.image_url} alt="booking" height="300" />
           <div className="border rounded my-3 py-2">
             <h5 className="border-bottom border-dark mx-3 py-2">{props.name.toUpperCase()}</h5>
             <p>{props.description}</p>

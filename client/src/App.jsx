@@ -27,7 +27,7 @@ function App() {
       <NavBar/>
       <Routes>
         {/* Listings Page */}
-        <Route path="/listings" element={<Listings/>}/>
+        <Route path="/" element={<Listings/>}/>
         {/* History Page */}
         <Route path="/history" element={user ? <History/> : <Login/>}/>
         {/* Update Booking Page*/}

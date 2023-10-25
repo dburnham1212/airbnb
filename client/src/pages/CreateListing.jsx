@@ -28,7 +28,7 @@ const CreateListing = () => {
   const navigate = useNavigate()
 
   // Mutation used to add a listing to the db to be called when needed
-  const [addListing, _addedListing] = useMutation(CREATE_LISTING);
+  const [addListing] = useMutation(CREATE_LISTING);
 
   // Handle changes to the form 
   const handleChange = (event) => {

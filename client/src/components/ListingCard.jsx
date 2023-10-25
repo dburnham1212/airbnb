@@ -23,7 +23,7 @@ const ListingCard = (props) => {
   const navigate = useNavigate();
 
   // Mutation to delete a listing from the db
-  const [deleteListing, _deletedListing] = useMutation(DELETE_LISTING);
+  const [deleteListing] = useMutation(DELETE_LISTING);
   
   // Function to delete a listing from the db
   const onDelete = () => {
@@ -52,7 +52,7 @@ const ListingCard = (props) => {
   return(
     <div className="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4 mt-4">
       <div className="card bg-light p-3">
-        <img className="object-fit-cover border rounded" src={props.image_url} alt="listing image" height="300" />
+        <img className="object-fit-cover border rounded" src={props.image_url} alt="listing" height="300" />
         <div className="my-3 border rounded">
           <h5 className="border-bottom border-dark mx-3 py-2 text-uppercase">{props.name}</h5>
           <p>{props.description}</p>

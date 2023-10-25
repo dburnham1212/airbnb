@@ -3,6 +3,7 @@ import { authContext } from "../context/AuthContext";
 
 import { useQuery, gql } from '@apollo/client';
 import BookingCard from "../components/BookingCard";
+import ResourceNotFound from "./ReourceNotFound";
 
 // GraphQL query to get all bookings from db
 const GET_BOOKINGS = gql`
@@ -56,7 +57,7 @@ const History = () => {
 
   // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (error) return <ResourceNotFound/>;
 
   // Set up a list of booking cards that represents the users booking history
   const history = bookings.map((booking) => 

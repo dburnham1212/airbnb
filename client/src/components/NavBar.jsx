@@ -1,15 +1,12 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { authContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 
 const NavBar = () => {
   // Get user object and functions to be used in the navbar
   const {
     user,
-    setUser,
-    clearToken,
     onLogout
   } = useContext(authContext);
 
@@ -32,7 +29,7 @@ const NavBar = () => {
         <div className="collapse navbar-collapse mx-4" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item active">
-              <Link className="nav-link link-light link-opacity-50-hover" to="/listings">Listings</Link>
+              <Link className="nav-link link-light link-opacity-50-hover" to="/">Listings</Link>
             </li>
             {user && 
               <li className="nav-item active">

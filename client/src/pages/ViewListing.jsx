@@ -3,6 +3,7 @@ import { authContext } from "../context/AuthContext";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { DateRange } from "react-date-range";
+import ResourceNotFound from "./ReourceNotFound";
 import moment from "moment"
 
 // Get listing GraphQL query
@@ -63,7 +64,7 @@ const ViewListing = () => {
   const { listingId } = useParams();
 
   // Set up create booking mutation to be used when a booking is created
-  const [addBooking, newBooking] = useMutation(ADD_BOOKING);
+  const [addBooking] = useMutation(ADD_BOOKING);
 
   // Function used to create a new booking
   const createBooking = (event) => {
@@ -177,7 +178,7 @@ const ViewListing = () => {
 
   // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (error) return <ResourceNotFound/>;
 
   // Set up the booking history table 
   const bookingHistory = bookings.map((booking, i) => {

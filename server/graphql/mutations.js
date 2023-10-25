@@ -62,7 +62,7 @@ const RootMutationType = new GraphQLObjectType({
         delete newUser.password;
 
         // Create json web token
-        const token = jwt.sign(newUser, process.env.REFRESH_TOKEN_SECRET, {
+        const token = jwt.sign(newUser, process.env.ACCESS_TOKEN_SECRET, {
           expiresIn: '2h'
         });
 
@@ -99,8 +99,8 @@ const RootMutationType = new GraphQLObjectType({
         delete checkUser.password;
 
         // Create json web token
-        const token = jwt.sign(checkUser, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: '5s'
+        const token = jwt.sign(checkUser, process.env.ACCESS_TOKEN_SECRET, {
+          expiresIn: '2h'
         });
 
         // Store token in the user object

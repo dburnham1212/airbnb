@@ -16,7 +16,7 @@ mutation RegisterUser($first_name: String!, $last_name: String!, $phone_number: 
     token
   }
 }
-`
+`;
 
 const Register = () => {
   // Import functions from context
@@ -33,12 +33,12 @@ const Register = () => {
   const navigate = useNavigate();
 
   // Query to register a user
-  const [registerUser, _registerUserData] = useMutation(REGISTER_USER);
+  const [registerUser] = useMutation(REGISTER_USER);
 
   // Function to handle form changes
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
-  }
+  };
 
   // Function to submit registration form
   const onSubmit= async (e) => {
@@ -54,12 +54,12 @@ const Register = () => {
       // Set token in local storage
       setToken(res.data.registerUser);
       // Navigate to listings page
-      navigate("/listings")
+      navigate("/")
     }).catch((err) => {
       setErrorText(err.message)
-    })
+    });
       
-  }
+  };
 
   return(
     <div className="d-flex justify-content-center py-5 mx-2">
@@ -109,7 +109,7 @@ const Register = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Register;

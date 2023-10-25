@@ -4,6 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 
 // Import components used
 import ListingCard from "../components/ListingCard";
+import ResourceNotFound from "./ReourceNotFound";
 
 // Get listings GraphQL query
 const GET_LISTINGS = gql`
@@ -53,7 +54,7 @@ const MyListings = () => {
 
   // Wait for query results to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (error) return <ResourceNotFound/>;
 
   // Set up array of listing cards to display on the page
   const displayListings = listings.map((listing) => 

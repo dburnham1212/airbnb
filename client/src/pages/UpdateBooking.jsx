@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import moment from "moment";
 import { authContext } from "../context/AuthContext";
+import ResourceNotFound from "./ReourceNotFound";
 
 // Get booking GraphQL query
 const GET_BOOKING = gql`
@@ -59,7 +60,7 @@ const UpdateBooking = () => {
   const { bookingId } = useParams()
   
   // Set up update booking mutation to be used when updating a booking
-  const [updateBooking, _updatedBooking] = useMutation(UPDATE_BOOKING);
+  const [updateBooking] = useMutation(UPDATE_BOOKING);
   
   // On submit function to be called when a booking is updated
   const onSubmit = (event) => {
@@ -103,7 +104,7 @@ const UpdateBooking = () => {
       let currentDate = moment(booking.start_date);
       let stopDate = moment(booking.end_date);
       // Check if the date we are checking is the same as the currently booked start date, if it is ignore it
-      if(moment(new Date(currentDate)).format("MM-DD-YYYY") != moment(currentBooking.start_date).format("MM-DD-YYYY")) {
+      if(moment(new Date(currentDate)).format("MM-DD-YYYY") !== moment(currentBooking.start_date).format("MM-DD-YYYY")) {
         // Cycle through the dates to add dates to block to the list
         while(currentDate <= stopDate) {
           blockedDatesArr.push(new Date(currentDate));
@@ -146,7 +147,7 @@ const UpdateBooking = () => {
 
   // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error : {error.message}</p>;
+  if (error) return <ResourceNotFound/>;
 
   return(
     <div className="d-flex justify-content-center py-5 mx-2">
