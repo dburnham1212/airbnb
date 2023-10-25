@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 // GraphQL query used to create a listing
 const CREATE_LISTING = gql`
-mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!){
-  addListing(user_id: $user_id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
+mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!, $token: String!){
+  addListing(user_id: $user_id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price, token: $token) {
     id
   }
 }
@@ -16,6 +16,7 @@ const CreateListing = () => {
   // Get the user object from context
   const {
     user,
+    handleJWTErrors
   } = useContext(authContext);
 
   // State objects
@@ -49,13 +50,21 @@ const CreateListing = () => {
     // Use the mutation to add the listing to the db
     addListing({
       variables: {
-        user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
+        user_id: user.id, 
+        image_url: formState.imageUrl, 
+        name: formState.name, description: 
+        formState.description, 
+        address: address, 
+        price: Number(formState.price), 
+        token: localStorage.getItem("token")
       }
     }).then(() => {
       // If successful set a listing created state to let us know that it was successful
       setListingCreated(true);
     }).catch((err) => {
-      // If not successful log the error message to the console
+      // If not successful first handle JWT errors
+      handleJWTErrors(err);
+      // Otherwise log the error to the console
       console.log(err.message);
     })
   }

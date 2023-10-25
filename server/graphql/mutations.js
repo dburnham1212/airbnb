@@ -15,6 +15,7 @@ const bookings = require('../db/queries/bookings');
 const bcrypt = require('bcryptjs');
 
 const jwt = require('jsonwebtoken');
+const { verifyJWT } = require("./verifyJWT");
 
 require('dotenv').config();
 
@@ -42,6 +43,7 @@ const RootMutationType = new GraphQLObjectType({
         // Check if an old user has the current email used
         const oldUser = await users.getUserByEmail(user);
 
+        // Check that the user doesnt exist otherwise return an error
         if (oldUser) {
           return new graphql.GraphQLError(`A user with the email ${user.email} already exists`, {
             extensions: {
@@ -84,6 +86,7 @@ const RootMutationType = new GraphQLObjectType({
         // Check if a user exists with that email
         const checkUser = await users.getUserByEmail(user);
 
+        // Check if the user exists and their password matches the stored password
         if(!checkUser || !bcrypt.compareSync(user.password, checkUser.password)) {
           return new graphql.GraphQLError(`Invalid Credentials`, {
             extensions: {
@@ -117,9 +120,17 @@ const RootMutationType = new GraphQLObjectType({
         name: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: new GraphQLNonNull(GraphQLString)},
         address: {type: new GraphQLNonNull(GraphQLString)},
-        price: {type: new GraphQLNonNull(GraphQLInt)}
+        price: {type: new GraphQLNonNull(GraphQLInt)},
+        token: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
+        // Verify the token recieved from client
+        const errors = verifyJWT(args);
+        // if there are errors return the errors to the client
+        if(errors) {
+          return errors;
+        }
+        // If not run the mutation and provide results
         const listing = { user_id: args.user_id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};
         const newListing = await listings.createListing(listing);
         return newListing;
@@ -134,9 +145,17 @@ const RootMutationType = new GraphQLObjectType({
         name: {type: new GraphQLNonNull(GraphQLString)},
         description: {type: new GraphQLNonNull(GraphQLString)},
         address: {type: new GraphQLNonNull(GraphQLString)},
-        price: {type: new GraphQLNonNull(GraphQLInt)}
+        price: {type: new GraphQLNonNull(GraphQLInt)},
+        token: {type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
+        // Verify the token recieved from client
+        const errors = verifyJWT(args);
+        // if there are errors return the errors to the client
+        if(errors) {
+          return errors;
+        }
+        // If not run the mutation and provide results
         const listing = { id: args.id, image_url: args.image_url, name: args.name, description: args.description, address: args.address, price: args.price};
         const updatedListing = await listings.updateListing(listing);
         return updatedListing;
@@ -146,9 +165,17 @@ const RootMutationType = new GraphQLObjectType({
       type: ListingType,
       description: 'Delete a listing',
       args: {
-        id: { type: new GraphQLNonNull(GraphQLInt)}
+        id: { type: new GraphQLNonNull(GraphQLInt)},
+        token: { type: new GraphQLNonNull(GraphQLString)}
       },
       resolve: async (_, args) => {
+        // Verify the token recieved from client
+        const errors = verifyJWT(args);
+        // if there are errors return the errors to the client
+        if(errors) {
+          return errors;
+        }
+        // If not run the mutation and provide results
         const deletedListing = await listings.deleteListingById(args.id);
         return deletedListing
       }
@@ -164,6 +191,7 @@ const RootMutationType = new GraphQLObjectType({
         end_date: {type: new GraphQLNonNull(DateScalar)},
       },
       resolve: async (_, args) => {
+        
         const booking = { listing_id: args.listing_id, user_id: args.user_id, start_date: args.start_date, end_date: args.end_date};
         const createdBooking = await bookings.createBooking(booking);
         return createdBooking;

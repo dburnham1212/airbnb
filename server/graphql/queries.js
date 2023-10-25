@@ -9,7 +9,7 @@ const listings = require('../db/queries/listings');
 const bookings = require('../db/queries/bookings');
 
 const { ListingType, BookingType } = require("./typeDefs");
-const { verifyJWT } = require("./verifyJWT")
+const { verifyJWT } = require("./verifyJWT");
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',

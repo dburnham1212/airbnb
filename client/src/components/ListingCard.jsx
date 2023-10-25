@@ -1,17 +1,21 @@
-import React, {useState} from "react";
+import React, { useContext, useState } from "react";
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
+import { authContext } from "../context/AuthContext";
 
 // GraphQL Query to delete a listing
 const DELETE_LISTING = gql`
-mutation DeleteListing($id: Int!){
-  deleteListing(id: $id) {
+mutation DeleteListing($id: Int!, $token: String!){
+  deleteListing(id: $id, token: $token) {
     id
   }
 }
 `
 
 const ListingCard = (props) => {
+  const {
+    handleJWTErrors 
+  } = useContext(authContext);
   // State objects
   const [inDeleteMode, setInDeleteMode] = useState(false);
   
@@ -25,10 +29,14 @@ const ListingCard = (props) => {
   const onDelete = () => {
     deleteListing({
       variables: {
-        id: props.id
+        id: props.id,
+        token: localStorage.getItem("token")
       }
-    });
-    props.removeListing(props.id);
+    }).then(() => {
+      props.removeListing(props.id);
+    }).catch((err) => {
+      handleJWTErrors(err)
+    })
   };
 
   // Function to navigate to view listing page

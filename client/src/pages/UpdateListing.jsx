@@ -20,8 +20,8 @@ const GET_LISTING = gql`
 
 // Update listing GraphQL query
 const UPDATE_LISTING = gql`
-mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!){
-  updateListing(id: $id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
+mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!, $token: String!){
+  updateListing(id: $id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price, token: $token) {
     id
   }
 }
@@ -78,13 +78,21 @@ const UpdateListing = () => {
     // Update the listing using form fields as input
     updateListing({
       variables: {
-        id: listing.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
+        id: listing.id, 
+        image_url: formState.imageUrl, 
+        name: formState.name, 
+        description: formState.description, 
+        address: address, 
+        price: Number(formState.price),
+        token: localStorage.getItem("token")
       }
     }).then(() => {
       // If successful change listing updated state to true
       setListingUpdated(true);
     }).catch((err) => {
-      // If not successful log error message to console
+      // If not successful handle JWT errors first
+      handleJWTErrors(err);
+      // Otherwise log the error to the console
       console.log(err.message);
     })
   }
