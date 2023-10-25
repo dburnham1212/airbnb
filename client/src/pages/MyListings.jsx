@@ -7,8 +7,8 @@ import ListingCard from "../components/ListingCard";
 
 // Get listings GraphQL query
 const GET_LISTINGS = gql`
-  query GetListings($id: Int!){
-    user_listings(id: $id){
+  query GetListings($id: Int!, $token: String!){
+    user_listings(id: $id, token: $token){
       id
       image_url
       name
@@ -19,10 +19,11 @@ const GET_LISTINGS = gql`
   }
 `;
 
-const ViewListings = () => {
+const MyListings = () => {
   // Import user object from context
   const {
-    user
+    user,
+    handleJWTErrors
   } = useContext(authContext);
 
   // State objects 
@@ -30,14 +31,18 @@ const ViewListings = () => {
 
   // Run GraphQL query to get all of the listings for the page
   const { loading, error, data } = useQuery(GET_LISTINGS, {
-    variables: {id: user.id},
+    variables: {id: user.id, token: localStorage.getItem("token") },
     fetchPolicy: 'cache-and-network'
   });
 
   // Wait for query to finish loading and assign results to state object 
   useEffect(() => {
     if (!loading) {
-      setListings(data.user_listings);
+      if(error){
+        handleJWTErrors(error)
+      } else {
+        setListings(data.user_listings);
+      }
     }
   }, [loading]);
 
@@ -86,4 +91,4 @@ const ViewListings = () => {
   )
 }
 
-export default ViewListings;
+export default MyListings;

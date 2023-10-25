@@ -97,7 +97,7 @@ const RootMutationType = new GraphQLObjectType({
 
         // Create json web token
         const token = jwt.sign(checkUser, process.env.REFRESH_TOKEN_SECRET, {
-          expiresIn: '2h'
+          expiresIn: '5s'
         });
 
         // Store token in the user object

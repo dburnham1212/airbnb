@@ -4,8 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { ApolloClient, InMemoryCache, ApolloProvider, gql, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { BrowserRouter } from 'react-router-dom';
+
 // import context providers
 import AuthProvider from './context/AuthContext';
 
@@ -38,11 +40,13 @@ const client = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

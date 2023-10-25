@@ -9,18 +9,9 @@ const NavBar = () => {
   const {
     user,
     setUser,
-    clearToken
+    clearToken,
+    onLogout
   } = useContext(authContext);
-
-  // Use Navigate to handle navigation
-  const navigate = useNavigate();
-
-  // Logout function to clear token, set user object to null, and navigate to the login page
-  const onLogout = () => {
-    clearToken();
-    setUser(null);
-    navigate("/login")
-  }
 
   return(
     <nav className="navbar navbar-expand-lg navbar-light fixed-top bg-dark py-4">

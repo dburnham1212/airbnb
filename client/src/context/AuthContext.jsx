@@ -1,17 +1,16 @@
 import {useState, createContext, useEffect} from 'react';
 import jwtDecode from 'jwt-decode'
+import { useNavigate } from 'react-router-dom';
 
 // Create a Context
 export const authContext = createContext();
-
-let userTokenObject = null;
-
-
 
 // Create a Component wrapper from Context.Provider
 export default function AuthProvider(props) {
   // Shared states
   const [user, setUser] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(localStorage.getItem("token")) {
@@ -25,7 +24,7 @@ export default function AuthProvider(props) {
         localStorage.removeItem("token");
         
       } else {
-        setUser(decodedToken)
+        setUser(decodedToken);
       }
     }
   }, [])
@@ -39,13 +38,32 @@ export default function AuthProvider(props) {
   const clearToken = () => {
     localStorage.removeItem("token");
   }
+
+  // Logout function to clear token, set user object to null, and navigate to the login page
+  const onLogout = () => {
+    clearToken();
+    setUser(null);
+    navigate("/login")
+  }
+
+  const handleJWTErrors = (error) => {
+    error.graphQLErrors.map((err) => {
+      if(err.extensions.code === "JWT_ERROR") {
+        setUser(null)
+        clearToken();
+        navigate('/login')
+      }
+    });
+  }
   
   // Provider data
   const providerData = { 
     user,
     setUser,
     setToken,
-    clearToken
+    clearToken,
+    onLogout,
+    handleJWTErrors
   };
 
   // Wrapper

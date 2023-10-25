@@ -1,14 +1,14 @@
 import React, {useState, useContext, useEffect} from "react";
 import { authContext } from "../context/AuthContext";
-import { useQuery, useMutation, gql } from "@apollo/client";
 import { useParams } from "react-router-dom";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import { DateRange } from "react-date-range";
 import moment from "moment"
 
 // Get listing GraphQL query
 const GET_LISTING = gql`
-  query GetListing($id: Int!){
-    listing(id: $id){
+  query GetListing($id: Int!, $token: String!){
+    listing(id: $id, token: $token){
       id
       image_url
       name
@@ -45,7 +45,8 @@ const ADD_BOOKING = gql`
 const ViewListing = () => {
   // Import user object from context
   const {
-    user
+    user,
+    handleJWTErrors
   } = useContext(authContext);
 
   // State Objects
@@ -89,29 +90,35 @@ const ViewListing = () => {
 
   // Query to get the listing data via GraphQL
   const { loading, error, data } = useQuery(GET_LISTING, {
-    variables: { id: Number(listingId) },
+    variables: { id: Number(listingId), token: localStorage.getItem("token") },
     fetchPolicy: 'cache-and-network'
-  });
+  }); 
 
   // Function to run after we have gotten the listing from GraphQL
   useEffect(() => {
     if (!loading) {
-      // Create a variable for listing and set it to the data recieved
-      const currentListing = data.listing;
+      // If we recieve an error
+      if(error) {
+        handleJWTErrors(error);
+      } else {
+        // Create a variable for listing and set it to the data recieved
+        const currentListing = data.listing;
 
-      // Set the listing state to the current listing from GraphQL
-      setListing(currentListing);
+        // Set the listing state to the current listing from GraphQL
+        setListing(currentListing);
 
-      // Sorting the bookings from latest start date to earliest
-      currentListing.bookings = sortBookings(currentListing.bookings);
-      // Setting the bookings state to the bookings for the listing from GraphQL
-      setBookings(currentListing.bookings)
+        // Sorting the bookings from latest start date to earliest
+        currentListing.bookings = sortBookings(currentListing.bookings);
+        // Setting the bookings state to the bookings for the listing from GraphQL
+        setBookings(currentListing.bookings)
 
-      // Updating blocked dates list so that a user cannot book over another booking
-      updateBlockedDates(currentListing.bookings);
-      
+        // Updating blocked dates list so that a user cannot book over another booking
+        updateBlockedDates(currentListing.bookings);
+      }
     } 
   }, [loading]);
+
+ 
 
   // Function to sort bookings from latest start date to earliest
   const sortBookings = (bookings) => {
@@ -184,7 +191,9 @@ const ViewListing = () => {
       
       <div className="container-fluid">
         <div className="row justify-content-center g-2">
-          <img className="object-fit-cover col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 border rounded" src={listing.image_url} alt="listing image" height="600"/>
+          <div className="col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9" >
+            <img className="object-fit-cover img-fluid border rounded" src={listing.image_url} alt="listing image" style={{maxHeight: "500px", width: "100%"}}/>
+          </div>
           {/* Listing card */}
           <div className="col-11 col-sm-11 col-md-11 col-lg-4 col-xl-4 ">
             <div className="card h-100">

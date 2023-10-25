@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { useMutation, useQuery, gql } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { DateRange } from "react-date-range";
 import moment from "moment";
-
+import { authContext } from "../context/AuthContext";
 
 // Get booking GraphQL query
 const GET_BOOKING = gql`
-query GetBooking($id: Int!){
-  booking(id: $id){
+query GetBooking($id: Int!, $token: String!){
+  booking(id: $id, token: $token){
     id
     start_date
     end_date
@@ -36,7 +36,10 @@ mutation UpdateBooking($id: Int!, $start_date: Date!, $end_date: Date!){
 }
 `;
 
-const UpdateBooking = (props) => {
+const UpdateBooking = () => {
+  const {
+    handleJWTErrors
+  } = useContext(authContext);
   // State Objects
   const [booking, setBooking] = useState({});
   const [currentListing, setCurrentListing] = useState({});
@@ -115,21 +118,25 @@ const UpdateBooking = (props) => {
 
   // Query to get the listing data via GraphQL
   const { loading, error, data } = useQuery(GET_BOOKING, {
-    variables: { id: Number(bookingId) },
+    variables: { id: Number(bookingId), token: localStorage.getItem("token") },
     fetchPolicy: 'cache-and-network'
   });
 
   // Check if the booking has been loaded
   useEffect(() => {
     if(!loading) {
-      // Set booking to the object returned from the query
-      setBooking({...booking, id: data.booking.id, startDate: data.booking.startDate, endDate: data.booking.endData});
-
-      // Set the current listing to the object returned from the query
-      setCurrentListing({...currentListing, name: data.booking.listing.name, description: data.booking.listing.description, address: data.booking.listing.address, price: data.booking.listing.price});
-
-      // Update blocked dates based off of the bookings saved in the listing returned from the query 
-      updateBlockedDates(data.booking.listing.bookings, data.booking);
+      if(error) {
+        handleJWTErrors(error);
+      } else {
+        // Set booking to the object returned from the query
+        setBooking({...booking, id: data.booking.id, startDate: data.booking.startDate, endDate: data.booking.endData});
+        
+        // Set the current listing to the object returned from the query
+        setCurrentListing({...currentListing, name: data.booking.listing.name, description: data.booking.listing.description, address: data.booking.listing.address, price: data.booking.listing.price});
+  
+        // Update blocked dates based off of the bookings saved in the listing returned from the query 
+        updateBlockedDates(data.booking.listing.bookings, data.booking);
+      }
     }
   }, [loading]);
 

@@ -6,8 +6,8 @@ import BookingCard from "../components/BookingCard";
 
 // GraphQL query to get all bookings from db
 const GET_BOOKINGS = gql`
-  query GetBookings($id: Int!) {
-    user_bookings(id: $id){
+  query GetBookings($id: Int!, $token: String!) {
+    user_bookings(id: $id, token: $token){
       id
       start_date
       end_date
@@ -25,7 +25,8 @@ const GET_BOOKINGS = gql`
 const History = () => {
   // Import user object from context
   const {
-    user
+    user,
+    handleJWTErrors
   } = useContext(authContext);
 
   // State object
@@ -33,7 +34,7 @@ const History = () => {
 
   // Query used to get the bookings from the db
   const { loading, error, data } = useQuery(GET_BOOKINGS, {
-    variables: { id: user.id },
+    variables: { id: user.id, token: localStorage.getItem("token")},
     fetchPolicy: 'cache-and-network'
   });
 
@@ -44,8 +45,12 @@ const History = () => {
 
   // Set bookings state object once we have recieved the bookings from the db
   useEffect (() => {
-    if(!loading) {
-      setBookings(data.user_bookings);
+    if (!loading) {
+      if (error) {
+        handleJWTErrors(error)
+      } else {
+        setBookings(data.user_bookings);
+      }
     }
   }, [loading]) 
 

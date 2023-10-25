@@ -64,7 +64,7 @@ const Listings = () => {
 
   // Create use effect to set the current displayed listings
   useEffect(() => {
-    if(!loading) {
+    if(!loading && !error) {
       setDisplayListings(data.listings);
     }
   }, [loading])

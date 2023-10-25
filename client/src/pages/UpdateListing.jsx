@@ -6,8 +6,8 @@ import { useParams } from "react-router-dom";
 
 // Get listing GraphQL query
 const GET_LISTING = gql`
-  query GetListing($id: Int!){
-    listing(id: $id){
+  query GetListing($id: Int!, $token: String!){
+    listing(id: $id, token: $token){
       id
       name
       description
@@ -30,7 +30,7 @@ mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $descript
 const UpdateListing = () => {
   // Import user object from context
   const {
-    user,
+    handleJWTErrors
   } = useContext(authContext);
 
   // State Objects
@@ -96,35 +96,41 @@ const UpdateListing = () => {
 
   // Query to get the listing data via GraphQL
   const { loading, error, data } = useQuery(GET_LISTING, {
-    variables: { id: Number(listingId) }
+    variables: { id: Number(listingId), token: localStorage.getItem("token") }
   });
 
   // Check if loading has been completed
   useEffect(() => {  
     if(!loading){
-      // Create a variable for listing and set it to the data recieved
-      const listing = data.listing;
+      // If we recieve an error
+      if(error) {
+        // Handle JWT errors
+        handleJWTErrors(error);
+      } else {
+        // Create a variable for listing and set it to the data recieved
+        const listing = data.listing;
 
-      // Set listing state object to listing recieved from db
-      setListing(listing);
+        // Set listing state object to listing recieved from db
+        setListing(listing);
 
-      // Split the address string based off of where the commas are in the string
-      const addressString = listing.address.split(",");
+        // Split the address string based off of where the commas are in the string
+        const addressString = listing.address.split(",");
 
-      // Trim address strings and set them to appropriate object key value pairs
-      setAddressState({
-        street: addressString[0],
-        city: addressString[1].trim(),
-        postalCode: addressString[2].trim()
-      })
-      
-      // Set up the overall form state exluding the adress
-      setFormState({
-        name: listing.name,
-        description: listing.description,
-        imageUrl: listing.image_url,
-        price: listing.price
-      })
+        // Trim address strings and set them to appropriate object key value pairs
+        setAddressState({
+          street: addressString[0],
+          city: addressString[1].trim(),
+          postalCode: addressString[2].trim()
+        })
+        
+        // Set up the overall form state exluding the adress
+        setFormState({
+          name: listing.name,
+          description: listing.description,
+          imageUrl: listing.image_url,
+          price: listing.price
+        })
+      }
     }
   }, [loading])
 
