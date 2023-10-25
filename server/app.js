@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 require('dotenv').config();
 const { ENVIROMENT, PORT } = process.env;
 const express = require('express');

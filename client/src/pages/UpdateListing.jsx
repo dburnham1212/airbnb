@@ -4,6 +4,7 @@ import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
+// Get listing GraphQL query
 const GET_LISTING = gql`
   query GetListing($id: Int!){
     listing(id: $id){
@@ -17,6 +18,7 @@ const GET_LISTING = gql`
   }
 `;
 
+// Update listing GraphQL query
 const UPDATE_LISTING = gql`
 mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!){
   updateListing(id: $id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
@@ -26,11 +28,14 @@ mutation UpdateListing($id: Int!, $image_url: String!, $name: String!, $descript
 `;
 
 const UpdateListing = () => {
+  // Import user object from context
   const {
     user,
   } = useContext(authContext);
 
-  
+  // State Objects
+  const [listing, setListing] = useState({});
+  const [listingUpdated, setListingUpdated] = useState(false);
   const [formState, setFormState] = useState({
     name: "",
     description: "",
@@ -44,38 +49,47 @@ const UpdateListing = () => {
     postalCode: ""
   });
 
-  const [listing, setListing] = useState({});
-  const [listingUpdated, setListingUpdated] = useState(false);
-
-  const [updateListing, updatedListing] = useMutation(UPDATE_LISTING);
-  
+  // Use Navigate to handle navigation
   const navigate = useNavigate()
+
+  // Get listingId from params in url
   const { listingId } = useParams();
 
- const handleChange = (event) => {
+  // Set up update listing mutation to be used when a listing is updated
+  const [updateListing, _updatedListing] = useMutation(UPDATE_LISTING);
+  
+  // Handle form changes
+  const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
   }
 
+  // Handle changes specifically tied to the address
   const handleAddressChange = (event) => {
     setAddressState({...addressState, [event.target.name]: event.target.value})
   }
 
+  // Function to handle form submission when a listing is updated
   const onSubmit = (event) => {
     event.preventDefault();
 
+    // Concatenate address string to be stored in db
     const address = `${addressState.street}, ${addressState.city}, ${addressState.postalCode}`;
 
+    // Update the listing using form fields as input
     updateListing({
       variables: {
         id: listing.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
+      // If successful change listing updated state to true
       setListingUpdated(true);
     }).catch((err) => {
+      // If not successful log error message to console
       console.log(err.message);
     })
   }
   
+  // Function used to navigate back to my listings page
   const navigateToViewListings = () => {
     navigate('/viewListings')
   }
@@ -85,20 +99,26 @@ const UpdateListing = () => {
     variables: { id: Number(listingId) }
   });
 
+  // Check if loading has been completed
   useEffect(() => {  
-    // Create a variable for listing and set it to the data recieved
     if(!loading){
+      // Create a variable for listing and set it to the data recieved
       const listing = data.listing;
 
+      // Set listing state object to listing recieved from db
       setListing(listing);
 
+      // Split the address string based off of where the commas are in the string
       const addressString = listing.address.split(",");
+
+      // Trim address strings and set them to appropriate object key value pairs
       setAddressState({
         street: addressString[0],
         city: addressString[1].trim(),
         postalCode: addressString[2].trim()
       })
       
+      // Set up the overall form state exluding the adress
       setFormState({
         name: listing.name,
         description: listing.description,
@@ -123,7 +143,6 @@ const UpdateListing = () => {
           <div className="border rounded bg-light py-3 mb-3">
             <h4 className="mb-3">Listing Successfully Updated</h4>
             <h5>{formState.name}</h5>
-            
           </div>
           <div className="d-flex justify-content-end">
             <button className="btn btn-dark" onClick={navigateToViewListings}>Return To My Listings</button>

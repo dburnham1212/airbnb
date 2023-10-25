@@ -43,7 +43,7 @@ const ADD_BOOKING = gql`
 `;
 
 const ViewListing = () => {
-  // Import user variable from context
+  // Import user object from context
   const {
     user
   } = useContext(authContext);
@@ -185,6 +185,7 @@ const ViewListing = () => {
       <div className="container-fluid">
         <div className="row justify-content-center g-2">
           <img className="object-fit-cover col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 border rounded" src={listing.image_url} alt="listing image" height="600"/>
+          {/* Listing card */}
           <div className="col-11 col-sm-11 col-md-11 col-lg-4 col-xl-4 ">
             <div className="card h-100">
               <div className="card-header bg-dark">
@@ -202,6 +203,7 @@ const ViewListing = () => {
               </div>
             </div>
           </div>
+          {/* Book listing card */}
           <div className="col-11 col-sm-11 col-md-11 col-lg-5 col-xl-5">
             <div className="card">
               <div className="card-header bg-dark">
@@ -220,6 +222,7 @@ const ViewListing = () => {
               </div>
             </div>
           </div>
+          {/* Table to display bookings for the listing */}
           <div className="card card col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 ">
             <div className="card-header bg-dark">
               <h6 className="text-light">Booking History</h6>

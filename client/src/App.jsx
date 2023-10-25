@@ -1,23 +1,23 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useContext } from "react";
+import { authContext } from "./context/AuthContext";
 
+// Import pages
 import Login from './pages/Login';
 import NavBar from './components/NavBar';
 import Register from './pages/Register';
-import Home from './pages/Home';
 import Listings from './pages/Listings';
 import History from "./pages/History";
 import CreateListing from "./pages/CreateListing";
 import ViewListings from "./pages/ViewListings";
 import ViewListing from "./pages/ViewListing";
 
-import './App.css';
-import { authContext } from "./context/AuthContext";
+// Import components
 import UpdateListing from "./pages/UpdateListing";
 import UpdateBooking from "./pages/UpdateBooking";
 
 function App() {
-
+  // Import user object from context
   const {
     user,
   } = useContext(authContext);
@@ -27,8 +27,6 @@ function App() {
       <BrowserRouter>
         <NavBar/>
         <Routes>
-          {/* Login Page */}
-          <Route path="/" element={<Home/>}/>
           {/* Listings Page */}
           <Route path="/listings" element={<Listings/>}/>
           {/* History Page */}

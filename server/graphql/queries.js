@@ -1,17 +1,14 @@
 const {
-  GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
   GraphQLList,
-  GraphQLInt,
-  GraphQLNonNull,
-  GraphQLScalarType
+  GraphQLInt
 } = require('graphql');
 
 const listings = require('../db/queries/listings');
 const bookings = require('../db/queries/bookings');
 
-const { UserType, ListingType, BookingType } = require("./typeDefs")
+const { ListingType, BookingType } = require("./typeDefs")
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',

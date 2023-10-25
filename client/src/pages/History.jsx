@@ -4,6 +4,7 @@ import { authContext } from "../context/AuthContext";
 import { useQuery, gql } from '@apollo/client';
 import BookingCard from "../components/BookingCard";
 
+// GraphQL query to get all bookings from db
 const GET_BOOKINGS = gql`
   query GetBookings($id: Int!) {
     user_bookings(id: $id){
@@ -22,30 +23,37 @@ const GET_BOOKINGS = gql`
 `;
 
 const History = () => {
+  // Import user object from context
   const {
     user
   } = useContext(authContext);
 
+  // State object
   const [bookings, setBookings] = useState([]);
 
+  // Query used to get the bookings from the db
   const { loading, error, data } = useQuery(GET_BOOKINGS, {
     variables: { id: user.id },
     fetchPolicy: 'cache-and-network'
   });
 
+  // Function used to remove a booking from already created bookings list
+  const removeBooking = (bookingId) => {
+    setBookings(bookings.filter(booking => booking.id !== bookingId));
+  }
+
+  // Set bookings state object once we have recieved the bookings from the db
   useEffect (() => {
     if(!loading) {
       setBookings(data.user_bookings);
     }
   }, [loading]) 
 
-  const removeBooking = (bookingId) => {
-    setBookings(bookings.filter(booking => booking.id !== bookingId));
-  }
-
+  // Wait for values to be returned from GraphQL
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
 
+  // Set up a list of booking cards that represents the users booking history
   const history = bookings.map((booking) => 
     <BookingCard
       key={booking.id}

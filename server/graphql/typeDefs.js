@@ -1,11 +1,9 @@
 const {
-  GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
   GraphQLList,
   GraphQLInt,
-  GraphQLNonNull,
-  GraphQLScalarType
+  GraphQLNonNull
 } = require('graphql');
 
 const { DateScalar} = require('./createdTypes');

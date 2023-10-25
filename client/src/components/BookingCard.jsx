@@ -1,22 +1,28 @@
 import React, { useState } from "react";
-import moment from "moment";
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
+
+// GraphQL query to cancel a booking
 const CANCEL_BOOKING = gql`
 mutation DeleteBooking($id: Int!){
   deleteBooking(id: $id) {
     id
   }
 }
-`
+`;
 
 const BookingCard = (props) => {
+  // State object
   const [inDeleteMode, setInDeleteMode] = useState(false);
 
-  const [deleteBooking, _deletedBooking] = useMutation(CANCEL_BOOKING);
-  
+  // Use Navigate to handle navigation
   const navigate = useNavigate();
+  
+  // Mutation used to delete a booking
+  const [deleteBooking, _deletedBooking] = useMutation(CANCEL_BOOKING);
 
+  // Function to use mutation to delete a booking and remove it from current list
   const onDelete = () => {
     deleteBooking({
       variables: {
@@ -26,6 +32,7 @@ const BookingCard = (props) => {
     props.removeBooking(props.id);
   }
 
+  // Function used to navigate to update a specific booking
   const navigateToUpdate = () => {
     navigate(`/updateBooking/${props.id}`)
   }
@@ -43,7 +50,6 @@ const BookingCard = (props) => {
             <p>Booking End: {moment(props.end_date).format("MM/DD/YYYY")}</p>
             <div className="border-top w-100 py-2 fw-bold"> ${props.price} CAD per night</div>
           </div>
-         
             {(moment(props.start_date) >= moment(new Date()).startOf('day')) ?  
               <>
                 <div className="d-flex justify-content-end align-items-center gap-2">

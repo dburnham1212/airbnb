@@ -1,13 +1,10 @@
 const graphql = require('graphql');
 
 const {
-  GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
-  GraphQLList,
   GraphQLInt,
   GraphQLNonNull,
-  GraphQLScalarType
 } = require('graphql');
 
 const { DateScalar } = require('./createdTypes');
@@ -67,6 +64,7 @@ const RootMutationType = new GraphQLObjectType({
           expiresIn: '2h'
         });
 
+        // Store token in the user object
         newUser.token = token;
 
         // Return user created in database
@@ -102,8 +100,10 @@ const RootMutationType = new GraphQLObjectType({
           expiresIn: '2h'
         });
 
+        // Store token in the user object
         checkUser.token = token;
         
+        // Return the user that was retrieved from the database
         return checkUser;
       }
     },

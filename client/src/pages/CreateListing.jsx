@@ -3,53 +3,66 @@ import { useMutation, gql } from "@apollo/client";
 import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+// GraphQL query used to create a listing
 const CREATE_LISTING = gql`
 mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $description: String!, $address: String!, $price: Int!){
   addListing(user_id: $user_id, image_url: $image_url, name: $name, description: $description, address: $address, price: $price) {
     id
   }
 }
-`
+`;
 
 const CreateListing = () => {
+  // Get the user object from context
   const {
     user,
   } = useContext(authContext);
 
+  // State objects
   const [formState, setFormState] = useState({});
   const [addressState, setAddressState] = useState({});
   const [listingCreated, setListingCreated] = useState(false);
 
+  // Use Navigate to handle navigation
   const navigate = useNavigate()
 
-  const [addListing, addedListing] = useMutation(CREATE_LISTING);
+  // Mutation used to add a listing to the db to be called when needed
+  const [addListing, _addedListing] = useMutation(CREATE_LISTING);
 
+  // Handle changes to the form 
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
-  }
+  };
 
+  // Handle changes to adress specifically in the form data
   const handleAddressChange = (event) => {
     setAddressState({...addressState, [event.target.name]: event.target.value})
-  }
+  };
 
+  // On submit function to be called when the form is completed to create a listing
   const onSubmit = (event) => {
     event.preventDefault();
 
+    // Concatenate the address from the inputted fields 
     const address = `${addressState.street}, ${addressState.city}, ${addressState.postalCode}`;
 
+    // Use the mutation to add the listing to the db
     addListing({
       variables: {
         user_id: user.id, image_url: formState.imageUrl, name: formState.name, description: formState.description, address: address, price: Number(formState.price)
       }
     }).then(() => {
-      setListingCreated(true)
+      // If successful set a listing created state to let us know that it was successful
+      setListingCreated(true);
     }).catch((err) => {
+      // If not successful log the error message to the console
       console.log(err.message);
     })
   }
 
+  // function to navigate to the my listings page
   const navigateToViewListings = () => {
-    navigate('/viewListings')
+    navigate('/viewListings');
   }
 
   return(
@@ -84,11 +97,11 @@ const CreateListing = () => {
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Street Address</label>
-            <input className="form-control" type="text" placeholder="123 New Street" name="street" required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="123 New Street" name="street" required onChange={(e) => handleAddressChange(e)} pattern="^[^,]+$"></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">City</label>
-            <input className="form-control" type="text" placeholder="City" name="city" required onChange={(e) => handleAddressChange(e)}></input>
+            <input className="form-control" type="text" placeholder="City" name="city" required onChange={(e) => handleAddressChange(e)} pattern="^[^,]+$"></input>
           </div>
           <div className="form-group pt-4">
             <label className="form-label">Postal Code (XXX XXX)</label>

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-
-import ListingCard from "../components/ListingCard";
-
 import { useQuery, useLazyQuery, gql } from '@apollo/client';
 
+// Import components
+import ListingCard from "../components/ListingCard";
+
+// GraphQL query to retrieve all listings
 const GET_LISTINGS = gql`
   query GetListings {
     listings{
@@ -17,6 +18,7 @@ const GET_LISTINGS = gql`
   }
 `;
 
+// GraphQL query to get listings based off of a string that is similar to the search results
 const GET_ADDRESS_LISTINGS = gql`
   query GetAddressListings($address: String){
     listings_by_address(address: $address){
@@ -31,8 +33,7 @@ const GET_ADDRESS_LISTINGS = gql`
 `;
 
 const Listings = () => {
-
-  // Set up our stats
+  // Set up our states
   const [searchString, setSearchString] = useState("");
   const [displayListings, setDisplayListings] = useState([]);
 
@@ -48,12 +49,15 @@ const Listings = () => {
 
   // Function to get listings based off search parameters
   const getListingsByAddress = () => {
+    // Get the listings based of off search results
     loadAddressListings()
     .then((res) => {
-      console.log(res)
+      // If successful
+      // Set the listings to the results from the query
       setDisplayListings(res.data.listings_by_address)
     })
     .catch((err) => {
+      // If not successful log the results
       console.log(err.message)
     });
   }

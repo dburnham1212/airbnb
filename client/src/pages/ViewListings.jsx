@@ -20,7 +20,7 @@ const GET_LISTINGS = gql`
 `;
 
 const ViewListings = () => {
-  // Import user variable from context
+  // Import user object from context
   const {
     user
   } = useContext(authContext);

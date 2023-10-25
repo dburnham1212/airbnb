@@ -30,10 +30,12 @@ export default function AuthProvider(props) {
     }
   }, [])
 
+  // Function used to set a token
   const setToken = (userData) => {
     localStorage.setItem("token", userData.token);
   }
 
+  // Function used to clear a token
   const clearToken = () => {
     localStorage.removeItem("token");
   }

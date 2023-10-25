@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { useMutation, gql } from '@apollo/client';
 import { authContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useMutation, gql } from '@apollo/client';
 
 //Register user GraphQL query
 const REGISTER_USER = gql`

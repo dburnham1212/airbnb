@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from "react-router-dom";
 
-
+// GraphQL Query to delete a listing
 const DELETE_LISTING = gql`
 mutation DeleteListing($id: Int!){
   deleteListing(id: $id) {
@@ -12,26 +12,31 @@ mutation DeleteListing($id: Int!){
 `
 
 const ListingCard = (props) => {
+  // State objects
   const [inDeleteMode, setInDeleteMode] = useState(false);
   
-  const [deleteListing, deletedListing] = useMutation(DELETE_LISTING);
-  
+  // Use Navigate to handle navigation
   const navigate = useNavigate();
+
+  // Mutation to delete a listing from the db
+  const [deleteListing, _deletedListing] = useMutation(DELETE_LISTING);
   
-  // Function to delete a listing
+  // Function to delete a listing from the db
   const onDelete = () => {
     deleteListing({
       variables: {
         id: props.id
       }
-    })
+    });
     props.removeListing(props.id);
-  }
+  };
 
+  // Function to navigate to view listing page
   const navigateToListing = () => {
     navigate(`/viewListing/${props.id}`)
   }
 
+  // Function to navigate to update listing page
   const navigateToUpdateListing = () => {
     navigate(`/updateListing/${props.id}`)
   }
