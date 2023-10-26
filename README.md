@@ -34,7 +34,18 @@ Displays all of the bookings that the user has made.
 
 !["Screenshot of My Bookings Page!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/MyBookingsPage.png)
 
+## Getting Started
 
+Client:
+- Install all dependencies (using the `npm install` command).
+- Run the development client using the `npm start` command.
+
+Server:
+- Install all dependencies (using the `npm install` command).
+- Initialize a database to store airbnb data in PostgreSQL.
+- Create and .env file using the env example provided.
+- Reset the database using the `npm db:reset` command.
+- Run the development web server using the `npm start` command.
 
 ## Dependencies
 
@@ -70,15 +81,3 @@ Server:
 
 Server:
 
-## Getting Started
-
-Client:
-- Install all dependencies (using the `npm install` command).
-- Run the development client using the `npm start` command.
-
-Server:
-- Install all dependencies (using the `npm install` command).
-- Initialize a database to store airbnb data in PostgreSQL.
-- Create and .env file using the env example provided.
-- Reset the database using the `npm db:reset` command.
-- Run the development web server using the `npm start` command.
