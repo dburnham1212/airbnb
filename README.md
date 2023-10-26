@@ -6,27 +6,33 @@ Airbnb is a clone of the popular site of the same name. It was developed using t
 
 ### Airbnb - Listings Page
 
-Displays all listings available to a user and allows the user to search for specific listings based off of their address
+Displays all listings available to a user and allows the user to search for specific listings based off of their address.
 
-!["Screenshot of listings page (displaying lisings)!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/ListingsPage.png)
+!["Screenshot of Listings Page (displaying lisings)!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/ListingsPage.png)
 
-### TinyApp - View Listing Page 
+### Airbnb - View Listing Page 
 
 Displays listing information and allows a user to book a listing.
 
-!["Screenshot of listing page (displaying a listing)!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/ViewListingPage.png)
+!["Screenshot of Listing Page (displaying a listing)!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/ViewListingPage.png)
 
-### TinyApp - Login Page
+### Airbnb - My Listings Page
 
-Simple login page to allow users to use their credentials and login to the app to interact with the site.
+Displays all listings that the user has created, displays similar information to the my listings page however allows and admin user to update and delete their listings.
 
-!["Screenshot of login page!"](https://github.com/dburnham1212/tinyapp/blob/master/docs/TinuApp_Login_Page.png)
+!["Screenshot of My Listings Page!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/MyListingsPage.png)
 
-### TinyApp - Registration Page
+### Airbnb - New Listing Page
 
-Users can create new credentials which will be saved on the server. They can then login and create new URLs!
+Page that allows an admin user to create their own listings for the site.
 
-!["Screenshot of registration page!"](https://github.com/dburnham1212/tinyapp/blob/master/docs/TinuApp_Register_Page.png)
+!["Screenshot of New Listing Page!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/NewListingPage.png)
+
+### Airbnb - My Bookings Page
+
+Displays all of the bookings that the user has made.
+
+!["Screenshot of My Bookings Page!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/MyBookingsPage.png)
 
 
 
