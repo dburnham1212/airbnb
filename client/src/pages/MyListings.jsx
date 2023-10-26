@@ -89,7 +89,7 @@ const MyListings = () => {
         </div>  
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default MyListings;

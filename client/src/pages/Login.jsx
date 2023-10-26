@@ -36,7 +36,7 @@ const Login = () => {
   // Function to handle form changes
   const handleChange = (event) => {
     setFormState({...formState, [event.target.name]: event.target.value}); 
-  }
+  };
 
   // Function to submit login form
   const onSubmit = (e) => {
@@ -55,8 +55,8 @@ const Login = () => {
     }).catch((err) => {
       // If there is an error returned
       setErrorText(err.message)
-    })
-  }
+    });
+  };
 
   return(
     <div className="d-flex justify-content-center py-5 mx-2">
@@ -84,7 +84,7 @@ const Login = () => {
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Login;

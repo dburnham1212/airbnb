@@ -15,6 +15,14 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: "Root Query",
   fields: () => ({
+    listing_unprotected: {
+      type: ListingType,
+      description: "A Single Unprotected Listing",
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (_, args) => listings.getListingById(args.id)
+    },
     listing: {
       type: ListingType,
       description: "A Single Listing",

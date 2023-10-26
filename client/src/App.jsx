@@ -7,8 +7,8 @@ import Login from './pages/Login';
 import NavBar from './components/NavBar';
 import Register from './pages/Register';
 import Listings from './pages/Listings';
-import History from "./pages/History";
-import CreateListing from "./pages/CreateListing";
+import MyBookings from "./pages/MyBookings";
+import NewListing from "./pages/NewListing";
 import ViewListing from "./pages/ViewListing";
 import MyListings from "./pages/MyListings";
 
@@ -28,14 +28,14 @@ function App() {
       <Routes>
         {/* Listings Page */}
         <Route path="/" element={<Listings/>}/>
+        {/* View a specific listing and its history */}
+        <Route path="/viewListing/:listingId" element={<ViewListing/>} />
         {/* History Page */}
-        <Route path="/history" element={user ? <History/> : <Login/>}/>
+        <Route path="/history" element={user ? <MyBookings/> : <Login/>}/>
         {/* Update Booking Page*/}
         <Route path="/updateBooking/:bookingId" element={user ? <UpdateBooking/> : <Login/>}/>
-        {/* View a specific listing and its history */}
-        <Route path="/viewListing/:listingId" element={user ? <ViewListing/> : <Login/>}/>
         {/* Create Listing Page */}
-        <Route path="/newlisting" element={(user && user.role === "admin") ? <CreateListing/> : <Login/>}/>
+        <Route path="/newlisting" element={(user && user.role === "admin") ? <NewListing/> : <Login/>}/>
         {/* Update Listing Page*/}
         <Route path="/updateListing/:listingId" element={(user && user.role === "admin") ? <UpdateListing/> : <Login/>}/>
         {/* View My Listings Page */}

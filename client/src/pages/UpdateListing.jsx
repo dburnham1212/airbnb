@@ -201,7 +201,7 @@ const UpdateListing = () => {
       </div>
     </div>
     
-  )
-}
+  );
+};
 
 export default UpdateListing;

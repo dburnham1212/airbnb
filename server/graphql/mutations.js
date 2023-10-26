@@ -38,7 +38,14 @@ const RootMutationType = new GraphQLObjectType({
         role: {type: new GraphQLNonNull(GraphQLString)},
       },
       resolve : async (_, args) => {
-        const user = {first_name: args.first_name, last_name: args.last_name, phone_number: args.phone_number, email: args.email, password: args.password, role: args.role}
+        const user = {
+          first_name: args.first_name.toLowerCase(), 
+          last_name: args.last_name.toLowerCase(), 
+          phone_number: args.phone_number, 
+          email: args.email.toLowerCase(), 
+          password: args.password,
+          role: args.role
+        }
 
         // Check if an old user has the current email used
         const oldUser = await users.getUserByEmail(user);
@@ -81,7 +88,7 @@ const RootMutationType = new GraphQLObjectType({
         password: {type: new GraphQLNonNull(GraphQLString)},
       },
       resolve : async (_, args) => {
-        const user = {email: args.email, password: args.password};
+        const user = {email: args.email.toLowerCase(), password: args.password};
         
         // Check if a user exists with that email
         const checkUser = await users.getUserByEmail(user);

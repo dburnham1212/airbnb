@@ -8,8 +8,8 @@ import moment from "moment"
 
 // Get listing GraphQL query
 const GET_LISTING = gql`
-  query GetListing($id: Int!, $token: String!){
-    listing(id: $id, token: $token){
+  query GetListing($id: Int!){
+    listing_unprotected(id: $id){
       id
       image_url
       name
@@ -54,6 +54,7 @@ const ViewListing = () => {
   const [bookings, setBookings] = useState([]);
   const [listing, setListing] = useState({});
   const [blockedDates, setBlockedDates] = useState([]);
+  const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [dateRange, setDateRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -71,33 +72,37 @@ const ViewListing = () => {
     event.preventDefault()
 
     // Promise to add booking to the database
-    addBooking({
-      variables: {
-        listing_id: Number(listingId), 
-        user_id: user.id, 
-        start_date: dateRange.startDate, 
-        end_date: dateRange.endDate,
-        token: localStorage.getItem("token")
-      }
-    }).then((res) => {
-      // If successful
-      // Add the new booking to the list and sort it from latest start date to earliest
-      const newBookings = sortBookings([...bookings, res.data.addBooking]);
-      // Set the booking state to the new object
-      setBookings(newBookings);
-      // Update the blocked dates list so that the user can no longer select dates within previously booked range
-      updateBlockedDates(newBookings);
-    }).catch((err)  => {
-      // If not successful handle JWT errors first
-      handleJWTErrors(err);
-      // Otherwise log errors to the console
-      console.log(err.message);
-    })
+    if(user) {
+      addBooking({
+        variables: {
+          listing_id: Number(listingId), 
+          user_id: user.id, 
+          start_date: dateRange.startDate, 
+          end_date: dateRange.endDate,
+          token: localStorage.getItem("token")
+        }
+      }).then((res) => {
+        // If successful
+        // Add the new booking to the list and sort it from latest start date to earliest
+        const newBookings = sortBookings([...bookings, res.data.addBooking]);
+        // Set the booking state to the new object
+        setBookings(newBookings);
+        // Update the blocked dates list so that the user can no longer select dates within previously booked range
+        updateBlockedDates(newBookings);
+        // Confirm the booking
+        setBookingConfirmed(true);
+      }).catch((err)  => {
+        // If not successful handle JWT errors first
+        handleJWTErrors(err);
+        // Otherwise log errors to the console
+        console.log(err.message);
+      })
+    }
   };
 
   // Query to get the listing data via GraphQL
   const { loading, error, data } = useQuery(GET_LISTING, {
-    variables: { id: Number(listingId), token: localStorage.getItem("token") },
+    variables: { id: Number(listingId) },
     fetchPolicy: 'cache-and-network'
   }); 
 
@@ -109,7 +114,7 @@ const ViewListing = () => {
         handleJWTErrors(error);
       } else {
         // Create a variable for listing and set it to the data recieved
-        const currentListing = data.listing;
+        const currentListing = data.listing_unprotected;
 
         // Set the listing state to the current listing from GraphQL
         setListing(currentListing);
@@ -221,57 +226,86 @@ const ViewListing = () => {
           </div>
           {/* Book listing card */}
           <div className="col-11 col-sm-11 col-md-11 col-lg-5 col-xl-5">
-            <div className="card">
-              <div className="card-header bg-dark">
-                <h6 className="text-light">Book Listing</h6>
-              </div>
-              <div className="card-body">
-                <DateRange
-                  minDate={new Date()}
-                  disabledDates={blockedDates}
-                  ranges={[dateRange]}
-                  onChange={handleDateSelect}
-                />
-                <div className="form-group py-3">
-                  <button className="btn btn-dark" onClick={(e) => createBooking(e)}> Book Listing </button>
+            <div className="card h-100">
+              { bookingConfirmed ?
+              <>
+                <div className="card-header bg-dark">
+                  <h6 className="text-light">Book Listing</h6>
                 </div>
-              </div>
+                <div className="card-body d-flex flex-column justify-content-between">
+                    <div>  
+                      <h5 className="border-bottom border-dark py-2">Your booking has been confirmed!</h5>
+                      <h6>We hope you enjoy your stay!</h6>
+                    </div>
+                    <div className="form-group">
+                      <button className="btn btn-dark" onClick={() => setBookingConfirmed(false)}> Book Again </button>
+                    </div>
+                </div>
+              </>
+              
+              :
+              <>
+                <div className="card-header bg-dark">
+                  <h6 className="text-light">Book Listing</h6>
+                </div>
+                <div className="card-body">
+                  <DateRange
+                    minDate={new Date()}
+                    disabledDates={blockedDates}
+                    ranges={[dateRange]}
+                    onChange={handleDateSelect}
+                  />
+                  {user ?
+                  <div className="form-group">
+                    <button className="btn btn-dark" onClick={(e) => createBooking(e)}> Book Listing </button>
+                  </div> 
+                  :
+                  <div className="d-flex justify-content-center">
+                    <div className="border bg-dark p-1 w-50 d-flex justify-content-center align-items-center">
+                      <span className="text-warning fw-bold p-2">Please Login To Book A Listing</span>
+                    </div>
+                  </div>
+                  }
+                </div>
+              </>}
             </div>
           </div>
           {/* Table to display bookings for the listing */}
-          <div className="card card col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 ">
-            <div className="card-header bg-dark">
-              <h6 className="text-light">Booking History</h6>
-            </div>
-            <div className="card-body">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Guest</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookingHistory.length > 0 &&  
-                    <>
-                      {bookingHistory}
-                    </>
-                  }
-                </tbody>
-              </table>
-              {bookingHistory.length === 0 &&  
-                <h6>
-                  No Booking History Found
-                </h6>
-              }
+          <div className="col-11 col-sm-11 col-md-11 col-lg-9 col-xl-9 ">
+            <div className="card">
+              <div className="card-header bg-dark">
+                <h6 className="text-light">Booking History</h6>
+              </div>
+              <div className="card-body">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Guest</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookingHistory.length > 0 &&  
+                      <>
+                        {bookingHistory}
+                      </>
+                    }
+                  </tbody>
+                </table>
+                {bookingHistory.length === 0 &&  
+                  <h6>
+                    No Booking History Found
+                  </h6>
+                }
+              </div>
             </div>
           </div>
         </div>
       </div>
       
     </div>
-  )
-}
+  );
+};
 
 export default ViewListing;

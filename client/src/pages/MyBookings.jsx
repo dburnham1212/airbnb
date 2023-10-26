@@ -23,7 +23,7 @@ const GET_BOOKINGS = gql`
   }
 `;
 
-const History = () => {
+const MyBookings = () => {
   // Import user object from context
   const {
     user,
@@ -77,7 +77,7 @@ const History = () => {
 
   return(
     <div className="text-center mb-3">
-      <h3 className="py-2 bg-light">Booking History</h3>
+      <h3 className="py-2 bg-light">My Bookings</h3>
       <div className="container-fluid">
         <div className="row">
           {history.length > 0 ?
@@ -92,7 +92,7 @@ const History = () => {
         </div>  
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default History;
+export default MyBookings;

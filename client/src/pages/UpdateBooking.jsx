@@ -74,7 +74,7 @@ const UpdateBooking = () => {
     }).then(() => {
       // If successful
       // Set the booking state object to reflect the new start dates
-      setBooking({...booking, start_date: dateRange.startDate, end_date: dateRange.endDate});
+      setBooking({...booking, startDate: dateRange.startDate, endDate: dateRange.endDate});
       // Set state object to show that the booking has been updated
       setBookingUpdated(true);
     }).catch((err) => {
@@ -133,7 +133,7 @@ const UpdateBooking = () => {
         handleJWTErrors(error);
       } else {
         // Set booking to the object returned from the query
-        setBooking({...booking, id: data.booking.id, startDate: data.booking.startDate, endDate: data.booking.endData});
+        setBooking({...booking, id: data.booking.id, startDate: data.booking.start_date, endDate: data.booking.end_date});
         
         // Set the current listing to the object returned from the query
         setCurrentListing({...currentListing, name: data.booking.listing.name, description: data.booking.listing.description, address: data.booking.listing.address, price: data.booking.listing.price});
@@ -159,8 +159,8 @@ const UpdateBooking = () => {
           <div className="border rounded bg-light py-3 mb-3">
             <h4 className="pb-2">Booking Successfully Updated</h4>
             <h5 className="pb-2">{currentListing.name}</h5>
-            <p>Start Date: {moment(booking.start_date).format("MM/DD/YYYY")}</p>
-            <p>End Date: {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+            <p>Start Date: {moment(booking.startDate).format("MM/DD/YYYY")}</p>
+            <p>End Date: {moment(booking.endDate).format("MM/DD/YYYY")}</p>
           </div>
           <div className="d-flex justify-content-end">
             <button className="btn btn-dark" onClick={navigateToHistory}>Return to History</button>
@@ -171,8 +171,8 @@ const UpdateBooking = () => {
         <div className="card-body">
           <div className="border rounded bg-light py-3 mb-3">
             <h5 className="pb-2">{currentListing.name}</h5>
-            <p>Start Date {moment(booking.start_date).format("MM/DD/YYYY")}</p>
-            <p>End Date {moment(booking.end_date).format("MM/DD/YYYY")}</p>
+            <p>Start Date {moment(booking.startDate).format("MM/DD/YYYY")}</p>
+            <p>End Date {moment(booking.endDate).format("MM/DD/YYYY")}</p>
           </div>
           <DateRange
             minDate={new Date()}
@@ -188,7 +188,7 @@ const UpdateBooking = () => {
         }
       </div>
     </div> 
-  )
-}
+  );
+};
 
 export default UpdateBooking;

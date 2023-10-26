@@ -61,14 +61,14 @@ const Listings = () => {
       // If not successful log the results
       console.log(err.message)
     });
-  }
+  };
 
   // Create use effect to set the current displayed listings
   useEffect(() => {
     if(!loading && !error) {
       setDisplayListings(data.listings);
     }
-  }, [loading])
+  }, [loading]);
 
   // Check if we are loading or if there is an error
   if (loading) return <p>Loading...</p>;
@@ -109,7 +109,7 @@ const Listings = () => {
         </div>  
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Listings;

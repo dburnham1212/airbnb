@@ -12,7 +12,7 @@ mutation AddListing($user_id: Int!, $image_url: String!, $name: String!, $descri
 }
 `;
 
-const CreateListing = () => {
+const NewListing = () => {
   // Get the user object from context
   const {
     user,
@@ -78,7 +78,7 @@ const CreateListing = () => {
     <div className="d-flex justify-content-center py-5 mx-2">
       <div className="card col-12 col-sm-8 col-md-7 col-lg-6 col-xl-6 text-center">
       <div className="card-header bg-dark">
-          <h2 className="text-light">Create Listing</h2>
+          <h2 className="text-light">New Listing</h2>
         </div>
         {listingCreated ? 
         <div className="card-body">
@@ -132,4 +132,4 @@ const CreateListing = () => {
   )
 }
 
-export default CreateListing;
+export default NewListing;

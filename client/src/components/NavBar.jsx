@@ -13,7 +13,7 @@ const NavBar = () => {
   return(
     <nav className="navbar navbar-expand-lg navbar-light fixed-top bg-dark py-4">
       <div className="container-fluid">
-        <div className="navbar-brand text-light px-4">Airbnb</div>
+        <div className="navbar-brand text-light px-4" style={{ fontFamily: "Pacifico", fontSize: 25 }}>Airbnb</div>
         <button 
           className="navbar-toggler bg-light mx-4" 
           type="button" 
@@ -50,7 +50,7 @@ const NavBar = () => {
           {user ?
           <ul className="navbar-nav d-flex justify-content-end"> 
             <li className="nav-item m-auto">
-              <span className="text-warning">User: {user.first_name} {user.last_name}</span>
+              <span className="text-warning">User: <span className="text-capitalize">{user.first_name}</span> <span className="text-capitalize">{user.last_name}</span></span>
             </li>
             <li className="nav-item active">
               <button className="nav-link link-light link-opacity-50-hover" onClick={onLogout}>Logout</button>
