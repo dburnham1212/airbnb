@@ -1,6 +1,6 @@
 # Airbnb Project
 
-Airbnb is a clone of the popular site of the same name. It was developed using the PERN stack (PostgreSQL, Express, React, Node). It also uses GraphQL non RESTful queries as well as JSON Web Tokens for authentication and authorization of these queries.
+Airbnb is a clone of the popular site of the same name. It was developed using the PERN stack (PostgreSQL, Express, React, Node). It also uses GraphQL for non-RESTful queries as well as JSON Web Tokens for authentication and authorization of these queries.
 
 ## Final 
 
@@ -18,7 +18,7 @@ Displays listing information and allows a user to book a listing.
 
 ### Airbnb - My Listings Page
 
-Displays all listings that the user has created, displays similar information to the my listings page however allows and admin user to update and delete their listings.
+Displays all listings that the user has created, displays similar information to the my listings page however allows an admin user to update and delete their listings.
 
 !["Screenshot of My Listings Page!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/MyListingsPage.png)
 
@@ -38,11 +38,37 @@ Displays all of the bookings that the user has made.
 
 ## Dependencies
 
-- Node.js
-- Express
-- EJS
-- bcryptjs
-- cookie-session
+Client:
+
+ - Node.js
+ - @apollo/client,
+ - @testing-library/jest-dom
+ - @testing-library/react
+ - @testing-library/user-event
+ - bootstrap
+ - date-fns
+ - graphql
+ - jwt-decode
+ - moment
+ - react
+ - react-date-range
+ - react-dom
+ - react-router-dom
+ - react-scripts
+ - web-vitals
+
+Server:
+ - bcryptjs
+ - cors
+ - dotenv
+ - express
+ - express-graphql
+ - graphql
+ - jsonwebtoken
+ - morgan
+ - pg
+
+Server:
 
 ## Getting Started
 
