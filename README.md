@@ -91,6 +91,3 @@ Server:
  - jsonwebtoken
  - morgan
  - pg
-
-Server:
-
