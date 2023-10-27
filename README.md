@@ -6,13 +6,13 @@ Airbnb is a clone of the popular site of the same name. It was developed using t
 
 ### Airbnb - Listings Page
 
-Displays all listings available to a user and allows the user to search for specific listings based off of their address.
+Displays all listings available to a user and allows the user to search for specific listings based off of their address. You do not have to be logged in to view this page.
 
 !["Screenshot of Listings Page (displaying lisings)!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/ListingsPage.png)
 
 ### Airbnb - View Listing Page 
 
-Displays listing information and allows a user to book a listing.
+Displays listing information and allows a user to book a listing. You do not have to be logged in to view this page however you must be logged in to book a listing.
 
 !["Screenshot of Listing Page (displaying a listing)!"](https://github.com/dburnham1212/airbnb/blob/main/screenshots/ViewListingPage.png)
 
