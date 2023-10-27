@@ -1,6 +1,6 @@
 # Airbnb Project
 
-Airbnb is a clone of the popular site of the same name. It was developed using the PERN stack (PostgreSQL, Express, React, Node). It also uses GraphQL for non-RESTful queries as well as JSON Web Tokens for authentication and authorization of these queries.
+Airbnb is a clone of the popular site of the same name. It was developed using the PERN stack (PostgreSQL, Express, React, Node). It also uses GraphQL for non-RESTful queries as well as JSON Web Tokens for authentication and authorization.
 
 ## Final 
 
