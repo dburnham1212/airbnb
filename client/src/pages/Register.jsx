@@ -26,7 +26,7 @@ const Register = () => {
   } = useContext(authContext);
 
   // State objects 
-  const [formState, setFormState] = useState({role: "user"})
+  const [formState, setFormState] = useState({role: "customer"})
   const [errorText, setErrorText] = useState("");
   
   // Use Navigate to handle navigation
@@ -55,8 +55,12 @@ const Register = () => {
       setToken(res.data.registerUser);
       // Navigate to listings page
       navigate("/")
-    }).catch((err) => {
-      setErrorText(err.message)
+    }).catch((error) => {
+      for (const err of error.graphQLErrors) {
+        if (err.extensions.code === "EMAIL_ALREADY_FOUND") {
+          setErrorText(err.message);
+        }
+      }; 
     });
       
   };
@@ -92,7 +96,7 @@ const Register = () => {
           <div className="form-group pt-4">
             <div className="px-4 d-flex d-flex justify-content-center">
               <label className="form-label w-25 px-4">Customer</label>
-              <input type="radio" name="role" defaultChecked="user" value="user" onChange={(e) => handleChange(e)}></input>
+              <input type="radio" name="role" defaultChecked="user" value="customer" onChange={(e) => handleChange(e)}></input>
             </div>
             <div className="px-4 d-flex d-flex justify-content-center">
               <label className="form-label w-25 px-4">Admin</label>

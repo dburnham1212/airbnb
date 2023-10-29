@@ -52,9 +52,13 @@ const Login = () => {
       setToken(res.data.loginUser);
       // Navigate to listings page 
       navigate("/")
-    }).catch((err) => {
+    }).catch((error) => {
       // If there is an error returned
-      setErrorText(err.message)
+      for (const err of error.graphQLErrors) {
+        if (err.extensions.code === "INVALID_CREDENTIALS") {
+          setErrorText(err.message);
+        }
+      }; 
     });
   };
 
@@ -75,7 +79,7 @@ const Login = () => {
             <input className="form-control" type="password" placeholder="password" name="password" required onChange={(e) => handleChange(e)}></input>
           </div>
           {/* Error handling for form */}
-          {errorText && <div class="alert alert-danger mt-4" role="alert">
+          {errorText && <div className="alert alert-danger mt-4" role="alert">
             {errorText}
           </div>}
           <div className="d-flex justify-content-end mx-2 my-4">

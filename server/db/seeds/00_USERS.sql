@@ -6,7 +6,7 @@ VALUES ('Dylan', 'Burnham', '555-555-5555', 'dburnham1212@gmail.com', '$2a$12$vw
 
 -- User 2
 INSERT INTO users (first_name, last_name, phone_number, email, password, role)
-VALUES ('Test', 'Tester', '555-555-5555', 'test@gmail.com', '$2a$12$vwfiBALtJBr07uHNM0y9UeRmOg.d4A4o0Mfqi0g3vxpZcFyQqPUly', 'user');
+VALUES ('Test', 'Tester', '555-555-5555', 'test@gmail.com', '$2a$12$vwfiBALtJBr07uHNM0y9UeRmOg.d4A4o0Mfqi0g3vxpZcFyQqPUly', 'customer');
 
 -- User 3
 INSERT INTO users (first_name, last_name, phone_number, email, password, role)

@@ -48,13 +48,13 @@ export default function AuthProvider(props) {
 
   // Function used to handle errors from graphql if json web token has been tampered with or has expired
   const handleJWTErrors = (error) => {
-    error.graphQLErrors.map((err) => {
+    for(const err of error.graphQLErrors) {
       if(err.extensions.code === "JWT_ERROR") {
         setUser(null)
         clearToken();
         navigate('/login')
       }
-    });
+    };
   }
   
   // Provider data

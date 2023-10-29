@@ -54,7 +54,7 @@ const RootMutationType = new GraphQLObjectType({
         if (oldUser) {
           return new graphql.GraphQLError(`A user with the email ${user.email} already exists`, {
             extensions: {
-              code: 'EMAIL_ALREAD_FOUND',
+              code: 'EMAIL_ALREADY_FOUND',
             },
           });
         }; 
