@@ -45,7 +45,7 @@ const NewListing = () => {
     event.preventDefault();
 
     // Concatenate the address from the inputted fields 
-    const address = `${addressState.street}, ${addressState.city}, ${addressState.postalCode}`;
+    const address = `${addressState.street.trim()}, ${addressState.city.trim()}, ${addressState.postalCode.trim()}`;
 
     // Use the mutation to add the listing to the db
     addListing({
