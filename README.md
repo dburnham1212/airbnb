@@ -1,6 +1,6 @@
 # Airbnb Project
 
-Airbnb is a clone of the popular site of the same name. It was developed using the PERN stack (PostgreSQL, Express, React, Node). It also uses GraphQL for non-RESTful queries as well as JSON Web Tokens for authentication and authorization.
+Airbnb is a minimal clone of the popular site of the same name. It was developed using the PERN stack (PostgreSQL, Express, React, Node). It also uses GraphQL for non-RESTful queries as well as JSON Web Tokens for authentication and authorization.
 
 ## Final 
 
@@ -57,7 +57,7 @@ Server:
 - Install all dependencies (using the `npm install` command).
 - Initialize a database to store airbnb data in PostgreSQL.
 - Create and .env file using the env example provided.
-- Reset the database using the `npm db:reset` command.
+- Reset the database using the `npm run db:reset` command.
 - Run the development web server using the `npm start` command.
 
 ## Dependencies
